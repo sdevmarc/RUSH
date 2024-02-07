@@ -1,0 +1,11 @@
+{
+  "name": "client",
+  "version": "0.0.0",
+  "description": "A frontend for mobile dedicated to users and customers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marc Edison D. Suarez",
+  "license": "ISC"
+}
