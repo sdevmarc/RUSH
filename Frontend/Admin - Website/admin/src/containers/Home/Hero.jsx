@@ -5,7 +5,7 @@ const Hero = () => {
     return (
         <>
             <Header />
-            <div className="overw-full h-[60vh] flex px-[15rem]">
+            <div className="w-full h-[60vh] flex">
                 <div className="relative w-[60%] h-full">
                     <img
                         className='object-cover  w-full h-full'
