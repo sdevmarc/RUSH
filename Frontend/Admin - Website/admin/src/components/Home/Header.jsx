@@ -16,7 +16,7 @@ const Header = () => {
                         Download
                     </h1>
                 </div>
-                <div className="w-full h-[5vh] flex justify-center items-center bg-[#e7faff]">
+                <div className="w-full h-[5vh] flex justify-center items-center bg-[#f9faff]">
                     <h1
                         className='text-[13px] font-semibold'
                     >Early access is now live!</h1>
