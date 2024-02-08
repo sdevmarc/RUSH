@@ -1,11 +1,12 @@
 import React from 'react'
+import Hero from '../containers/Home/Hero'
 
 const Home = () => {
-  return (
-    <div className='w-full h-screen text-[60px] flex justify-center items-center text-center'>
-      Rent and share platform <br />&<br /> Circular Fashion Marketplace
-    </div>
-  )
+    return (
+        <>
+            <Hero />
+        </>
+    )
 }
 
 export default Home
