@@ -17,9 +17,7 @@ const LogInOrSignUp = () => {
                         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                             <View style={styles.viewLogoContainer}>
                                 <View style={styles.viewLogoContainer}>
-                                    <Image
-                                        source={Logo}
-                                        style={styles.logo} />
+                                    <Image source={Logo} />
                                 </View>
 
                                 <View style={styles.viewTouchacbleOpacity}>
