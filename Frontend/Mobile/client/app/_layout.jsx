@@ -4,8 +4,9 @@ import { Stack } from 'expo-router'
 const Layout = () => {
     return (
         <Stack>
-            <Stack.Screen name='screens/intro/LogInOrSignUp' options={{ headerTitle: 'Login', headerTitleAlign: 'center', headerShown: false }} />
+            <Stack.Screen name='screens/intro/GetStarted' options={{ headerTitle: 'Login', headerTitleAlign: 'center', headerShown: false }} />
             <Stack.Screen name='screens/intro/OnBoarding' options={{ headerTitle: 'OnBoarding', headerTitleAlign: 'center', headerShown: false }} />
+            <Stack.Screen name='screens/intro/LoginRegister' options={{ headerTitle: 'OnBoarding', headerTitleAlign: 'center', headerShown: false }} />
         </Stack>
     )
 }

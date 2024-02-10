@@ -2,9 +2,11 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React, { useRef, useEffect } from 'react';
 import LottieView from 'lottie-react-native';
 import Onboarding from 'react-native-onboarding-swiper'
+import { useRouter } from 'expo-router';
 
 const OnBoarding = () => {
     const animation = useRef(null);
+    const router = useRouter()
     useEffect(() => {
         // You can control the ref programmatically, rather than using autoPlay
         // animation.current?.play();
@@ -43,6 +45,8 @@ const OnBoarding = () => {
     return (
         <View style={styles.Container}>
             <Onboarding
+                onSkip={() => router.replace('screens/intro/LoginRegister')}
+                onDone={() => router.replace('screens/intro/LoginRegister')}
                 DotComponent={Custom}
                 bottomBarHighlight={false}
                 DoneButtonComponent={handleDone}
@@ -123,15 +127,16 @@ const styles = StyleSheet.create({
         height: 200
     },
     doneButton: {
-        width: 70,
-        height: 40,
+        width: 100,
+        height: 80,
         justifyContent: 'center',
         alignItems: 'center',
-        borderTopLeftRadius: 30,
-        borderBottomLeftRadius: 30,
-        backgroundColor: 'white'
+        borderTopLeftRadius: 50,
+        borderBottomLeftRadius: 50,
+        backgroundColor: 'white',
+        marginBottom: 100
     },
     doneText: {
-        fontSize: 13
+        fontSize: 15
     }
 })

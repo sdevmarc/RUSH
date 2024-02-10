@@ -27,11 +27,11 @@ const LogInOrSignUp = () => {
                                 </View>
 
                                 <View style={styles.viewTouchacbleOpacity}>
-                                    <TouchableOpacity style={styles.LoginTouchableStyle}>
+                                    {/* <TouchableOpacity style={styles.LoginTouchableStyle}>
                                         <Text style={styles.LoginTouchableText}>Login</Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                     <TouchableOpacity style={styles.SignUpTouchableStyle} onPress={handleSignUp}>
-                                        <Text style={styles.SignUpTouchableText}>SignUp</Text>
+                                        <Text style={styles.SignUpTouchableText}>Get started</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -78,17 +78,15 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     SignUpTouchableStyle: {
-        width: 300,
+        width: 350,
         height: 50,
         borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'transparent',
-        borderColor: 'white',
-        borderWidth: 2
+        backgroundColor: 'white'
     },
     SignUpTouchableText: {
-        color: '#fff',
+        color: '#111',
         fontWeight: 'bold',
         fontSize: 18
     }

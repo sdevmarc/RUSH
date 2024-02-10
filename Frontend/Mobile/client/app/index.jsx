@@ -7,7 +7,7 @@ const index = () => {
         <>
             <View style={styles.Container}>
                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Splash Screen Kunware</Text>
-                <Link href={'/screens/intro/LogInOrSignUp'}>Go to Site</Link>
+                <Link href={'/screens/intro/GetStarted'}>Go to Site</Link>
             </View>
         </>
 
