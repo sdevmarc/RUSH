@@ -5,6 +5,7 @@ const Layout = () => {
     return (
         <Stack>
             <Stack.Screen name='screens/intro/LogInOrSignUp' options={{ headerTitle: 'Login', headerTitleAlign: 'center', headerShown: false }} />
+            <Stack.Screen name='screens/intro/OnBoarding' options={{ headerTitle: 'OnBoarding', headerTitleAlign: 'center', headerShown: false }} />
         </Stack>
     )
 }
