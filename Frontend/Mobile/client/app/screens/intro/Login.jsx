@@ -8,7 +8,7 @@ const Login = () => {
     const router = useRouter()
 
     const handleSignUp = () => {
-        router.navigate('screens/intro/Register')
+        router.replace('screens/intro/Register')
     }
 
     return (
