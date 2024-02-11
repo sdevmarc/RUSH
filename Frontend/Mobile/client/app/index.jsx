@@ -11,8 +11,12 @@ const index = () => {
     return (
         <>
             <View style={styles.Container}>
-                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Splash Screen Kunware</Text>
-                <TouchableOpacity onPress={handleSplashScreen}>Go to Site</TouchableOpacity>
+                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+                    Splash Screen Kunware
+                </Text>
+                <TouchableOpacity onPress={handleSplashScreen}>
+                   <Text>Go to Site</Text>
+                </TouchableOpacity>
             </View>
         </>
 
