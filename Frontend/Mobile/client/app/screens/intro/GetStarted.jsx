@@ -5,9 +5,10 @@ import { useRouter } from 'expo-router'
 const bgIntro = require('../../../assets/bgIntro.png')
 const Logo = require('../../../assets/LogoLight.png')
 
-const LogInOrSignUp = () => {
+const GetStarted = () => {
     const router = useRouter()
-    const handleSignUp = () => {
+
+    const handleGetStarted = () => {
         router.replace('screens/intro/OnBoarding')
     }
 
@@ -30,7 +31,7 @@ const LogInOrSignUp = () => {
                                     {/* <TouchableOpacity style={styles.LoginTouchableStyle}>
                                         <Text style={styles.LoginTouchableText}>Login</Text>
                                     </TouchableOpacity> */}
-                                    <TouchableOpacity style={styles.SignUpTouchableStyle} onPress={handleSignUp}>
+                                    <TouchableOpacity style={styles.SignUpTouchableStyle} onPress={handleGetStarted}>
                                         <Text style={styles.SignUpTouchableText}>Get started</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -44,6 +45,8 @@ const LogInOrSignUp = () => {
         </>
     );
 };
+
+export default GetStarted;
 
 const styles = StyleSheet.create({
     container: {
@@ -91,5 +94,3 @@ const styles = StyleSheet.create({
         fontSize: 18
     }
 });
-
-export default LogInOrSignUp;

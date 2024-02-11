@@ -3,7 +3,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
 
-const LoginRegister = () => {
+const Login = () => {
     return (
         <>
             <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
@@ -56,7 +56,7 @@ const LoginRegister = () => {
     )
 }
 
-export default LoginRegister
+export default Login
 
 const styles = StyleSheet.create({
     safeAreaViewContainer: {

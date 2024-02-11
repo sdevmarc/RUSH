@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 const OnBoarding = () => {
     const animation = useRef(null);
     const router = useRouter()
+    
     useEffect(() => {
         // You can control the ref programmatically, rather than using autoPlay
         // animation.current?.play();
@@ -45,8 +46,8 @@ const OnBoarding = () => {
     return (
         <View style={styles.Container}>
             <Onboarding
-                onSkip={() => router.replace('screens/intro/LoginRegister')}
-                onDone={() => router.replace('screens/intro/LoginRegister')}
+                onSkip={() => router.replace('screens/intro/Login')}
+                onDone={() => router.replace('screens/intro/Login')}
                 DotComponent={Custom}
                 bottomBarHighlight={false}
                 DoneButtonComponent={handleDone}
