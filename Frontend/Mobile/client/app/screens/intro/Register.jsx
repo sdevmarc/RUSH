@@ -3,9 +3,16 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
 import { Checkbox } from 'expo-checkbox'
+import { useRouter } from 'expo-router'
 
 const Register = () => {
     const [isChecked, setChecked] = useState(false);
+    const router = useRouter()
+
+    const handleSignUp = () => {
+        router.replace('screens/intro/Successful')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
@@ -44,7 +51,7 @@ const Register = () => {
 
                     </View>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.SignUpTouchableStyle}>
+                        <TouchableOpacity onPress={handleSignUp} style={styles.SignUpTouchableStyle}>
                             <Text style={styles.SignUpTouchableText}>Sign Up</Text>
                         </TouchableOpacity>
                     </View>
