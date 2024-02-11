@@ -2,8 +2,15 @@ import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpa
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
+import {useRouter} from 'expo-router'
 
 const Login = () => {
+    const router = useRouter()
+
+    const handleSignUp = () => {
+        router.navigate('screens/intro/Register')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
@@ -33,7 +40,7 @@ const Login = () => {
                             <TouchableOpacity style={styles.LoginTouchableStyle}>
                                 <Text style={styles.LoginTouchableText}>Login</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.SignUpTouchableStyle}>
+                            <TouchableOpacity onPress={handleSignUp} style={styles.SignUpTouchableStyle}>
                                 <Text style={styles.SignUpTouchableText}>Sign Up</Text>
                             </TouchableOpacity>
 
