@@ -42,20 +42,35 @@ const OnBoarding = () => {
             </TouchableOpacity>
         )
     }
-
+    
+    const handleSkip = ({ ...props }) => {
+        return (
+            <TouchableOpacity style={{display: 'none'}} {...props}>
+                <Text style={styles.doneText}>Done</Text>
+            </TouchableOpacity>
+        )
+    }
+    const handleNext = ({ ...props }) => {
+        return (
+            <TouchableOpacity style={{display: 'none'}} {...props}>
+                <Text style={styles.doneText}>Done</Text>
+            </TouchableOpacity>
+        )
+    }
     return (
         <View style={styles.Container}>
             <Onboarding
-                onSkip={() => router.replace('screens/intro/Login')}
-                onDone={() => router.replace('screens/intro/Login')}
+                onDone={() => router.navigate('screens/intro/Login')}
                 DotComponent={Custom}
                 bottomBarHighlight={false}
+                NextButtonComponent={handleNext}
+                SkipButtonComponent={handleSkip}
                 DoneButtonComponent={handleDone}
                 containerStyles={{ paddingHorizontal: 15 }}
                 titleStyles={{ fontWeight: 'bold', textAlign: 'left' }}
                 pages={[
                     {
-                        backgroundColor: '#a7f3d0',
+                        backgroundColor: '#ffffff',
                         image: (
                             <View style={styles.animationContainer}>
                                 <LottieView
@@ -74,7 +89,7 @@ const OnBoarding = () => {
 
                     },
                     {
-                        backgroundColor: '#fef3c7',
+                        backgroundColor: '#ffffff',
                         image: (
                             <View style={styles.animationContainer}>
                                 <LottieView
@@ -91,7 +106,7 @@ const OnBoarding = () => {
                         subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
                     },
                     {
-                        backgroundColor: '#a78bfa',
+                        backgroundColor: '#ffffff',
                         image: (
                             <View style={styles.animationContainer}>
                                 <LottieView
@@ -134,10 +149,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderTopLeftRadius: 50,
         borderBottomLeftRadius: 50,
-        backgroundColor: 'white',
+        backgroundColor: '#111',
         marginBottom: 100
     },
     doneText: {
+        color: 'white',
         fontSize: 15
     }
 })

@@ -11,11 +11,18 @@ const Login = () => {
         router.replace('screens/intro/Register')
     }
 
+    const handleLogin = () => {
+        router.navigate('screens/Dashboard/Home')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
             <SafeAreaView style={styles.safeAreaViewContainer}>
                 <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+                    <View>
+                        
+                    </View>
                     <View style={styles.imageView}>
                         <Image source={Logo} style={{ width: 100 }} resizeMode='contain' />
                     </View>
@@ -35,19 +42,22 @@ const Login = () => {
                         </View>
 
                     </View>
-                    <View style={{ gap: 20 }}>
+                    <View style={{ gap: 16}}>
                         <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.LoginTouchableStyle}>
+                            <TouchableOpacity onPress={handleLogin} style={styles.LoginTouchableStyle}>
                                 <Text style={styles.LoginTouchableText}>Login</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleSignUp} style={styles.SignUpTouchableStyle}>
-                                <Text style={styles.SignUpTouchableText}>Sign Up</Text>
+                                <Text style={styles.SignUpTouchableText}>Create account</Text>
                             </TouchableOpacity>
 
                         </View>
+                        <View>
+                            <Text style={{textAlign: 'center', fontSize: 13, fontWeight: 'bold'}}>-------------------- or --------------------</Text>
+                        </View>
                         <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.FacebookTouchableStyle}>
-                                <Text style={styles.FacebookTouchableText}>Continue with Facebook</Text>
+                            <TouchableOpacity style={styles.GoogleTouchableStyle}>
+                                <Text style={styles.GoogleTouchableText}>Continue with Facebook</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.GoogleTouchableStyle}>
                                 <Text style={styles.GoogleTouchableText}>Continue with Google</Text>

@@ -1,4 +1,4 @@
-import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
@@ -8,6 +8,7 @@ import { useRouter } from 'expo-router'
 const Register = () => {
     const [isChecked, setChecked] = useState(false);
     const router = useRouter()
+    const { width, height } = Dimensions.get('window');
 
     const handleSignUp = () => {
         router.replace('screens/intro/Successful')
@@ -17,44 +18,48 @@ const Register = () => {
         <>
             <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
             <SafeAreaView style={styles.safeAreaViewContainer}>
-                <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                    <View style={styles.imageView}>
-                        <Image source={Logo} style={{ width: 100 }} resizeMode='contain' />
-                    </View>
-                    <View>
-                        <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Sign Up</Text>
-                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Create a new account</Text>
-                    </View>
-                    <View style={styles.formView}>
-                        <View style={styles.form}>
-                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Username</Text>
-                            <TextInput style={styles.formInput} placeholder='Username' />
+                <ScrollView contentContainerStyle={{ width: width, height: height, backgroundColor: 'white', paddingVertical: 80, paddingHorizontal: 25 }}>
+                    <View style={{ flex: 1,justifyContent: 'flex-start', gap: 30 }}>
+                        <View style={styles.imageView}>
+                            <Image source={Logo} style={{ width: 100 }} resizeMode='contain' />
                         </View>
-                        <View style={styles.form}>
-                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Email</Text>
-                            <TextInput style={styles.formInput} placeholder='Email' />
+                        <View>
+                            <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Sign Up</Text>
+                            <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Create a new account</Text>
                         </View>
-                        <View style={styles.form}>
-                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Password</Text>
-                            <TextInput style={styles.formInput} placeholder='Password' />
+                        <View style={styles.formView}>
+                            <View style={styles.form}>
+                                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Username</Text>
+                                <TextInput style={styles.formInput} placeholder='Username' />
+                            </View>
+                            <View style={styles.form}>
+                                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Email</Text>
+                                <TextInput style={styles.formInput} placeholder='Email' />
+                            </View>
+                            <View style={styles.form}>
+                                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Password</Text>
+                                <TextInput style={styles.formInput} placeholder='Password' />
+                            </View>
+                            <View style={styles.form}>
+                                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Confirm Password</Text>
+                                <TextInput style={styles.formInput} placeholder='Confirm Password' />
+                            </View>
+                            <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center', paddingHorizontal: 25 }}>
+                                <Checkbox style={styles.checkbox} value={isChecked} onValueChange={setChecked} />
+                                <Text style={{ fontSize: 13, color: '#8a8a8a' }}>
+                                    By creating an account you have to agree with our terms and conditions.
+                                </Text>
+                            </View>
+
                         </View>
-                        <View style={styles.form}>
-                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Confirm Password</Text>
-                            <TextInput style={styles.formInput} placeholder='Confirm Password' />
-                        </View>
-                        <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center', paddingHorizontal: 25 }}>
-                            <Checkbox style={styles.checkbox} value={isChecked} onValueChange={setChecked} />
-                            <Text style={{ fontSize: 13, color: '#8a8a8a' }}>
-                                By creating an account you have to agree with our terms and conditions.
-                            </Text>
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity onPress={handleSignUp} style={styles.SignUpTouchableStyle}>
+                                <Text style={styles.SignUpTouchableText}>Sign Up</Text>
+                            </TouchableOpacity>
                         </View>
 
                     </View>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={handleSignUp} style={styles.SignUpTouchableStyle}>
-                            <Text style={styles.SignUpTouchableText}>Sign Up</Text>
-                        </TouchableOpacity>
-                    </View>
+
                 </ScrollView>
             </SafeAreaView>
         </>
@@ -70,8 +75,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     scrollViewContainer: {
-        flex: 1,
-        justifyContent: 'space-between',
         backgroundColor: 'white',
         paddingVertical: 60,
         paddingHorizontal: 25

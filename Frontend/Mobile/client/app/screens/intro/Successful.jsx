@@ -39,7 +39,7 @@ const Successful = () => {
                         <View>
                             <LottieView
                                 ref={animation}
-                                source={require('../../../assets/WallE.json')}
+                                source={require('../../../assets/Check.json')}
                                 autoPlay
                                 loop
                                 width={300}
