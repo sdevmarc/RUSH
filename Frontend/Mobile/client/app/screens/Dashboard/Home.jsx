@@ -14,7 +14,7 @@ const Home = () => {
                 animationType='slide'
                 presentationStyle='pageSheet'
             >
-                <View style={{ flex: 1,justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text>Hello World</Text>
                 </View>
             </Modal>
@@ -25,11 +25,8 @@ const Home = () => {
     return (
         <>
             <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
-            <SafeAreaView style={styles.safeAreaViewContainer}>
+            <View style={styles.safeAreaViewContainer}>
                 <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                    <View>
-                        <Text style={{ fontWeight: 'bold' }}>Menu</Text>
-                    </View>
                     <View style={{ gap: 6 }}>
                         <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Welcome!</Text>
                         <Text style={{ fontSize: 18, color: '#8a8a8a', fontWeight: 'bold' }}>Our Rental Shops</Text>
@@ -42,7 +39,10 @@ const Home = () => {
                     </View>
                     <View style={{ gap: 10 }}>
                         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Categories</Text>
-                        <View style={{ flexDirection: 'row', gap: 10 }}>
+                        <ScrollView
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            style={{ gap: 10 }}>
                             <TouchableOpacity style={styles.touchableActiveCategory}>
                                 <Text style={{ color: 'white', fontWeight: 'bold' }}>Clothes</Text>
                             </TouchableOpacity>
@@ -61,7 +61,7 @@ const Home = () => {
                             <TouchableOpacity style={styles.touchableNotActiveCategory}>
                                 <Text style={{ color: '#111' }}>Tools</Text>
                             </TouchableOpacity>
-                        </View>
+                        </ScrollView>
                     </View>
                     <View style={{ gap: 20 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -71,10 +71,62 @@ const Home = () => {
                             </TouchableOpacity>
                         </View>
 
-                        <View style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 20 }}>
+                        <View style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', gap: 20 }}>
                             <TouchableOpacity onPress={() => setModal(true)}>
-                                <View style={{ width: 170, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 170, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
+                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
+                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
+                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
+                                    </View>
+                                    <View style={{ gap: 3 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
+                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
+                                    </View>
+                                </View>
+
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setModal(true)}>
+                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
+                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
+                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
+                                    </View>
+                                    <View style={{ gap: 3 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
+                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
+                                    </View>
+                                </View>
+
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setModal(true)}>
+                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
+                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
+                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
+                                    </View>
+                                    <View style={{ gap: 3 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
+                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
+                                    </View>
+                                </View>
+
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setModal(true)}>
+                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
+                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
+                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
+                                    </View>
+                                    <View style={{ gap: 3 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
+                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
+                                    </View>
+                                </View>
+
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setModal(true)}>
+                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
+                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
                                         <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
                                     </View>
                                     <View style={{ gap: 3 }}>
@@ -86,60 +138,11 @@ const Home = () => {
 
                             </TouchableOpacity>
 
-
-                            <TouchableOpacity>
-                                <View style={{ width: 170, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 170, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
-                                    </View>
-                                    <View style={{ gap: 3 }}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
-                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
-                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <View style={{ width: 170, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 170, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
-                                    </View>
-                                    <View style={{ gap: 3 }}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
-                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
-                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <View style={{ width: 170, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 170, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
-                                    </View>
-                                    <View style={{ gap: 3 }}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
-                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
-                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <View style={{ width: 170, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 170, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
-                                    </View>
-                                    <View style={{ gap: 3 }}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
-                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
-                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
                         </View>
 
                     </View>
                 </ScrollView>
-            </SafeAreaView >
+            </View >
         </>
 
     )
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
         gap: 30
     },
     formInput: {
-        width: 300,
+        width: 260,
         height: 50,
         backgroundColor: '#e8e8e8',
         borderRadius: 10,
@@ -179,13 +182,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10
+        borderRadius: 10,
+        marginHorizontal: 5
     },
     touchableNotActiveCategory: {
         paddingHorizontal: 10,
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10
+        borderRadius: 10,
+        marginHorizontal: 5
     }
 })

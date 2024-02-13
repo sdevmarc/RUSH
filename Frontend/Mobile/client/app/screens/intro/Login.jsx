@@ -12,7 +12,7 @@ const Login = () => {
     }
 
     const handleLogin = () => {
-        router.navigate('screens/Dashboard/Home')
+        router.navigate('screens/Dashboard')
     }
 
     return (
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
         backgroundColor: 'white',
-        paddingVertical: 60,
+        paddingVertical: 30,
         paddingHorizontal: 25
     },
     buttonContainer: {
