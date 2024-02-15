@@ -20,9 +20,6 @@ const Login = () => {
             <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
             <SafeAreaView style={styles.safeAreaViewContainer}>
                 <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                    <View>
-                        
-                    </View>
                     <View style={styles.imageView}>
                         <Image source={Logo} style={{ width: 100 }} resizeMode='contain' />
                     </View>
