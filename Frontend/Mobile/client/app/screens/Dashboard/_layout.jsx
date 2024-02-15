@@ -18,7 +18,7 @@ export default TabsRoutes
 
 const CustomHomeHeader = () => {
     const click = () => {
-        Alert.alert('Downloaded porn')
+        Alert.alert('Menu alert')
     }
     return (
         <View style={{ width: 300, height: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
