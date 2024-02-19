@@ -111,7 +111,7 @@ const OnBoarding = () => {
                             <View style={styles.animationContainer}>
                                 <LottieView
                                     ref={animation}
-                                    source={require('../../../assets/Celebrate.json')}
+                                    source={require('../../../assets/Pay.json')}
                                     autoPlay
                                     loop
                                     style={{
