@@ -54,13 +54,13 @@ const Login = () => {
                             <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
                                 Email / Username
                             </Text>
-                            <TextInput style={{ height: height * 0.05, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.03 }} placeholder='Email or username' />
+                            <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Email or username' />
                         </View>
                         <View style={{ gap: 10 }}>
                             <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
                                 Password
                             </Text>
-                            <TextInput style={{ height: height * 0.05, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.03 }} placeholder='Password' />
+                            <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Password' />
                             <TouchableOpacity>
                                 <Text style={{ fontSize: width * 0.03, fontWeight: 'bold', color: '#666666' }}>
                                     Forgot Password?
@@ -69,18 +69,18 @@ const Login = () => {
                         </View>
                     </View>
                     <View style={{ marginHorizontal: width * 0.1, marginVertical: height * 0.02, gap: 16 }}>
-                        <TouchableOpacity onPress={handleLogin} style={{ height: height * 0.05, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
+                        <TouchableOpacity onPress={handleLogin} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
                             <Text style={{ fontSize: width * 0.035, color: 'white', fontWeight: 'bold' }}>
                                 Login
                             </Text>
                         </TouchableOpacity>
                         <Text style={{ textAlign: 'center', fontSize: width * 0.03, fontWeight: 'bold' }}>-------------------- or --------------------</Text>
-                        <TouchableOpacity onPress={handleSignUp} style={{ height: height * 0.05, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
+                        <TouchableOpacity onPress={handleSignUp} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
                             <Text style={{ fontSize: width * 0.03, fontWeight: 'bold' }}>
                                 Create Account
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ height: height * 0.05, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
+                        <TouchableOpacity style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
                             <Text style={{ fontSize: width * 0.03, fontWeight: 'bold' }}>
                                 Continue with Google
                             </Text>
