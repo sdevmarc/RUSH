@@ -1,8 +1,21 @@
-import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import {
+    Image,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+    Dimensions
+} from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
-import {useRouter} from 'expo-router'
+import { useRouter } from 'expo-router'
+
+const { width, height } = Dimensions.get("window")
+
 
 const Login = () => {
     const router = useRouter()
@@ -17,9 +30,20 @@ const Login = () => {
 
     return (
         <>
-            <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
-            <SafeAreaView style={styles.safeAreaViewContainer}>
-                <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+            <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+            <SafeAreaView style={{ flex: 1 }}>
+                <ScrollView>
+                    <View style={{ width: width, height: height / 5, justifyContent: 'center' }}>
+                        <Image source={Logo} style={{ width: width }} resizeMode='contain' />
+                    </View>
+                    <View style={{ width: width, marginHorizontal: width * 0.1 }}>
+                        <Text style={{ fontSize: width * 0.09, fontWeight: 'bold' }}>Welcome!</Text>
+                        <Text style={{ fontSize: width * 0.03, color: '#8a8a8a' }}>Please login or sign up to continue our app</Text>
+                    </View>
+                </ScrollView>
+
+
+                {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                     <View style={styles.imageView}>
                         <Image source={Logo} style={{ width: 100 }} resizeMode='contain' />
                     </View>
@@ -29,32 +53,34 @@ const Login = () => {
                         <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Please login or sign up to continue our app</Text>
                     </View>
                     <View style={styles.formView}>
-                        <View style={styles.form}>
+                        <View style={{width: width-100, backgroundColor: 'black'}}>
                             <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Email / Username</Text>
                             <TextInput style={styles.formInput} placeholder='Email or username' />
                         </View>
                         <View style={styles.form}>
-                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Password</Text>
+                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                                Password
+                            </Text>
                             <TextInput style={styles.formInput} placeholder='Password' />
+                            <TouchableOpacity>
+                                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#666666' }}>
+                                    Forgot Password?</Text>
+                            </TouchableOpacity>
                         </View>
 
                     </View>
-                    <View style={{ gap: 16}}>
+                    <View style={{ gap: 16 }}>
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity onPress={handleLogin} style={styles.LoginTouchableStyle}>
                                 <Text style={styles.LoginTouchableText}>Login</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleSignUp} style={styles.SignUpTouchableStyle}>
-                                <Text style={styles.SignUpTouchableText}>Create account</Text>
-                            </TouchableOpacity>
-
                         </View>
                         <View>
-                            <Text style={{textAlign: 'center', fontSize: 13, fontWeight: 'bold'}}>-------------------- or --------------------</Text>
+                            <Text style={{ textAlign: 'center', fontSize: 13, fontWeight: 'bold' }}>-------------------- or --------------------</Text>
                         </View>
                         <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.GoogleTouchableStyle}>
-                                <Text style={styles.GoogleTouchableText}>Continue with Facebook</Text>
+                            <TouchableOpacity onPress={handleSignUp} style={styles.SignUpTouchableStyle}>
+                                <Text style={styles.SignUpTouchableText}>Create Account</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.GoogleTouchableStyle}>
                                 <Text style={styles.GoogleTouchableText}>Continue with Google</Text>
@@ -63,7 +89,7 @@ const Login = () => {
                         </View>
                     </View>
 
-                </ScrollView>
+                </ScrollView> */}
             </SafeAreaView>
         </>
 
