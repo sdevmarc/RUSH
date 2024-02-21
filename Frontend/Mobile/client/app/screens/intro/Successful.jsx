@@ -22,49 +22,45 @@ const Successful = () => {
         <>
             <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
 
-            <SafeAreaView style={styles.safeAreaViewContainer}>
-                <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                    <View style={{ position: 'absolute', width, height }}>
-                        <LottieView
-                            ref={animation}
-                            source={require('../../../assets/Celebrate.json')}
-                            autoPlay
-                            loop
-                            resizeMode='cover'
-                            style={{ width, height }}
-                        />
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
-                        <View>
-                            <LottieView
-                                ref={animation}
-                                source={require('../../../assets/Check.json')}
-                                autoPlay
-                                loop
-                                width={300}
-                                height={300}
-                            />
-                        </View>
+            <SafeAreaView style={{ flex: 1 }}>
+                <ScrollView contentContainerStyle={{ flex: 1 }}>
+                    <LottieView
+                        ref={animation}
+                        source={require('../../../assets/Celebrate.json')}
+                        autoPlay
+                        loop
+                        resizeMode='cover'
+                        style={{ position: 'absolute', width: width, height: height }}
+                    />
+                    <View style={{ flex: 1, justifyContent: 'space-between', marginVertical: height *0.05 }}>
                         <View style={{ gap: 10 }}>
-                            <View style={{ gap: 10 }}>
-                                <Text style={{ textAlign: 'center', fontSize: 30, fontWeight: 'bold' }}>
-                                    Successfull
+                            <View>
+                                <LottieView
+                                    ref={animation}
+                                    source={require('../../../assets/Check.json')}
+                                    autoPlay
+                                    loop
+                                    width={width * 1}
+                                    height={height * 0.3}
+                                />
+                            </View>
+                            <View style={{ gap: height * 0.03 }}>
+                                <Text style={{ textAlign: 'center', fontSize: width * 0.08, fontWeight: 'bold' }}>
+                                    Successful
                                 </Text>
-                                <Text style={{ textAlign: 'center', fontSize: 13, color: '#8a8a8a', paddingHorizontal: 50 }}>
+                                <Text style={{ textAlign: 'center', fontSize: width * 0.035, color: '#8a8a8a', paddingHorizontal: width * 0.2}}>
                                     You have successfully registered in our app and start working on it.
                                 </Text>
                             </View>
                         </View>
-                    </View>
-
-                    <View>
-                        <TouchableOpacity onPress={handleLogin} style={styles.LoginTouchableStyle}>
-                            <Text style={styles.LoginTouchableText}>Proceed to Login</Text>
+                        <TouchableOpacity onPress={handleLogin} style={{ height: height * 0.06, borderRadius: height * 0.03, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', marginHorizontal: width * 0.1 }}>
+                            <Text style={{ fontSize: width * 0.035, color: 'white', fontWeight: 'bold' }}>
+                                Proceed to Login
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
-            </SafeAreaView>
+            </SafeAreaView >
         </>
     )
 }
