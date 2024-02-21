@@ -26,7 +26,7 @@ const Login = () => {
     }
 
     const handleLogin = () => {
-        router.navigate('screens/Dashboard')
+        router.navigate('screens/Dashboard/Home')
     }
 
     const handleSubmit = () => {
