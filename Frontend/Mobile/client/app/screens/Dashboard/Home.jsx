@@ -1,7 +1,20 @@
-import { Image, Modal, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import {
+    Image,
+    Modal,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+    Dimensions,
+    ImageBackground
+} from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 const bgSample = require('../../../assets/bgIntro.png')
+const { width, height } = Dimensions.get('window')
 
 const Home = () => {
     const [isModal, setModal] = useState(false)
@@ -24,124 +37,166 @@ const Home = () => {
 
     return (
         <>
-            <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
-            <View style={styles.safeAreaViewContainer}>
-                <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                    <View style={{ gap: 6 }}>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Welcome!</Text>
-                        <Text style={{ fontSize: 18, color: '#8a8a8a', fontWeight: 'bold' }}>Our Rental Shops</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <TextInput style={styles.formInput} placeholder='Search...' />
-                        <TouchableOpacity style={styles.touchableSort}>
-                            <Text style={{ color: 'white' }}>Sort</Text>
+            {/* <StatusBar translucent backgroundColor="white" barStyle="dark-content" /> */}
+            <View style={{ backgroundColor: '#fff' }}>
+                <ScrollView>
+                    <ImageBackground source={{ uri: 'https://source.unsplash.com/woman-wearing-black-and-white-floral-dress-walks-inside-dark-room-tH_Byj_IWbo' }}
+                        resizeMode='cover'
+                        style={{ width: width, height: height * 0.23, justifyContent: 'flex-end', gap: width * 0.04 }}>
+                        <TouchableOpacity style={{ paddingHorizontal: width * 0.03 }}>
+                            <Text style={{ color: '#fff', fontSize: width * 0.04, fontWeight: 'bold' }}>
+                                Menu
+                            </Text>
                         </TouchableOpacity>
-                    </View>
-                    <View style={{ gap: 10 }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Categories</Text>
-                        <ScrollView
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            style={{ gap: 10 }}>
-                            <TouchableOpacity style={styles.touchableActiveCategory}>
-                                <Text style={{ color: 'white', fontWeight: 'bold' }}>Clothes</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.touchableNotActiveCategory}>
-                                <Text style={{ color: '#111' }}>Electronics</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.touchableNotActiveCategory}>
-                                <Text style={{ color: '#111' }}>Car</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.touchableNotActiveCategory}>
-                                <Text style={{ color: '#111' }}>Camera</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.touchableNotActiveCategory}>
-                                <Text style={{ color: '#111' }}>Cleaning</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.touchableNotActiveCategory}>
-                                <Text style={{ color: '#111' }}>Tools</Text>
-                            </TouchableOpacity>
-                        </ScrollView>
-                    </View>
-                    <View style={{ gap: 20 }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Top Stores</Text>
-                            <TouchableOpacity>
-                                <Text style={{ fontSize: 15 }}>View all</Text>
-                            </TouchableOpacity>
+                        <View style={{
+                            paddingHorizontal: width * 0.03,
+                        }}>
+                            <Text style={{ fontSize: width * 0.08, fontWeight: 'bold', color: '#fff' }}>Discover</Text>
+                            <Text style={{ fontSize: width * 0.045, color: '#fff', fontWeight: 'bold' }}>Our Rental Shops</Text>
+                        </View>
+                    </ImageBackground>
+                    <View style={{ paddingVertical: height * 0.03, gap: height * 0.03 }}>
+                        <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03 }}>
+                            <Text style={{ fontSize: width * 0.047, fontWeight: '800', color: '#222' }}>
+                                Categories
+                            </Text>
+                            <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <TouchableOpacity 
+                                style={{ 
+                                    paddingHorizontal: width * 0.05, 
+                                    paddingVertical: height * 0.0065, 
+                                    borderRadius: height * 0.01, 
+                                    backgroundColor: '#222', 
+                                    borderWidth: width * 0.003}}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
+                                    <Text>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
+                                    <Text>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
+                                    <Text>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
+                                    <Text>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
+                                    <Text>Clothes</Text>
+                                </TouchableOpacity>
+
+                            </ScrollView>
                         </View>
 
-                        <View style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', gap: 20 }}>
-                            <TouchableOpacity onPress={() => setModal(true)}>
-                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
-                                    </View>
-                                    <View style={{ gap: 3 }}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
-                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
-                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
-                                    </View>
-                                </View>
-
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => setModal(true)}>
-                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
-                                    </View>
-                                    <View style={{ gap: 3 }}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
-                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
-                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
-                                    </View>
-                                </View>
-
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => setModal(true)}>
-                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
-                                    </View>
-                                    <View style={{ gap: 3 }}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
-                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
-                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
-                                    </View>
-                                </View>
-
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => setModal(true)}>
-                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
-                                    </View>
-                                    <View style={{ gap: 3 }}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
-                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
-                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
-                                    </View>
-                                </View>
-
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => setModal(true)}>
-                                <View style={{ width: 150, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                                    <View style={{ width: 150, height: 170, borderRadius: 10, overflow: 'hidden', alignItems: 'center' }}>
-                                        <Image source={bgSample} style={{ width: 200, height: 200 }} resizeMode='cover' />
-                                    </View>
-                                    <View style={{ gap: 3 }}>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Eko Store</Text>
-                                        <Text style={{ fontSize: 13, color: '#8a8a8a' }}>Need clothes? Bumili ka dito sa eko store</Text>
-                                        <Text style={{ fontWeight: 'bold' }}>Open Daily</Text>
-                                    </View>
-                                </View>
-
-                            </TouchableOpacity>
-
+                        <View style={{ gap: height * 0.02, marginLeft: width * 0.03 }}>
+                            <Text style={{ fontSize: width * 0.047, fontWeight: '800', color: '#222' }}>
+                                Hot Trends 🔥🔥🔥
+                            </Text>
+                            <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <TouchableOpacity style={{
+                                    width: width * 0.55,
+                                    height: height * 0.25,
+                                    borderRadius: height * 0.01,
+                                    backgroundColor: '#222',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    width: width * 0.55,
+                                    height: height * 0.25,
+                                    borderRadius: height * 0.01,
+                                    backgroundColor: '#222',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    width: width * 0.55,
+                                    height: height * 0.25,
+                                    borderRadius: height * 0.01,
+                                    backgroundColor: '#222',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    width: width * 0.55,
+                                    height: height * 0.25,
+                                    borderRadius: height * 0.01,
+                                    backgroundColor: '#222',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
+                            </ScrollView>
                         </View>
+                        <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03 }}>
+                            <Text style={{ fontSize: width * 0.047, fontWeight: '800', color: '#222' }}>
+                                Stores 😍😍😍
+                            </Text>
+                            <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.04, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+                                <TouchableOpacity style={{
+                                    width: width * 0.4,
+                                    height: height * 0.2,
+                                    borderRadius: height * 0.01,
+                                    backgroundColor: '#222',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    width: width * 0.4,
+                                    height: height * 0.2,
+                                    borderRadius: height * 0.01,
+                                    backgroundColor: '#222',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    width: width * 0.4,
+                                    height: height * 0.2,
+                                    borderRadius: height * 0.01,
+                                    backgroundColor: '#222',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
 
+                                <TouchableOpacity style={{
+                                    width: width * 0.4,
+                                    height: height * 0.2,
+                                    borderRadius: height * 0.01,
+                                    backgroundColor: '#222',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    width: width * 0.4,
+                                    height: height * 0.2,
+                                    borderRadius: height * 0.01,
+                                    backgroundColor: '#222',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <Text style={{ color: '#fff' }}>Clothes</Text>
+                                </TouchableOpacity>
+
+                            </ScrollView>
+                        </View>
                     </View>
-                </ScrollView>
+                </ScrollView >
             </View >
         </>
 
