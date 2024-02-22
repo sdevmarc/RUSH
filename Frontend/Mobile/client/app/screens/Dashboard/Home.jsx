@@ -9,52 +9,58 @@ import {
     TouchableOpacity,
     View,
     Dimensions,
-    ImageBackground
+    ImageBackground,
+    Animated
 } from 'react-native'
 import { useNavigation } from 'expo-router';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import React, { useRef, useState } from 'react'
+import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
+
+
+
 const bgSample = require('../../../assets/bgIntro.png')
 const { width, height } = Dimensions.get('window')
 
+
 const Home = () => {
-    const [isModal, setModal] = useState(false)
     const navigation = useNavigation()
-
-
-    if (isModal) {
-        return (
-            <Modal
-                visible={isModal}
-                onRequestClose={() => setModal(false)}
-                animationType='slide'
-                presentationStyle='pageSheet'
-            >
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text>Hello World</Text>
-                </View>
-            </Modal>
-        )
-    }
+    const scrollY = useRef(new Animated.Value(0)).current;
+    const headerBackground = scrollY.interpolate({
+        inputRange: [0, height * 0.1],
+        outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.8)'],
+        extrapolate: 'clamp',
+    })
+    const headerHeight = scrollY.interpolate({
+        inputRange: [0, height * 0.1],
+        outputRange: [height * 0.13, height * 0.12],
+        extrapolate: 'clamp',
+    })
 
 
     return (
         <>
-            {/* <StatusBar translucent backgroundColor="white" barStyle="dark-content" /> */}
             <View style={{ backgroundColor: '#fff' }}>
-                <ScrollView>
+                <Animated.View style={{ backgroundColor: headerBackground, position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1, height: headerHeight, justifyContent: 'flex-end', paddingHorizontal: width * 0.03, paddingVertical: height * 0.02 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <TextInput placeholder='Search...' style={{ backgroundColor: '#fff', paddingHorizontal: width * 0.03, borderRadius: height * 0.007, width: width * 0.7, height: height * 0.04, fontSize: width * 0.035 }} />
+                        <TouchableOpacity onPress={() => navigation.openDrawer()} >
+                            <Ionicons name="menu" size={width * 0.08} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                </Animated.View>
+
+                <ScrollView
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                        { useNativeDriver: false }
+                    )}
+                    scrollEventThrottle={16}
+                >
                     <ImageBackground source={{ uri: 'https://source.unsplash.com/woman-wearing-black-and-white-floral-dress-walks-inside-dark-room-tH_Byj_IWbo' }}
                         resizeMode='cover'
-                        style={{ width: width, height: height * 0.23, justifyContent: 'flex-end', gap: width * 0.04 }}>
-                        <TouchableOpacity
-                            style={{ paddingHorizontal: width * 0.03 }}
-                            onPress={() => navigation.openDrawer()}
-                        >
-                            <Text style={{ color: '#fff', fontSize: width * 0.04, fontWeight: 'bold' }}>
-                                Menu
-                            </Text>
-                        </TouchableOpacity>
+                        style={{ width: width, height: width * 0.5, justifyContent: 'flex-end', gap: width * 0.04 }}>
+
                         <View style={{
                             paddingHorizontal: width * 0.03,
                         }}>
@@ -212,48 +218,3 @@ const Home = () => {
 }
 
 export default Home
-
-const styles = StyleSheet.create({
-    safeAreaViewContainer: {
-        flex: 1,
-        backgroundColor: 'white'
-    },
-    scrollViewContainer: {
-        backgroundColor: 'white',
-        paddingVertical: 60,
-        paddingHorizontal: 15,
-        gap: 30
-    },
-    formInput: {
-        width: 260,
-        height: 50,
-        backgroundColor: '#e8e8e8',
-        borderRadius: 10,
-        padding: 13
-    },
-    touchableSort: {
-        width: 50,
-        height: 50,
-        backgroundColor: 'black',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    touchableActiveCategory: {
-        paddingHorizontal: 10,
-        paddingVertical: 7,
-        backgroundColor: 'black',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-        marginHorizontal: 5
-    },
-    touchableNotActiveCategory: {
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-        marginHorizontal: 5
-    }
-})
