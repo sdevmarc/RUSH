@@ -11,6 +11,8 @@ import {
     Dimensions,
     ImageBackground
 } from 'react-native'
+import { useNavigation } from 'expo-router';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 const bgSample = require('../../../assets/bgIntro.png')
@@ -18,6 +20,8 @@ const { width, height } = Dimensions.get('window')
 
 const Home = () => {
     const [isModal, setModal] = useState(false)
+    const navigation = useNavigation()
+
 
     if (isModal) {
         return (
@@ -43,7 +47,10 @@ const Home = () => {
                     <ImageBackground source={{ uri: 'https://source.unsplash.com/woman-wearing-black-and-white-floral-dress-walks-inside-dark-room-tH_Byj_IWbo' }}
                         resizeMode='cover'
                         style={{ width: width, height: height * 0.23, justifyContent: 'flex-end', gap: width * 0.04 }}>
-                        <TouchableOpacity style={{ paddingHorizontal: width * 0.03 }}>
+                        <TouchableOpacity
+                            style={{ paddingHorizontal: width * 0.03 }}
+                            onPress={() => navigation.openDrawer()}
+                        >
                             <Text style={{ color: '#fff', fontSize: width * 0.04, fontWeight: 'bold' }}>
                                 Menu
                             </Text>
@@ -57,17 +64,18 @@ const Home = () => {
                     </ImageBackground>
                     <View style={{ paddingVertical: height * 0.03, gap: height * 0.03 }}>
                         <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03 }}>
-                            <Text style={{ fontSize: width * 0.047, fontWeight: '800', color: '#222' }}>
+                            <Text style={{ fontSize: width * 0.047, fontWeight: 'bold', color: '#222' }}>
                                 Categories
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <TouchableOpacity 
-                                style={{ 
-                                    paddingHorizontal: width * 0.05, 
-                                    paddingVertical: height * 0.0065, 
-                                    borderRadius: height * 0.01, 
-                                    backgroundColor: '#222', 
-                                    borderWidth: width * 0.003}}>
+                                <TouchableOpacity
+                                    style={{
+                                        paddingHorizontal: width * 0.05,
+                                        paddingVertical: height * 0.0065,
+                                        borderRadius: height * 0.01,
+                                        backgroundColor: '#222',
+                                        borderWidth: width * 0.003
+                                    }}>
                                     <Text style={{ color: '#fff' }}>Clothes</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
@@ -90,15 +98,15 @@ const Home = () => {
                         </View>
 
                         <View style={{ gap: height * 0.02, marginLeft: width * 0.03 }}>
-                            <Text style={{ fontSize: width * 0.047, fontWeight: '800', color: '#222' }}>
-                                Hot Trends 🔥🔥🔥
+                            <Text style={{ fontSize: width * 0.047, fontWeight: 'bold', color: '#222' }}>
+                                Hot Trends 🔥
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
                                 <TouchableOpacity style={{
                                     width: width * 0.55,
                                     height: height * 0.25,
                                     borderRadius: height * 0.01,
-                                    backgroundColor: '#222',
+                                    backgroundColor: 'grey',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }}>
@@ -108,7 +116,7 @@ const Home = () => {
                                     width: width * 0.55,
                                     height: height * 0.25,
                                     borderRadius: height * 0.01,
-                                    backgroundColor: '#222',
+                                    backgroundColor: 'grey',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }}>
@@ -118,7 +126,7 @@ const Home = () => {
                                     width: width * 0.55,
                                     height: height * 0.25,
                                     borderRadius: height * 0.01,
-                                    backgroundColor: '#222',
+                                    backgroundColor: 'grey',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }}>
@@ -128,7 +136,7 @@ const Home = () => {
                                     width: width * 0.55,
                                     height: height * 0.25,
                                     borderRadius: height * 0.01,
-                                    backgroundColor: '#222',
+                                    backgroundColor: 'grey',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }}>
@@ -137,8 +145,8 @@ const Home = () => {
                             </ScrollView>
                         </View>
                         <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03 }}>
-                            <Text style={{ fontSize: width * 0.047, fontWeight: '800', color: '#222' }}>
-                                Stores 😍😍😍
+                            <Text style={{ fontSize: width * 0.047, fontWeight: 'bold', color: '#222' }}>
+                                Stores 😍
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.04, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
                                 <TouchableOpacity style={{
