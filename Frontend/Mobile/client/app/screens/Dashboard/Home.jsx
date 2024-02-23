@@ -37,6 +37,35 @@ const Home = () => {
         extrapolate: 'clamp',
     })
 
+    const Categories = [
+        { id: 1, name: 'Clothes' },
+        { id: 2, name: 'Clothes' },
+        { id: 3, name: 'Clothes' },
+        { id: 4, name: 'Clothes' },
+        { id: 5, name: 'Clothes' },
+        { id: 6, name: 'Clothes' },
+        { id: 7, name: 'Clothes' }
+    ]
+
+    const Trends = [
+        { id: 1, name: 'Clothes' },
+        { id: 2, name: 'Clothes' },
+        { id: 3, name: 'Clothes' },
+        { id: 4, name: 'Clothes' },
+        { id: 5, name: 'Clothes' },
+        { id: 6, name: 'Clothes' },
+        { id: 7, name: 'Clothes' }
+    ]
+
+    const Stores = [
+        { id: 1, name: 'Clothes' },
+        { id: 2, name: 'Clothes' },
+        { id: 3, name: 'Clothes' },
+        { id: 4, name: 'Clothes' },
+        { id: 5, name: 'Clothes' },
+        { id: 6, name: 'Clothes' },
+        { id: 7, name: 'Clothes' }
+    ]
 
     return (
         <>
@@ -74,7 +103,19 @@ const Home = () => {
                                 Categories
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <TouchableOpacity
+                                {Categories.map((item) => (
+                                    <TouchableOpacity 
+                                    key={item.id} 
+                                    style={{ 
+                                        paddingHorizontal: width * 0.05, 
+                                        paddingVertical: height * 0.0065, 
+                                        borderRadius: height * 0.01, 
+                                        backgroundColor: '#fff', 
+                                        borderWidth: width * 0.003 }}>
+                                        <Text>{item.name}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                                {/* <TouchableOpacity
                                     style={{
                                         paddingHorizontal: width * 0.05,
                                         paddingVertical: height * 0.0065,
@@ -82,24 +123,11 @@ const Home = () => {
                                         backgroundColor: '#222',
                                         borderWidth: width * 0.003
                                     }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
-                                    <Text>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
-                                    <Text>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
-                                    <Text>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
-                                    <Text>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{ paddingHorizontal: width * 0.05, paddingVertical: height * 0.0065, borderRadius: height * 0.01, backgroundColor: '#fff', borderWidth: width * 0.003 }}>
-                                    <Text>Clothes</Text>
-                                </TouchableOpacity>
-
+                                    <Text style={{ color: '#fff' }}
+                                    >
+                                        Clothes
+                                    </Text>
+                                </TouchableOpacity> */}
                             </ScrollView>
                         </View>
 
@@ -108,46 +136,18 @@ const Home = () => {
                                 Hot Trends 🔥
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <TouchableOpacity style={{
-                                    width: width * 0.55,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    backgroundColor: 'grey',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.55,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    backgroundColor: 'grey',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.55,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    backgroundColor: 'grey',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.55,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    backgroundColor: 'grey',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
+                                {Trends.map((item) => (
+                                    <TouchableOpacity key={item.id} style={{
+                                        width: width * 0.55,
+                                        height: height * 0.25,
+                                        borderRadius: height * 0.01,
+                                        backgroundColor: 'grey',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}>
+                                        <Text style={{ color: '#fff' }}>{item.name}</Text>
+                                    </TouchableOpacity>
+                                ))}
                             </ScrollView>
                         </View>
                         <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03 }}>
@@ -155,58 +155,20 @@ const Home = () => {
                                 Stores 😍
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.04, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.2,
-                                    borderRadius: height * 0.01,
-                                    backgroundColor: '#222',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.2,
-                                    borderRadius: height * 0.01,
-                                    backgroundColor: '#222',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.2,
-                                    borderRadius: height * 0.01,
-                                    backgroundColor: '#222',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.2,
-                                    borderRadius: height * 0.01,
-                                    backgroundColor: '#222',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.2,
-                                    borderRadius: height * 0.01,
-                                    backgroundColor: '#222',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Text style={{ color: '#fff' }}>Clothes</Text>
-                                </TouchableOpacity>
-
+                                {Stores.map((item) => (
+                                    <TouchableOpacity key={item.id} style={{
+                                        width: width * 0.4,
+                                        height: height * 0.2,
+                                        borderRadius: height * 0.01,
+                                        backgroundColor: '#222',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}>
+                                        <Text style={{ color: '#fff' }}>
+                                            {item.name}
+                                        </Text>
+                                    </TouchableOpacity>
+                                ))}
                             </ScrollView>
                         </View>
                     </View>
