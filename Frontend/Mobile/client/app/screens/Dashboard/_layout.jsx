@@ -6,18 +6,8 @@ import { StyleSheet } from 'react-native';
 const _layout = () => {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <Drawer
-                screenOptions={{
-                    headerShown: false
-                }}
-            >
-                <Drawer.Screen
-                    name="Home"
-                    options={{
-                        drawerLabel: 'Home',
-                        title: 'Home',
-                    }}
-                />
+            <Drawer screenOptions={{ headerShown: false }} >
+                <Drawer.Screen name="Home" options={{ drawerLabel: 'Home', title: 'Home' }} />
             </Drawer>
         </GestureHandlerRootView>
     )
