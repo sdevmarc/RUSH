@@ -28,6 +28,8 @@ const SelectedStore = () => {
         extrapolate: 'clamp',
     })
 
+  
+
     const Products = [
         { id: 1, name: 'Sando', status: { isAvailable: 'Available', bgColor: '#008048' } },
         { id: 2, name: 'Skirt', status: { isAvailable: 'Available', bgColor: '#008048' } },
