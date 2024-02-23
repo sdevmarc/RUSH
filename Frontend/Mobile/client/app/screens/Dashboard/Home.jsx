@@ -23,6 +23,7 @@ const bgSample = require('../../../assets/bgIntro.png')
 const { width, height } = Dimensions.get('window')
 
 
+
 const Home = () => {
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -48,7 +49,7 @@ const Home = () => {
     ]
 
     const Trends = [
-        { id: 1, name: 'Clothes' },
+        { id: 1, name: 'Clothes', navigate: handleSelectStore },
         { id: 2, name: 'Clothes' },
         { id: 3, name: 'Clothes' },
         { id: 4, name: 'Clothes' },
@@ -66,6 +67,10 @@ const Home = () => {
         { id: 6, name: 'Clothes' },
         { id: 7, name: 'Clothes' }
     ]
+
+    const handleSelectStore = () => {
+        navigation.navigate('SelectedStore')
+    }
 
     return (
         <>
@@ -104,14 +109,15 @@ const Home = () => {
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {Categories.map((item) => (
-                                    <TouchableOpacity 
-                                    key={item.id} 
-                                    style={{ 
-                                        paddingHorizontal: width * 0.05, 
-                                        paddingVertical: height * 0.0065, 
-                                        borderRadius: height * 0.01, 
-                                        backgroundColor: '#fff', 
-                                        borderWidth: width * 0.003 }}>
+                                    <TouchableOpacity
+                                        key={item.id}
+                                        style={{
+                                            paddingHorizontal: width * 0.05,
+                                            paddingVertical: height * 0.0065,
+                                            borderRadius: height * 0.01,
+                                            backgroundColor: '#fff',
+                                            borderWidth: width * 0.003
+                                        }}>
                                         <Text>{item.name}</Text>
                                     </TouchableOpacity>
                                 ))}
@@ -137,14 +143,17 @@ const Home = () => {
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {Trends.map((item) => (
-                                    <TouchableOpacity key={item.id} style={{
-                                        width: width * 0.55,
-                                        height: height * 0.25,
-                                        borderRadius: height * 0.01,
-                                        backgroundColor: 'grey',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}>
+                                    <TouchableOpacity
+                                        key={item.id}
+                                        onPress={handleSelectStore}
+                                        style={{
+                                            width: width * 0.55,
+                                            height: height * 0.25,
+                                            borderRadius: height * 0.01,
+                                            backgroundColor: 'grey',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}>
                                         <Text style={{ color: '#fff' }}>{item.name}</Text>
                                     </TouchableOpacity>
                                 ))}
@@ -156,14 +165,17 @@ const Home = () => {
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.04, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
                                 {Stores.map((item) => (
-                                    <TouchableOpacity key={item.id} style={{
-                                        width: width * 0.4,
-                                        height: height * 0.2,
-                                        borderRadius: height * 0.01,
-                                        backgroundColor: '#222',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}>
+                                    <TouchableOpacity
+                                        key={item.id}
+                                        onPress={handleSelectStore}
+                                        style={{
+                                            width: width * 0.4,
+                                            height: height * 0.2,
+                                            borderRadius: height * 0.01,
+                                            backgroundColor: '#222',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}>
                                         <Text style={{ color: '#fff' }}>
                                             {item.name}
                                         </Text>
