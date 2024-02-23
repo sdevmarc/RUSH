@@ -28,6 +28,16 @@ const SelectedStore = () => {
         extrapolate: 'clamp',
     })
 
+    const Products = [
+        { id: 1, name: 'Sando', status: { isAvailable: 'Available', bgColor: '#008048' } },
+        { id: 2, name: 'Skirt', status: { isAvailable: 'Available', bgColor: '#008048' } },
+        { id: 3, name: 'Shorts', status: { isAvailable: 'Rented', bgColor: '#e31243' } },
+        { id: 4, name: 'Shirt', status: { isAvailable: 'Available', bgColor: '#008048' } },
+        { id: 5, name: 'Underwear', status: { isAvailable: 'Rented', bgColor: '#e31243' } },
+        { id: 6, name: 'Polo', status: { isAvailable: 'Rented', bgColor: '#e31243' } },
+        { id: 7, name: 'Pajama', status: { isAvailable: 'Rented', bgColor: '#e31243' } }
+    ]
+
     return (
         <>
             <View>
@@ -80,267 +90,43 @@ const SelectedStore = () => {
                                 Products
                             </Text>
                             <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.04, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    // backgroundColor: '#222',
-                                    padding: width * 0.02
-                                }}
-                                >
-                                    <View
-                                        style={{ width: '100%', height: '100%', justifyContent: 'space-between' }}
+                                {Products.map((item) => (
+                                    <TouchableOpacity key={item.id} style={{
+                                        width: width * 0.4,
+                                        height: height * 0.25,
+                                        borderRadius: height * 0.01,
+                                        // backgroundColor: '#222',
+                                        padding: width * 0.02
+                                    }}
                                     >
-                                        <View
-                                            style={{ width: '100%', height: '80%', backgroundColor: 'white' }}
-                                        >
-                                            <Image source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }} resizeMode='cover' style={{ width: '100%', height: '100%' }} />
+                                        <View style={{ width: '100%', height: '100%', justifyContent: 'space-between' }}>
+                                            <View style={{ width: '100%', height: '80%', backgroundColor: 'white' }}>
+                                                <Image
+                                                    source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
+                                                    resizeMode='cover'
+                                                    style={{ width: '100%', height: '100%' }} />
+                                            </View>
+                                            <View style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}>
+                                                <Text style={{ color: '#222', fontWeight: 'bold', fontSize: width * 0.04 }} >
+                                                    {item.name}
+                                                </Text>
+                                                <Text
+                                                    style={{
+                                                        color: '#fff',
+                                                        fontWeight: 'bold',
+                                                        backgroundColor: `${item.status.bgColor}`,
+                                                        paddingHorizontal: width * 0.03,
+                                                        paddingVertical: width * 0.005,
+                                                        borderRadius: height * 0.005,
+                                                        fontSize: width * 0.03
+                                                    }}
+                                                >
+                                                    {item.status.isAvailable}
+                                                </Text>
+                                            </View>
                                         </View>
-                                        <View
-                                            style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}
-                                        >
-                                            <Text
-                                                style={{
-                                                    color: '#222',
-                                                    fontWeight: 'bold',
-                                                    fontSize: width * 0.04
-                                                }}
-                                            >
-                                                Sando
-                                            </Text>
-                                            <Text
-                                                style={{
-                                                    color: '#fff',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: '#008048',
-                                                    paddingHorizontal: width * 0.03,
-                                                    paddingVertical: width * 0.005,
-                                                    borderRadius: height * 0.005,
-                                                    fontSize: width * 0.03
-                                                }}
-                                            >
-                                                Available
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    // backgroundColor: '#222',
-                                    padding: width * 0.02
-                                }}
-                                >
-                                    <View
-                                        style={{ width: '100%', height: '100%', justifyContent: 'space-between' }}
-                                    >
-                                        <View
-                                            style={{ width: '100%', height: '80%', backgroundColor: 'white' }}
-                                        >
-                                            <Image source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }} resizeMode='cover' style={{ width: '100%', height: '100%' }} />
-                                        </View>
-                                        <View
-                                            style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}
-                                        >
-                                            <Text
-                                                style={{
-                                                    color: '#222',
-                                                    fontWeight: 'bold',
-                                                    fontSize: width * 0.04
-                                                }}
-                                            >
-                                                Underwear
-                                            </Text>
-                                            <Text
-                                                style={{
-                                                    color: '#fff',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: '#008048',
-                                                    paddingHorizontal: width * 0.03,
-                                                    paddingVertical: width * 0.005,
-                                                    borderRadius: height * 0.005,
-                                                    fontSize: width * 0.03
-                                                }}
-                                            >
-                                                Available
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    // backgroundColor: '#222',
-                                    padding: width * 0.02
-                                }}
-                                >
-                                    <View
-                                        style={{ width: '100%', height: '100%', justifyContent: 'space-between' }}
-                                    >
-                                        <View
-                                            style={{ width: '100%', height: '80%', backgroundColor: 'white' }}
-                                        >
-                                            <Image source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }} resizeMode='cover' style={{ width: '100%', height: '100%' }} />
-                                        </View>
-                                        <View
-                                            style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}
-                                        >
-                                            <Text
-                                                style={{
-                                                    color: '#222',
-                                                    fontWeight: 'bold',
-                                                    fontSize: width * 0.04
-                                                }}
-                                            >
-                                                Skirt
-                                            </Text>
-                                            <Text
-                                                style={{
-                                                    color: '#fff',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: '#008048',
-                                                    paddingHorizontal: width * 0.03,
-                                                    paddingVertical: width * 0.005,
-                                                    borderRadius: height * 0.005,
-                                                    fontSize: width * 0.03
-                                                }}
-                                            >
-                                                Available
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    // backgroundColor: '#222',
-                                    padding: width * 0.02
-                                }}
-                                >
-                                    <View
-                                        style={{ width: '100%', height: '100%', justifyContent: 'space-between' }}
-                                    >
-                                        <View
-                                            style={{ width: '100%', height: '80%', backgroundColor: 'white' }}
-                                        >
-                                            <Image source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }} resizeMode='cover' style={{ width: '100%', height: '100%' }} />
-                                        </View>
-                                        <View
-                                            style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}
-                                        >
-                                            <Text 
-                                            style={{ 
-                                                color: '#222', 
-                                                fontWeight: 'bold', 
-                                                fontSize: width * 0.04 
-                                                }}>
-                                                    Clothes
-                                                    </Text>
-                                            <Text
-                                                style={{
-                                                    color: '#fff',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: '#e31243',
-                                                    paddingHorizontal: width * 0.03,
-                                                    paddingVertical: width * 0.005,
-                                                    borderRadius: height * 0.005,
-                                                    fontSize: width * 0.03
-                                                }}
-                                            >
-                                                Rented
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    // backgroundColor: '#222',
-                                    padding: width * 0.02
-                                }}
-                                >
-                                    <View
-                                        style={{ width: '100%', height: '100%', justifyContent: 'space-between' }}
-                                    >
-                                        <View
-                                            style={{ width: '100%', height: '80%', backgroundColor: 'white' }}
-                                        >
-                                            <Image source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }} resizeMode='cover' style={{ width: '100%', height: '100%' }} />
-                                        </View>
-                                        <View
-                                            style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}
-                                        >
-                                            <Text 
-                                            style={{ 
-                                                color: '#222', 
-                                                fontWeight: 'bold', 
-                                                fontSize: width * 0.04 
-                                                }}>
-                                                    Clothes
-                                                    </Text>
-                                            <Text
-                                                style={{
-                                                    color: '#fff',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: '#e31243',
-                                                    paddingHorizontal: width * 0.03,
-                                                    paddingVertical: width * 0.005,
-                                                    borderRadius: height * 0.005,
-                                                    fontSize: width * 0.03
-                                                }}
-                                            >
-                                                Rented
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    width: width * 0.4,
-                                    height: height * 0.25,
-                                    borderRadius: height * 0.01,
-                                    // backgroundColor: '#222',
-                                    padding: width * 0.02
-                                }}
-                                >
-                                    <View
-                                        style={{ width: '100%', height: '100%', justifyContent: 'space-between' }}
-                                    >
-                                        <View
-                                            style={{ width: '100%', height: '80%', backgroundColor: 'white' }}
-                                        >
-                                            <Image source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }} resizeMode='cover' style={{ width: '100%', height: '100%' }} />
-                                        </View>
-                                        <View
-                                            style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}
-                                        >
-                                            <Text 
-                                            style={{ 
-                                                color: '#222', 
-                                                fontWeight: 'bold', 
-                                                fontSize: width * 0.04 
-                                                }}>
-                                                    Clothes
-                                                    </Text>
-                                            <Text
-                                                style={{
-                                                    color: '#fff',
-                                                    fontWeight: 'bold',
-                                                    backgroundColor: '#e31243',
-                                                    paddingHorizontal: width * 0.03,
-                                                    paddingVertical: width * 0.005,
-                                                    borderRadius: height * 0.005,
-                                                    fontSize: width * 0.03
-                                                }}
-                                            >
-                                                Rented
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
+                                    </TouchableOpacity>
+                                ))}
                             </ScrollView>
                         </View>
                     </View>
