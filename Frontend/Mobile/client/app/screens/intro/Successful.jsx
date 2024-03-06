@@ -66,30 +66,3 @@ const Successful = () => {
 }
 
 export default Successful
-
-const styles = StyleSheet.create({
-    safeAreaViewContainer: {
-        flex: 1,
-        backgroundColor: 'white'
-    },
-    scrollViewContainer: {
-        flex: 1,
-        justifyContent: 'space-between',
-        backgroundColor: 'white',
-        paddingVertical: 60,
-        paddingHorizontal: 25
-    },
-    LoginTouchableStyle: {
-        width: 360,
-        height: 50,
-        borderRadius: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#111'
-    },
-    LoginTouchableText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 15
-    },
-})
