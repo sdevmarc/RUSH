@@ -4,7 +4,7 @@ import React from 'react'
 const Cart = () => {
     return (
         <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-            <Text>Cart</Text>
+            <Text>This is the Cart</Text>
         </View>
     )
 }
