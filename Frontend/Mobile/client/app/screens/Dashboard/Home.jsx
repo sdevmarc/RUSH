@@ -13,9 +13,8 @@ import {
     Animated
 } from 'react-native'
 import { useNavigation } from 'expo-router';
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 
 
 
