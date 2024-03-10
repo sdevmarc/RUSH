@@ -52,12 +52,15 @@ const Home = () => {
 
     const Categories = [
         { id: 1, name: 'Clothes' },
-        { id: 2, name: 'Clothes' },
-        { id: 3, name: 'Clothes' },
-        { id: 4, name: 'Clothes' },
-        { id: 5, name: 'Clothes' },
-        { id: 6, name: 'Clothes' },
-        { id: 7, name: 'Clothes' }
+        { id: 2, name: 'Electronic' },
+        { id: 3, name: 'Accessories' },
+        { id: 4, name: 'Homegoods' },
+        { id: 5, name: 'Beauty' },
+        { id: 6, name: 'Sports' },
+        { id: 7, name: 'Toys' },
+        { id: 8, name: 'Sports' },
+        { id: 9, name: 'Food' },
+        { id: 10, name: 'Pets' }
     ]
 
     const Trends = [
@@ -71,17 +74,17 @@ const Home = () => {
     ]
 
     const Stores = [
-        { id: 1, name: 'Clothes' },
-        { id: 2, name: 'Clothes' },
-        { id: 3, name: 'Clothes' },
-        { id: 4, name: 'Clothes' },
-        { id: 5, name: 'Clothes' },
-        { id: 6, name: 'Clothes' },
-        { id: 7, name: 'Clothes' },
-        { id: 8, name: 'Clothes' },
-        { id: 9, name: 'Clothes' },
-        { id: 10, name: 'Clothes' },
-        { id: 11, name: 'Clothes' },
+        { id: 1, name: 'Barassi' },
+        { id: 2, name: 'Bloom' },
+        { id: 3, name: 'Gear' },
+        { id: 4, name: 'Thrive' },
+        { id: 5, name: 'Spark' },
+        { id: 6, name: 'Luxe' },
+        { id: 7, name: 'Swift' },
+        { id: 8, name: 'Ford' },
+        { id: 9, name: 'Suzuki' },
+        { id: 10, name: 'Mitsubishi' },
+        { id: 11, name: 'Toyota' },
     ]
 
     const handleSelectStore = () => {
@@ -92,7 +95,7 @@ const Home = () => {
         <>
             <View style={{ backgroundColor: '#EE3C3C' }}>
                 <SafeAreaView>
-                    <Animated.View style={{ width: width, height: headerHeight, paddingHorizontal: width * 0.03, backgroundColor: '#EE3C3C', gap: height * 0.01 }}>
+                    <Animated.View style={{ width: width, height: headerHeight, paddingHorizontal: width * 0.05, backgroundColor: '#EE3C3C', gap: height * 0.01 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => navigation.openDrawer()} >
                                 <Ionicons name="menu" size={width * 0.08} color="white" />
@@ -102,7 +105,7 @@ const Home = () => {
                                     Home
                                 </Text>
                             </Animated.View>
-                            <TouchableOpacity >
+                            <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
                                 <Ionicons name="search" size={24} color="white" />
                             </TouchableOpacity>
                         </View>
@@ -179,29 +182,29 @@ const Home = () => {
                                         STORES
                                     </Text>
                                 </View>
-                                <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.04, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+                                <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
                                     {Stores.map((item) => (
                                         <TouchableOpacity
                                             key={item.id}
                                             onPress={handleSelectStore}
                                             style={{
-                                                width: width * 0.4,
+                                                width: width * 0.45,
                                                 height: height * 0.25,
                                                 // borderRadius: height * 0.01,
-                                                backgroundColor: '#EE3C3C',
+                                                // backgroundColor: '#EE3C3C',
                                                 padding: width * 0.02
                                             }}
                                         >
                                             <View style={{ width: '100%', height: '100%' }}>
-                                                <View style={{ width: '100%', height: '80%', backgroundColor: 'white' }}>
+                                                <View style={{ overflow: 'hidden', width: '100%', height: '80%', backgroundColor: 'white', borderRadius: height * 0.006 }}>
                                                     <Image
                                                         source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
                                                         resizeMode='cover'
                                                         style={{ width: '100%', height: '100%' }}
                                                     />
                                                 </View>
-                                                <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                                    <Text style={{ color: '#fff', fontSize: width * 0.04, fontFamily: 'Poppins-Bold' }} >
+                                                <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'flex-start' }}>
+                                                    <Text style={{ color: '#222', fontSize: width * 0.04, fontFamily: 'Poppins-Bold' }} >
                                                         {item.name}
                                                     </Text>
                                                     <Text
