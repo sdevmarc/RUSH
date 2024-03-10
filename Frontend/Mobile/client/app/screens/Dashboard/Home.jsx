@@ -16,22 +16,30 @@ import { useNavigation } from 'expo-router';
 import React, { useRef } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { useFonts } from 'expo-font';
 
 
 const bgSample = require('../../../assets/bgIntro.png')
 const { width, height } = Dimensions.get('window')
 
 
-
 const Home = () => {
+    const [fontsLoaded, fontError] = useFonts({
+        'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
+        'Poppins-Bold': require('../../../assets/fonts/Poppins-Bold.ttf'),
+    });
+
+    if (!fontsLoaded && !fontError) {
+        return null;
+    }
+
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
-    const headerBackground = scrollY.interpolate({
-        inputRange: [0, height * 0.1],
-        outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)'],
-        extrapolate: 'clamp',
-    })
+    // const headerBackground = scrollY.interpolate({
+    //     inputRange: [0, height * 0.1],
+    //     outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)'],
+    //     extrapolate: 'clamp',
+    // })
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
         outputRange: [height * 0.15, height * 0.05],
@@ -88,13 +96,13 @@ const Home = () => {
         <>
             <View style={{ backgroundColor: '#EE3C3C' }}>
                 <SafeAreaView>
-                    <Animated.View style={{ width: width, height: headerHeight, paddingHorizontal: width * 0.03, backgroundColor: '#EE3C3C' }}>
+                    <Animated.View style={{ width: width, height: headerHeight, paddingHorizontal: width * 0.03, backgroundColor: '#EE3C3C', gap: height * 0.01 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => navigation.openDrawer()} >
                                 <Ionicons name="menu" size={width * 0.08} color="white" />
                             </TouchableOpacity>
                             <Animated.View style={{ opacity: opacityTitle1 }}>
-                                <Text style={{ fontSize: width * 0.05, color: '#fff', fontWeight: '700' }}>
+                                <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Bold' }}>
                                     Home
                                 </Text>
                             </Animated.View>
@@ -103,10 +111,10 @@ const Home = () => {
                             </TouchableOpacity>
                         </View>
                         <Animated.View style={{ opacity }}>
-                            <Text style={{ fontSize: width * 0.1, fontWeight: '700', color: '#fff' }}>
+                            <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: '#fff', fontFamily: 'Poppins-Bold' }}>
                                 Discover
                             </Text>
-                            <Text style={{ fontSize: width * 0.08, color: '#fff', fontWeight: '700' }}>
+                            <Text style={{ fontSize: width * 0.07, color: '#fff', fontWeight: '700', fontFamily: 'Poppins-Bold' }}>
                                 Our Rental Shops
                             </Text>
                         </Animated.View>
@@ -137,7 +145,7 @@ const Home = () => {
                                                 backgroundColor: '#fff',
                                                 borderWidth: width * 0.003
                                             }}>
-                                            <Text>{item.name}</Text>
+                                            <Text style={{ fontFamily: 'Poppins-Regular' }}>{item.name}</Text>
                                         </TouchableOpacity>
                                     ))}
                                     {/* <TouchableOpacity
@@ -173,7 +181,7 @@ const Home = () => {
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                             }}>
-                                            <Text style={{ color: '#fff' }}>{item.name}</Text>
+                                            <Text style={{ color: '#fff', fontFamily: 'Poppins-Regular' }}>{item.name}</Text>
                                         </TouchableOpacity>
                                     ))}
                                 </ScrollView>
@@ -195,7 +203,7 @@ const Home = () => {
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                             }}>
-                                            <Text style={{ color: '#fff' }}>
+                                            <Text style={{ color: '#fff', fontFamily: 'Poppins-Regular' }}>
                                                 {item.name}
                                             </Text>
                                         </TouchableOpacity>
