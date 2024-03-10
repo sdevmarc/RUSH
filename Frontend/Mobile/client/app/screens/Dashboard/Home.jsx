@@ -74,17 +74,17 @@ const Home = () => {
     ]
 
     const Stores = [
-        { id: 1, name: 'Barassi' },
-        { id: 2, name: 'Bloom' },
-        { id: 3, name: 'Gear' },
-        { id: 4, name: 'Thrive' },
-        { id: 5, name: 'Spark' },
-        { id: 6, name: 'Luxe' },
-        { id: 7, name: 'Swift' },
-        { id: 8, name: 'Ford' },
-        { id: 9, name: 'Suzuki' },
-        { id: 10, name: 'Mitsubishi' },
-        { id: 11, name: 'Toyota' },
+        { id: 1, name: 'Barassi', category: 'Clothes' },
+        { id: 2, name: 'Bloom', category: 'Beauty' },
+        { id: 3, name: 'Gear', category: 'Accessories' },
+        { id: 4, name: 'Thrive', category: 'Clothes' },
+        { id: 5, name: 'Spark', category: 'Homegoods' },
+        { id: 6, name: 'Luxe', category: 'Sports' },
+        { id: 7, name: 'Swift', category: 'Clothes' },
+        { id: 8, name: 'Ford', category: 'Electronic' },
+        { id: 9, name: 'Suzuki', category: 'Electronic' },
+        { id: 10, name: 'Mitsubishi', category: 'Electronic' },
+        { id: 11, name: 'Toyota', category: 'Electronic' },
     ]
 
     const handleSelectStore = () => {
@@ -218,7 +218,7 @@ const Home = () => {
                                                             fontFamily: 'Poppins-Regular'
                                                         }}
                                                     >
-                                                        {item.name}
+                                                        {item.category}
                                                     </Text>
                                                 </View>
                                             </View>
