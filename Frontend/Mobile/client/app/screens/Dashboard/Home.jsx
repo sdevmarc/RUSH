@@ -1,15 +1,9 @@
 import {
-    Image,
-    Modal,
     ScrollView,
-    StatusBar,
-    StyleSheet,
     Text,
-    TextInput,
     TouchableOpacity,
     View,
     Dimensions,
-    ImageBackground,
     Animated
 } from 'react-native'
 import { useNavigation } from 'expo-router';
@@ -18,12 +12,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 
-
-const bgSample = require('../../../assets/bgIntro.png')
-const { width, height } = Dimensions.get('window')
-
-
 const Home = () => {
+    const { width, height } = Dimensions.get('window')
+
     const [fontsLoaded, fontError] = useFonts({
         'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
         'Poppins-Bold': require('../../../assets/fonts/Poppins-Bold.ttf'),
@@ -148,19 +139,6 @@ const Home = () => {
                                             <Text style={{ fontFamily: 'Poppins-Regular' }}>{item.name}</Text>
                                         </TouchableOpacity>
                                     ))}
-                                    {/* <TouchableOpacity
-                                    style={{
-                                        paddingHorizontal: width * 0.05,
-                                        paddingVertical: height * 0.0065,
-                                        borderRadius: height * 0.01,
-                                        backgroundColor: '#222',
-                                        borderWidth: width * 0.003
-                                    }}>
-                                    <Text style={{ color: '#fff' }}
-                                    >
-                                        Clothes
-                                    </Text>
-                                </TouchableOpacity> */}
                                 </ScrollView>
                             </View>
 
