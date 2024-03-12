@@ -6,8 +6,7 @@ import {
     Dimensions,
     Animated,
     Image,
-    StatusBar,
-    Platform
+    StatusBar
 } from 'react-native'
 import { useNavigation } from 'expo-router';
 import React, { useRef } from 'react'
