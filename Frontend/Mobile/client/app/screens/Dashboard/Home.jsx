@@ -93,13 +93,13 @@ const Home = () => {
         <>
             <StatusBar barStyle="light-content" />
             <View>
-                <Animated.View style={{ width: width, height: headerHeight, paddingHorizontal: width * 0.05, backgroundColor: '#EE3C3C' }}>
+                <Animated.View style={{ width: width, height: headerHeight, paddingHorizontal: width * 0.05, backgroundColor: '#ad3232' }}>
                     <View style={{ position: 'absolute', top: height * 0.05, paddingHorizontal: width * 0.05, width: width, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <TouchableOpacity onPress={() => navigation.openDrawer()} >
                             <Ionicons name="menu" size={width * 0.08} color="white" />
                         </TouchableOpacity>
                         <Animated.View style={{ opacity: opacityTitle1 }}>
-                            <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Bold' }}>
+                            <Text style={{ fontSize: width * 0.04, color: '#fff', fontFamily: 'Poppins-Bold' }}>
                                 Home
                             </Text>
                         </Animated.View>
@@ -107,7 +107,7 @@ const Home = () => {
                             <Ionicons name="search" size={24} color="white" />
                         </TouchableOpacity>
                     </View>
-                    <Animated.View style={{ opacity, position: 'absolute', top: height * 0.1, paddingHorizontal: width * 0.05, width: width, }}>
+                    <Animated.View style={{ opacity, position: 'absolute', top: height * 0.1, paddingHorizontal: width * 0.05, width: width }}>
                         <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: '#fff', fontFamily: 'Poppins-Bold' }}>
                             Discover
                         </Text>
@@ -129,8 +129,8 @@ const Home = () => {
                     <View style={{ paddingVertical: height * 0.03, gap: height * 0.03, backgroundColor: 'white' }}>
                         <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
-                                <MaterialIcons name="category" size={24} color="#EE3C3C" />
-                                <Text style={{ fontSize: width * 0.047, color: '#EE3C3C', fontFamily: 'Poppins-Bold' }}>
+                                <MaterialIcons name="category" size={24} color="#ad3232" />
+                                <Text style={{ fontSize: width * 0.047, color: '#ad3232', fontFamily: 'Poppins-Bold' }}>
                                     CATEGORIES
                                 </Text>
                             </View>
@@ -175,8 +175,8 @@ const Home = () => {
                             </View> */}
                         <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03, paddingBottom: height * 0.06 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
-                                <Ionicons name="storefront" size={24} color="#EE3C3C" />
-                                <Text style={{ fontSize: width * 0.047, color: '#EE3C3C', fontFamily: 'Poppins-Bold' }}>
+                                <Ionicons name="storefront" size={24} color="#ad3232" />
+                                <Text style={{ fontSize: width * 0.047, color: '#ad3232', fontFamily: 'Poppins-Bold' }}>
                                     STORES
                                 </Text>
                             </View>
@@ -189,7 +189,7 @@ const Home = () => {
                                             width: width * 0.45,
                                             height: height * 0.25,
                                             // borderRadius: height * 0.01,
-                                            // backgroundColor: '#EE3C3C',
+                                            // backgroundColor: '#ad3232',
                                             padding: width * 0.02
                                         }}
                                     >
@@ -228,7 +228,7 @@ const Home = () => {
                                     //         width: width * 0.4,
                                     //         height: height * 0.2,
                                     //         borderRadius: height * 0.01,
-                                    //         backgroundColor: '#EE3C3C',
+                                    //         backgroundColor: '#ad3232',
                                     //         justifyContent: 'center',
                                     //         alignItems: 'center',
                                     //     }}>
