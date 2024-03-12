@@ -13,25 +13,49 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 
+const { width, height } = Dimensions.get('window')
+
+const Categories = [
+    { id: 1, name: 'Clothes' },
+    { id: 2, name: 'Electronic' },
+    { id: 3, name: 'Accessories' },
+    { id: 4, name: 'Homegoods' },
+    { id: 5, name: 'Beauty' },
+    { id: 6, name: 'Sports' },
+    { id: 7, name: 'Toys' },
+    { id: 8, name: 'Sports' },
+    { id: 9, name: 'Food' },
+    { id: 10, name: 'Pets' }
+]
+
+const Trends = [
+    { id: 1, name: 'Clothes' },
+    { id: 2, name: 'Clothes' },
+    { id: 3, name: 'Clothes' },
+    { id: 4, name: 'Clothes' },
+    { id: 5, name: 'Clothes' },
+    { id: 6, name: 'Clothes' },
+    { id: 7, name: 'Clothes' }
+]
+
+const Stores = [
+    { id: 1, name: 'Barassi', category: 'Clothes' },
+    { id: 2, name: 'Bloom', category: 'Beauty' },
+    { id: 3, name: 'Gear', category: 'Accessories' },
+    { id: 4, name: 'Thrive', category: 'Clothes' },
+    { id: 5, name: 'Spark', category: 'Homegoods' },
+    { id: 6, name: 'Luxe', category: 'Sports' },
+    { id: 7, name: 'Swift', category: 'Clothes' },
+    { id: 8, name: 'Ford', category: 'Electronic' },
+    { id: 9, name: 'Suzuki', category: 'Electronic' },
+    { id: 10, name: 'Mitsubishi', category: 'Electronic' },
+    { id: 11, name: 'Toyota', category: 'Electronic' },
+]
+
 const Home = () => {
-    const { width, height } = Dimensions.get('window')
-
-    const [fontsLoaded, fontError] = useFonts({
-        'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
-        'Poppins-Bold': require('../../../assets/fonts/Poppins-Bold.ttf'),
-    });
-
-    if (!fontsLoaded && !fontError) {
-        return null;
-    }
-
-    const navigation = useNavigation()
+    const navigation = useNavigation();
     const scrollY = useRef(new Animated.Value(0)).current;
-    // const headerBackground = scrollY.interpolate({
-    //     inputRange: [0, height * 0.1],
-    //     outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)'],
-    //     extrapolate: 'clamp',
-    // })
+
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
         outputRange: [height * 0.15, height * 0.05],
@@ -50,42 +74,15 @@ const Home = () => {
         extrapolate: 'clamp',
     });
 
-    const Categories = [
-        { id: 1, name: 'Clothes' },
-        { id: 2, name: 'Electronic' },
-        { id: 3, name: 'Accessories' },
-        { id: 4, name: 'Homegoods' },
-        { id: 5, name: 'Beauty' },
-        { id: 6, name: 'Sports' },
-        { id: 7, name: 'Toys' },
-        { id: 8, name: 'Sports' },
-        { id: 9, name: 'Food' },
-        { id: 10, name: 'Pets' }
-    ]
+    const [fontsLoaded] = useFonts({
+        'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
+        'Poppins-Bold': require('../../../assets/fonts/Poppins-Bold.ttf'),
+    });
 
-    const Trends = [
-        { id: 1, name: 'Clothes' },
-        { id: 2, name: 'Clothes' },
-        { id: 3, name: 'Clothes' },
-        { id: 4, name: 'Clothes' },
-        { id: 5, name: 'Clothes' },
-        { id: 6, name: 'Clothes' },
-        { id: 7, name: 'Clothes' }
-    ]
+    if (!fontsLoaded) {
+        return null;
+    }
 
-    const Stores = [
-        { id: 1, name: 'Barassi', category: 'Clothes' },
-        { id: 2, name: 'Bloom', category: 'Beauty' },
-        { id: 3, name: 'Gear', category: 'Accessories' },
-        { id: 4, name: 'Thrive', category: 'Clothes' },
-        { id: 5, name: 'Spark', category: 'Homegoods' },
-        { id: 6, name: 'Luxe', category: 'Sports' },
-        { id: 7, name: 'Swift', category: 'Clothes' },
-        { id: 8, name: 'Ford', category: 'Electronic' },
-        { id: 9, name: 'Suzuki', category: 'Electronic' },
-        { id: 10, name: 'Mitsubishi', category: 'Electronic' },
-        { id: 11, name: 'Toyota', category: 'Electronic' },
-    ]
 
     const handleSelectStore = () => {
         navigation.navigate('SelectedStore')
@@ -204,7 +201,7 @@ const Home = () => {
                                                             style={{ width: '100%', height: '100%' }}
                                                         />
                                                     </View>
-                                                    <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'flex-start' }}>
+                                                    <View style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}>
                                                         <Text style={{ color: '#222', fontSize: width * 0.04, fontFamily: 'Poppins-Bold' }} >
                                                             {item.name}
                                                         </Text>
