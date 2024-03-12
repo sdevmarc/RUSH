@@ -6,7 +6,8 @@ import {
     Dimensions,
     Animated,
     Image,
-    StatusBar
+    StatusBar,
+    Platform
 } from 'react-native'
 import { useNavigation } from 'expo-router';
 import React, { useRef } from 'react'
@@ -59,7 +60,7 @@ const Home = () => {
 
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
-        outputRange: [height * 0.17, height * 0.08],
+        outputRange: [height * 0.2, height * 0.11],
         extrapolate: 'clamp',
     })
 
@@ -91,10 +92,10 @@ const Home = () => {
 
     return (
         <>
-            <StatusBar translucent backgroundColor="#EE3C3C" barStyle="light-content" />
-            <SafeAreaView>
+            <StatusBar barStyle="light-content" />
+            <View>
                 <Animated.View style={{ width: width, height: headerHeight, paddingHorizontal: width * 0.05, backgroundColor: '#EE3C3C' }}>
-                    <View style={{ position: 'absolute', top: height * 0.02, paddingHorizontal: width * 0.05, width: width, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View style={{ position: 'absolute', top: height * 0.05, paddingHorizontal: width * 0.05, width: width, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <TouchableOpacity onPress={() => navigation.openDrawer()} >
                             <Ionicons name="menu" size={width * 0.08} color="white" />
                         </TouchableOpacity>
@@ -107,7 +108,7 @@ const Home = () => {
                             <Ionicons name="search" size={24} color="white" />
                         </TouchableOpacity>
                     </View>
-                    <Animated.View style={{ opacity, position: 'absolute', top: height * 0.075, paddingHorizontal: width * 0.05, width: width, }}>
+                    <Animated.View style={{ opacity, position: 'absolute', top: height * 0.1, paddingHorizontal: width * 0.05, width: width, }}>
                         <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: '#fff', fontFamily: 'Poppins-Bold' }}>
                             Discover
                         </Text>
@@ -241,7 +242,7 @@ const Home = () => {
                         </View>
                     </View>
                 </ScrollView >
-            </SafeAreaView>
+            </View>
         </>
 
     )
