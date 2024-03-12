@@ -128,8 +128,8 @@ const Home = () => {
                         <View style={{ paddingVertical: height * 0.03, gap: height * 0.03, backgroundColor: 'white' }}>
                             <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03 }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
-                                    <MaterialIcons name="category" size={24} color="black" />
-                                    <Text style={{ fontSize: width * 0.047, color: '#222', fontFamily: 'Poppins-Bold' }}>
+                                    <MaterialIcons name="category" size={24} color="#EE3C3C" />
+                                    <Text style={{ fontSize: width * 0.047, color: '#EE3C3C', fontFamily: 'Poppins-Bold' }}>
                                         CATEGORIES
                                     </Text>
                                 </View>
@@ -174,8 +174,8 @@ const Home = () => {
                             </View> */}
                             <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03, paddingBottom: height * 0.06 }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
-                                    <Ionicons name="storefront" size={24} color="black" />
-                                    <Text style={{ fontSize: width * 0.047, color: '#222', fontFamily: 'Poppins-Bold' }}>
+                                    <Ionicons name="storefront" size={24} color="#EE3C3C" />
+                                    <Text style={{ fontSize: width * 0.047, color: '#EE3C3C', fontFamily: 'Poppins-Bold' }}>
                                         STORES
                                     </Text>
                                 </View>
