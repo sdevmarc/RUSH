@@ -179,7 +179,6 @@ const Home = () => {
                                         STORES
                                     </Text>
                                 </View>
-                                <ScrollView>
                                     <View style={{ flexDirection: 'row', gap: width * 0.02, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
                                         {Stores.map((item) => (
                                             <TouchableOpacity
@@ -238,8 +237,6 @@ const Home = () => {
                                             // </TouchableOpacity>
                                         ))}
                                     </View>
-
-                                </ScrollView>
                             </View>
                         </View>
                     </ScrollView >
