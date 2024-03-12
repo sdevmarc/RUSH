@@ -98,7 +98,7 @@ const SelectedStore = () => {
                         </View>
                         <Animated.View style={{ opacity, position: 'absolute', top: height * 0.12, paddingHorizontal: width * 0.05, width: width }}>
                             <Text style={{ fontSize: width * 0.07, color: '#fff', fontWeight: '700', fontFamily: 'Poppins-Bold' }}>
-                                Yacatiago Boutique
+                                BARASSI
                             </Text>
                         </Animated.View>
                     </BlurView>
