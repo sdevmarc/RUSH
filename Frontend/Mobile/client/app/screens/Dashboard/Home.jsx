@@ -11,7 +11,6 @@ import {
 import { useNavigation } from 'expo-router';
 import React, { useRef } from 'react'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 
 const { width, height } = Dimensions.get('window')
