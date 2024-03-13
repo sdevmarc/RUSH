@@ -6,18 +6,16 @@ import {
     Dimensions,
     TouchableOpacity,
     Image,
-    StatusBar,
-    StyleSheet
+    StatusBar
 } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router'
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width, height } = Dimensions.get('window')
-const text = 'Hello, my container is blurring contents underneath!';
+
 const Products = [
     { id: 1, name: 'Sando', status: { isAvailable: 'Available', bgColor: '#008048' } },
     { id: 2, name: 'Skirt', status: { isAvailable: 'Available', bgColor: '#008048' } },
@@ -31,7 +29,6 @@ const Products = [
 const SelectedStore = () => {
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
-    const [scrollEnabled, setScrollEnabled] = useState(true);
 
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
@@ -51,35 +48,19 @@ const SelectedStore = () => {
         extrapolate: 'clamp',
     });
 
+    const handleSelectItem = () => {
+        navigation.navigate('SelectedItem')
+    }
+
     return (
         <>
-            <StatusBar barStyle="dark-content" />
-            {/* <SafeAreaView style={styles.container}>
-                <View style={styles.background}>
-                    {[...Array(20).keys()].map(i => (
-                        <View
-                            key={`box-${i}`}
-                            style={[styles.box, i % 2 === 1 ? styles.boxOdd : styles.boxEven]}
-                        />
-                    ))}
-                </View>
-                <BlurView intensity={100} style={styles.blurContainer}>
-                    <Text style={styles.text}>{text}</Text>
-                </BlurView>
-                <BlurView intensity={80} tint="light" style={styles.blurContainer}>
-                    <Text style={styles.text}>{text}</Text>
-                </BlurView>
-                <BlurView intensity={90} tint="dark" style={styles.blurContainer}>
-                    <Text style={[styles.text, { color: '#fff' }]}>{text}</Text>
-                </BlurView>
-            </SafeAreaView> */}
+            <StatusBar barStyle="light-content" />
             <View>
-
                 <Animated.View style={{ width: width, height: headerHeight, backgroundColor: '#ad3232', overflow: 'hidden' }}>
                     <View style={{ position: 'absolute', top: height * 0, left: width * 0, width: width * 0.3, height: width * 0.3, backgroundColor: '#7668fc', borderRadius: width * 0.5 }} />
                     <View style={{ position: 'absolute', top: height * 0.1, left: width * 0.7, width: width * 0.5, height: width * 0.5, backgroundColor: '#f5e5ba', borderRadius: width * 0.5 }} />
                     <LinearGradient
-                        colors={['transparent','rgba(34, 34, 34, 0.7)']}
+                        colors={['transparent', 'rgba(34, 34, 34, 0.7)']}
                         style={{ position: 'absolute', top: 0, left: 0, width: width, height: height * 0.2 }}
                     />
                     <BlurView intensity={50} style={{ flex: 1 }}>
@@ -102,9 +83,6 @@ const SelectedStore = () => {
                             </Text>
                         </Animated.View>
                     </BlurView>
-
-
-
                 </Animated.View>
                 <ScrollView
                     onScroll={
@@ -126,7 +104,7 @@ const SelectedStore = () => {
                                 {Products.map((item) => (
                                     <TouchableOpacity
                                         key={item.id}
-                                        // onPress={handleSelectStore}
+                                        onPress={handleSelectItem}
                                         style={{
                                             width: width * 0.45,
                                             height: height * 0.25,
@@ -174,37 +152,3 @@ const SelectedStore = () => {
 }
 
 export default SelectedStore
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    blurContainer: {
-        flex: 1,
-        padding: 20,
-        margin: 16,
-        textAlign: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        borderRadius: 20,
-    },
-    background: {
-        flex: 1,
-        flexWrap: 'wrap',
-        ...StyleSheet.absoluteFill,
-    },
-    box: {
-        width: '25%',
-        height: '20%',
-    },
-    boxEven: {
-        backgroundColor: 'orangered',
-    },
-    boxOdd: {
-        backgroundColor: 'gold',
-    },
-    text: {
-        fontSize: 24,
-        fontWeight: '600',
-    },
-})
