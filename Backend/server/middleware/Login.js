@@ -13,6 +13,7 @@ const LoginAuth = async (req, res, next) => {
 
                 if (isMatch) {
                     res.json({ success: true, message: 'Login successful!' })
+                    next()
                 } else {
                     res.json({ success: true, message: 'Login Failed!' });
                 }
