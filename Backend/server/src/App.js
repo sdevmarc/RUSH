@@ -10,7 +10,8 @@ const mainMiddleware = require('../middleware/Website/mainMiddleware')
 const hashPassword = require('../middleware/hashPassword')
 
 //Routes
-const SignupRoutes = require('../routes/SignUp')
+const SignupRoute = require('../routes/Signup')
+const LoginRoute = require('../routes/Login')
 
 app.use(cors({
     origin: '*',
@@ -27,7 +28,11 @@ app.get('/', (req, res) => {
     })
 })
 
-app.use('/api', hashPassword, SignupRoutes)
+app.use('/api', LoginRoute)
+
+app.use('/api', hashPassword, SignupRoute)
+
+
 
 
 
