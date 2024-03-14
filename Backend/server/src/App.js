@@ -11,6 +11,7 @@ const mainMiddleware = require('../middleware/Website/mainMiddleware')
 //Routes
 const SignupRoute = require('../routes/Signup')
 const LoginRoute = require('../routes/Login')
+const AddStore = require('../routes/AddStore')
 
 app.use(cors({
     origin: '*',
@@ -29,6 +30,8 @@ app.get('/', (req, res) => {
 
 app.use('/api', SignupRoute)
 app.use('/api', LoginRoute)
+
+app.use('/api', AddStore)
 
 
 
