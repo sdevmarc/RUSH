@@ -2,28 +2,81 @@ import {
     Image,
     ScrollView,
     StatusBar,
-    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
     View,
     Dimensions,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Alert
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
 import { Checkbox } from 'expo-checkbox'
 import { useRouter } from 'expo-router'
+import axios from 'axios'
+import address from '../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
 const Register = () => {
+    const [values, setValues] = useState({
+        name: '',
+        contactno: '',
+        username: '',
+        password: ''
+
+    })
+    const [confirmPassword, setConfirmPassword] = useState('')
+
     const [isChecked, setChecked] = useState(false);
     const router = useRouter()
 
-    const handleSignUp = () => {
-        router.replace('screens/intro/Successful')
+    const handleSignUp = async () => {
+        try {
+            if (values.name === '' || values.username === '' || values.password === '' || confirmPassword === '' || values.contactno === '') {
+                Alert.alert('Warning', 'Please fill-in the required fields')
+            } else {
+                if (values.password === confirmPassword) {
+                    if (isChecked) {
+                        const res = await axios.post(`http://${address}/api/signup`, values)
+
+                        if (res.data.success) {
+                            router.replace('screens/intro/Successful')
+                        } else {
+                            Alert.alert('Error', `${res.data.message}`)
+                        }
+                    } else {
+                        Alert.alert('Warning', 'Please check the terms and agreement!')
+                    }
+                } else {
+                    Alert.alert('Warning', 'Password do not match!')
+                }
+            }
+        } catch (error) {
+            Alert.alert(`Error`, `Register error: ${error}`)
+        }
+    }
+
+    const handleOnChangeName = (value) => {
+        setValues({ ...values, name: value })
+    }
+
+    const handleOnChangeContactNo = (value) => {
+        setValues({ ...values, contactno: value })
+    }
+
+    const handleOnChangeUsername = (value) => {
+        setValues({ ...values, username: value })
+    }
+
+    const handleOnChangePassword = (value) => {
+        setValues({ ...values, password: value })
+    }
+
+    const handleOnChangeConfirmPassword = (value) => {
+        setConfirmPassword(value)
     }
 
     return (
@@ -50,31 +103,31 @@ const Register = () => {
                                 <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
                                     Username
                                 </Text>
-                                <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Username' />
+                                <TextInput onChangeText={handleOnChangeUsername} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Username' />
                             </View>
                             <View style={{ gap: 10 }}>
                                 <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
                                     Full Name
                                 </Text>
-                                <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Full Name' />
+                                <TextInput onChangeText={handleOnChangeName} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Full Name' />
                             </View>
                             <View style={{ gap: 10 }}>
                                 <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
                                     Mobile Number
                                 </Text>
-                                <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Mobile Number' />
+                                <TextInput onChangeText={handleOnChangeContactNo} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Mobile Number' />
                             </View>
                             <View style={{ gap: 10 }}>
                                 <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
                                     Password
                                 </Text>
-                                <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Password' />
+                                <TextInput onChangeText={handleOnChangePassword} secureTextEntry={true} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Password' />
                             </View>
                             <View style={{ gap: 10 }}>
                                 <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
                                     Confirm Password
                                 </Text>
-                                <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Confirm Password' />
+                                <TextInput onChangeText={handleOnChangeConfirmPassword} secureTextEntry={true} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Confirm Password' />
                             </View>
                             <View style={{ flexDirection: 'row', gap: width * 0.02, alignItems: 'center', paddingHorizontal: width * 0.03 }}>
                                 <Checkbox style={{ margin: 0 }} value={isChecked} onValueChange={setChecked} />
