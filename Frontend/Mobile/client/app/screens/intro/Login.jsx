@@ -2,7 +2,6 @@ import {
     Image,
     ScrollView,
     StatusBar,
-    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
@@ -10,27 +9,53 @@ import {
     Dimensions,
     Alert
 } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
 import { useRouter } from 'expo-router'
+import axios from 'axios'
+import address from '../../../config/host'
 
 const { width, height } = Dimensions.get("window")
 
 
 const Login = () => {
+    const [values, setValues] = useState({
+        username: '',
+        password: ''
+    })
+
     const router = useRouter()
+
+
+    const handleLogin = async () => {
+        try {
+            if (values.username === '' || values.password === '') {
+                Alert.alert('Warning', 'Please fill-in the required fields.')
+            } else {
+                const res = await axios.post(`http://${address}/api/login`, values)
+
+                if (res.data.success) {
+                    router.navigate('screens/Dashboard')
+                } else {
+                    Alert.alert('Error', `${res.data.message}`)
+                }
+            }
+        } catch (error) {
+            Alert.alert('Error', `Error sign up: ${error}`)
+        }
+    }
 
     const handleSignUp = () => {
         router.replace('screens/intro/Register')
     }
 
-    const handleLogin = () => {
-        router.navigate('screens/Dashboard')
+    const handleOnchangeUsername = (value) => {
+        setValues({ ...values, username: value })
     }
 
-    const handleSubmit = () => {
-        Alert.alert('Success')
+    const handleOnchangePassword = (value) => {
+        setValues({ ...values, password: value })
     }
 
     return (
@@ -54,13 +79,13 @@ const Login = () => {
                             <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
                                 Email / Username
                             </Text>
-                            <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Email or username' />
+                            <TextInput onChangeText={handleOnchangeUsername} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Email or username' />
                         </View>
                         <View style={{ gap: 10 }}>
                             <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
                                 Password
                             </Text>
-                            <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Password' />
+                            <TextInput onChangeText={handleOnchangePassword} secureTextEntry={true} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Password' />
                             <TouchableOpacity>
                                 <Text style={{ fontSize: width * 0.03, fontWeight: 'bold', color: '#666666' }}>
                                     Forgot Password?
