@@ -7,7 +7,6 @@ const connectDb = require('../config/db')
 
 //Middlewares
 const mainMiddleware = require('../middleware/Website/mainMiddleware')
-const hashPassword = require('../middleware/hashPassword')
 
 //Routes
 const SignupRoute = require('../routes/Signup')
@@ -28,9 +27,9 @@ app.get('/', (req, res) => {
     })
 })
 
+app.use('/api', SignupRoute)
 app.use('/api', LoginRoute)
 
-app.use('/api', hashPassword, SignupRoute)
 
 
 
