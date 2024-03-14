@@ -6,17 +6,15 @@ const LoginAuth = async (req, res, next) => {
         const { username, password } = req.body
 
         const User = await Users.findOne({ username: username })
-
+        
         if (User) {
-            if (username === User.username) {
-                const isMatch = await bcrypt.compare(password, User.password);
+            const isMatch = await bcrypt.compare(password, User.password);
 
-                if (isMatch) {
-                    res.json({ success: true, message: 'Login successful!' })
-                    next()
-                } else {
-                    res.json({ success: true, message: 'Login Failed!' });
-                }
+            if (isMatch) {
+                res.json({ success: true, message: 'Login successful!' })
+                next()
+            } else {
+                res.json({ success: false, message: 'Wrong Password!' });
             }
         } else {
             res.json({ success: false, message: 'No such user found.' })
