@@ -2,7 +2,6 @@ const express = require('express')
 const cors = require('cors')
 require('dotenv').config()
 const app = express()
-const AuthConfig = require('../config/AuthConfig')
 
 //Config
 const connectDb = require('../config/db')
@@ -21,7 +20,6 @@ app.use(cors({
 }))
 
 app.use(express.json())
-app.use(AuthConfig);
 connectDb()
 
 app.get('/', (req, res) => {
@@ -40,17 +38,6 @@ app.get('/', (req, res) => {
     }
 })
 
-app.get('/logout', (req, res) => {
-    try {
-        if (req.oidc.isAuthenticated()) {
-            res.json({ authenticate: true, message: 'Authenticated' })
-        } else {
-            res.json({ authenticate: false, message: 'Not Authenticated' })
-        }
-    } catch (error) {
-        res.json({ message: `Error / route: ${error}` })
-    }
-})
 
 app.use('/api', SignupRoute)
 app.use('/api', LoginRoute)

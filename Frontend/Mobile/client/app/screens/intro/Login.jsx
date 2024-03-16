@@ -9,27 +9,16 @@ import {
     Dimensions,
     Alert
 } from 'react-native'
-import * as WebBrowser from 'expo-web-browser';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
 import { useRouter } from 'expo-router'
 import axios from 'axios'
 import address from '../../../config/host'
-import * as AuthSession from 'expo-auth-session'
-
-const auth0Config = {
-    clientId: 'Fm6VAHCPF3EzS34mN0g7PkcLxM5M1XH9',
-    domain: 'dev-j2sq0h5u6gi6pbw5.us.auth0.com',
-    redirectUri: AuthSession.makeRedirectUri(),
-    audience: 'https://dev-j2sq0h5u6gi6pbw5.us.auth0.com/api/v2/',
-    responseType: 'token id_token',
-};
 
 const { width, height } = Dimensions.get("window")
 
 const Login = () => {
-    const [token, setToken] = useState(null);
     const [values, setValues] = useState({
         username: '',
         password: ''
@@ -67,27 +56,15 @@ const Login = () => {
         setValues({ ...values, password: value })
     }
 
-    const AuthGoogle = async () => {
-        try {
-            const redirectUrl = await WebBrowser.openAuthSessionAsync(
-                `http://${address}/login`
-            );
-
-            if (redirectUrl) {
-                const result = await AuthSession.completeAuthSessionAsync();
-                console.log(`asdasdasd ${result}`)
-                if (result.type === 'success') {
-                    setToken(result.params.access_token);
-                } else {
-                    Alert.alert('Error success token Auth Google')
-                }
-            } else {{
-                Alert.alert('Error RedirectUrl Auth Google')
-            }}
-        } catch (error) {
-            console.error(error);
+    React.useEffect(() => {
+        console.log(response)
+        console.log(`First ${response}`)
+        if (response && response.type === 'success') {
+            console.log(`Second ${response}`)
+          setToken(response.params.access_token)
         }
-    };
+      }, [response]);
+
 
     return (
         <>
@@ -139,7 +116,7 @@ const Login = () => {
                                             Create Account
                                         </Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={AuthGoogle} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
+                                    <TouchableOpacity onPress={handleSignUp} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
                                         <Text style={{ fontSize: width * 0.03, fontWeight: 'bold' }}>
                                             Continue with Google
                                         </Text>
