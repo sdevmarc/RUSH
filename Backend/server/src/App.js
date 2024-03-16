@@ -29,6 +29,7 @@ app.get('/', (req, res) => {
     //     message: `This is Home`
     // })
     try {
+        console.log(req.oidc.isAuthenticated())
         if (req.oidc.isAuthenticated()) {
             res.json({ authenticate: true, message: 'Authenticated' })
         } else {
@@ -37,7 +38,18 @@ app.get('/', (req, res) => {
     } catch (error) {
         res.json({ message: `Error / route: ${error}` })
     }
+})
 
+app.get('/logout', (req, res) => {
+    try {
+        if (req.oidc.isAuthenticated()) {
+            res.json({ authenticate: true, message: 'Authenticated' })
+        } else {
+            res.json({ authenticate: false, message: 'Not Authenticated' })
+        }
+    } catch (error) {
+        res.json({ message: `Error / route: ${error}` })
+    }
 })
 
 app.use('/api', SignupRoute)
