@@ -9,6 +9,7 @@ import {
     Dimensions,
     Alert
 } from 'react-native'
+import * as WebBrowser from 'expo-web-browser';
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
@@ -58,6 +59,10 @@ const Login = () => {
         setValues({ ...values, password: value })
     }
 
+    const AuthGoogle = async () => {
+        await WebBrowser.openBrowserAsync('https://localhost');
+    };
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
@@ -105,7 +110,7 @@ const Login = () => {
                                 Create Account
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
+                        <TouchableOpacity onPress={AuthGoogle} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
                             <Text style={{ fontSize: width * 0.03, fontWeight: 'bold' }}>
                                 Continue with Google
                             </Text>
