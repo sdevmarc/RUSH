@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router'
 const bgIntro = require('../../../assets/bgIntro.png')
 const Logo = require('../../../assets/LogoLight.png')
 
+
 const GetStarted = () => {
     const router = useRouter()
 
@@ -43,6 +44,7 @@ const GetStarted = () => {
                 </ImageBackground>
             </View>
         </>
+
     );
 };
 
