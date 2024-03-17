@@ -13,9 +13,8 @@ const Layout = () => {
                 <Stack.Screen name='screens/intro/Successful' options={{ headerTitle: 'Successful', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name='screens/Dashboard' options={{ headerTitle: 'Home', headerTitleAlign: 'center', headerShown: false }} />
             </Stack>
-            
-        </>
 
+        </>
     )
 }
 
