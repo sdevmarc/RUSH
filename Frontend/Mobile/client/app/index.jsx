@@ -15,12 +15,10 @@ const index = () => {
                     Splash Screen Kunware
                 </Text>
                 <TouchableOpacity onPress={handleSplashScreen}>
-                   <Text>Go to Site</Text>
+                    <Text>Go to Site</Text>
                 </TouchableOpacity>
             </View>
         </>
-
-
     )
 }
 
