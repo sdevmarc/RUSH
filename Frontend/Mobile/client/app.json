@@ -15,17 +15,7 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.yourparengmarc.client",
-      "supportsTablet": true,
-      "infoPlist": {
-        "CFBundleURLTypes": [
-          {
-            "CFBundleURLSchemes": [
-              ""
-            ]
-          }
-        ]
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
