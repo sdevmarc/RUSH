@@ -85,9 +85,6 @@ android {
 
     namespace 'com.yourparengmarc.client'
     defaultConfig {
-// @generated begin react-native-auth0-manifest-placeholder - expo prebuild (DO NOT MODIFY) sync-33ceffa82a88ad5ecced42999ed53fef2b628f15
-manifestPlaceholders = [auth0Domain: "dev-j2sq0h5u6gi6pbw5.us.auth0.com", auth0Scheme: "com.yourparengmarc.client.auth0"]
-// @generated end react-native-auth0-manifest-placeholder
         applicationId 'com.yourparengmarc.client'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion

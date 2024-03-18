@@ -7,17 +7,26 @@ import {
     TouchableOpacity,
     View,
     Dimensions,
-    Alert
+    Alert,
+    Button
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
 import { useRouter } from 'expo-router'
 import axios from 'axios'
 import address from '../../../config/host'
+import * as WebBrowser from 'expo-web-browser'
+import * as Google from 'expo-auth-session/providers/google'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+WebBrowser.maybeCompleteAuthSession()
+
 const { width, height } = Dimensions.get("window")
 
 const Login = () => {
+    const [userInfo, setUserInfo] = useState(null)
+    const [request, response, promptAsync] = Google.useAuthRequest()
 
     const [values, setValues] = useState({
         username: '',
@@ -56,15 +65,87 @@ const Login = () => {
         setValues({ ...values, password: value })
     }
 
-    const AuthGoogle =  () => {
-      Alert.alert('Tite')
+    useEffect(() => {
+        console.log(response)
+
+        // if (response && response.type === 'success') {
+        //     const { authentication: { accessToken } } = response;
+        //     const fetchUser = async () => {
+        //         try {
+        //             const user = await fetchUserInfo(accessToken);
+        //             console.log(user.family_name);
+        //             // Alert.alert(user.family_name)
+        //             // You may want to setUserInfo here
+
+        //         } catch (error) {
+        //             console.error("Error fetching user info:", error);
+        //         }
+        //     };
+        //     fetchUser();
+        // }
+    }, [response])
+
+    const AuthGoogle = async () => {
+        if (response.type === 'success') {
+            const { authentication: { accessToken } } = response;
+            const fetchUser = async () => {
+                try {
+                    const user = await fetchUserInfo(accessToken);
+                    console.log(user.family_name);
+                    // Alert.alert(user.family_name)
+                    // You may want to setUserInfo here
+
+                } catch (error) {
+                    console.error("Error fetching user info:", error);
+                }
+            };
+            fetchUser();
+        }
+
+    }
+
+    async function fetchUserInfo(token) {
+        const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        });
+
+        return await response.json();
+    }
+
+    const getUserInfo = async (token) => {
+        if (!token) return
+        try {
+            const response = await fetch('https://www.googleapis.com/userinfo/v2/me',
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+
+            const user = await response.json()
+            await AsyncStorage.setItem("@user", JSON.stringify(user))
+        } catch (error) {
+
+        }
+
     }
 
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView>
+
+
+                <Text>Google Auth</Text>
+                <Button title='Sign in with Google' onPress={() => promptAsync()} />
+                <Button title='Delete local storage' onPress={() => AsyncStorage.removeItem("@user")} />
+
+
+
+                {/* <ScrollView>
                     <View style={{ width: width, height: height * 0.2, justifyContent: 'center' }}>
                         <Image source={Logo} style={{ width: width }} resizeMode='contain' />
                     </View>
@@ -115,7 +196,7 @@ const Login = () => {
                         </TouchableOpacity>
 
                     </View>
-                </ScrollView>
+                </ScrollView> */}
             </SafeAreaView>
         </>
     )

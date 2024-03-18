@@ -10,7 +10,7 @@ const GetStarted = () => {
     const router = useRouter()
 
     const handleGetStarted = () => {
-        router.replace('screens/intro/OnBoarding')
+        router.replace('screens/intro/Login')
     }
 
     return (
