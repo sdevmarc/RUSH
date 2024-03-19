@@ -16,17 +16,35 @@ import Logo from '../../../assets/LogoDark.png'
 import { useRouter } from 'expo-router'
 import axios from 'axios'
 import address from '../../../config/host'
-import * as WebBrowser from 'expo-web-browser'
-import * as Google from 'expo-auth-session/providers/google'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-WebBrowser.maybeCompleteAuthSession()
+import * as LocalAuthentication from 'expo-local-authentication'
 
 const { width, height } = Dimensions.get("window")
 
 const Login = () => {
-    const [userInfo, setUserInfo] = useState(null)
-    const [request, response, promptAsync] = Google.useAuthRequest()
+    const [isBiometric, setBiomettric] = useState(false)
+    const [isAuthenticated, setAuthenticate] = useState(false)
+
+    useEffect(() => {
+        (async () => {
+            const compatible = await LocalAuthentication.hasHardwareAsync()
+            setBiomettric(compatible)
+        })()
+    }, [])
+
+
+    const onAuthenticate = async () => {
+        const auth = await LocalAuthentication.authenticateAsync({
+            promptMessage: 'Authenticate',
+            fallbackLabel: 'Enter Password'
+        })
+
+        console.log(auth)
+        setAuthenticate(auth.success)
+    }
+
+
+
+
 
     const [values, setValues] = useState({
         username: '',
@@ -65,71 +83,7 @@ const Login = () => {
         setValues({ ...values, password: value })
     }
 
-    useEffect(() => {
-        console.log(response)
-
-        // if (response && response.type === 'success') {
-        //     const { authentication: { accessToken } } = response;
-        //     const fetchUser = async () => {
-        //         try {
-        //             const user = await fetchUserInfo(accessToken);
-        //             console.log(user.family_name);
-        //             // Alert.alert(user.family_name)
-        //             // You may want to setUserInfo here
-
-        //         } catch (error) {
-        //             console.error("Error fetching user info:", error);
-        //         }
-        //     };
-        //     fetchUser();
-        // }
-    }, [response])
-
-    const AuthGoogle = async () => {
-        if (response.type === 'success') {
-            const { authentication: { accessToken } } = response;
-            const fetchUser = async () => {
-                try {
-                    const user = await fetchUserInfo(accessToken);
-                    console.log(user.family_name);
-                    // Alert.alert(user.family_name)
-                    // You may want to setUserInfo here
-
-                } catch (error) {
-                    console.error("Error fetching user info:", error);
-                }
-            };
-            fetchUser();
-        }
-
-    }
-
-    async function fetchUserInfo(token) {
-        const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-        });
-
-        return await response.json();
-    }
-
-    const getUserInfo = async (token) => {
-        if (!token) return
-        try {
-            const response = await fetch('https://www.googleapis.com/userinfo/v2/me',
-                {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-
-            const user = await response.json()
-            await AsyncStorage.setItem("@user", JSON.stringify(user))
-        } catch (error) {
-
-        }
+    const AuthBiometric = () => {
 
     }
 
@@ -137,11 +91,21 @@ const Login = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <SafeAreaView style={{ flex: 1 }}>
-
-
-                <Text>Google Auth</Text>
-                <Button title='Sign in with Google' onPress={() => promptAsync()} />
-                <Button title='Delete local storage' onPress={() => AsyncStorage.removeItem("@user")} />
+                {
+                    isAuthenticated ?
+                        (
+                            <>
+                                <Text>You are Authenticated</Text>
+                                <Button title='Logout' onPress={() => setAuthenticate(false)} />
+                            </>
+                        )
+                        : (
+                            <>
+                                <Text>You are not authenticateed</Text>
+                                <Button title='Login' onPress={() => onAuthenticate()} />
+                            </>
+                        )
+                }
 
 
 
