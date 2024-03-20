@@ -141,7 +141,7 @@ const Login = () => {
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={onAuthenticate} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
+                        <TouchableOpacity onPress={() => onAuthenticate()} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
                             <Text style={{ fontSize: width * 0.03, fontWeight: 'bold' }}>
                                 Continue with Google
                             </Text>
