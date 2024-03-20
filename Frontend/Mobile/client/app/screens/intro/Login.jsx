@@ -40,6 +40,12 @@ const Login = () => {
 
         console.log(auth)
         setAuthenticate(auth.success)
+
+        // if (isAuthenticated) {
+        //     router.navigate('screens/Dashboard')
+        // } else {
+        //     Alert.alert('You  are not authenticated')
+        // }
     }
 
 
@@ -91,25 +97,7 @@ const Login = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <SafeAreaView style={{ flex: 1 }}>
-                {
-                    isAuthenticated ?
-                        (
-                            <>
-                                <Text>You are Authenticated</Text>
-                                <Button title='Logout' onPress={() => setAuthenticate(false)} />
-                            </>
-                        )
-                        : (
-                            <>
-                                <Text>You are not authenticateed</Text>
-                                <Button title='Login' onPress={() => onAuthenticate()} />
-                            </>
-                        )
-                }
-
-
-
-                {/* <ScrollView>
+                <ScrollView>
                     <View style={{ width: width, height: height * 0.2, justifyContent: 'center' }}>
                         <Image source={Logo} style={{ width: width }} resizeMode='contain' />
                     </View>
@@ -153,14 +141,14 @@ const Login = () => {
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={AuthGoogle} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
+                        <TouchableOpacity onPress={onAuthenticate} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
                             <Text style={{ fontSize: width * 0.03, fontWeight: 'bold' }}>
                                 Continue with Google
                             </Text>
                         </TouchableOpacity>
 
                     </View>
-                </ScrollView> */}
+                </ScrollView>
             </SafeAreaView>
         </>
     )
