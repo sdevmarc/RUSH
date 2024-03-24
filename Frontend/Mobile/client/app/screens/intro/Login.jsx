@@ -145,7 +145,7 @@ const Login = () => {
 
 
 
-                {/* <ScrollView>
+                <ScrollView>
                     <View style={{ width: width, height: height * 0.2, justifyContent: 'center' }}>
                         <Image source={Logo} style={{ width: width }} resizeMode='contain' />
                     </View>
@@ -196,7 +196,7 @@ const Login = () => {
                         </TouchableOpacity>
 
                     </View>
-                </ScrollView> */}
+                </ScrollView>
             </SafeAreaView>
         </>
     )
