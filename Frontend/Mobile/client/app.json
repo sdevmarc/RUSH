@@ -16,7 +16,9 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourparengmarc.client"
+      "infoPlist": {
+        "NSCameraUsageDescription": "Face ID  is used to authenticate the user"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +33,13 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow TEST_USER to use Face ID."
+        }
+      ]
     ],
     "extra": {
       "router": {

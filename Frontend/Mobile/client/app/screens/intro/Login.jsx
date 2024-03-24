@@ -8,7 +8,8 @@ import {
     View,
     Dimensions,
     Alert,
-    Button
+    Button,
+    TouchableHighlight
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -16,17 +17,85 @@ import Logo from '../../../assets/LogoDark.png'
 import { useRouter } from 'expo-router'
 import axios from 'axios'
 import address from '../../../config/host'
-import * as WebBrowser from 'expo-web-browser'
-import * as Google from 'expo-auth-session/providers/google'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-WebBrowser.maybeCompleteAuthSession()
+import * as LocalAuthentication from 'expo-local-authentication'
 
 const { width, height } = Dimensions.get("window")
 
 const Login = () => {
-    const [userInfo, setUserInfo] = useState(null)
-    const [request, response, promptAsync] = Google.useAuthRequest()
+    const [isBiometric, setBiomettric] = useState(false)
+    const [isAuthenticated, setAuthenticate] = useState(false)
+    const [isBiometricSupported, setIsBiometricSupported] = useState(false)
+
+    useEffect(() => {
+        (async () => {
+            const compatible = await LocalAuthentication.hasHardwareAsync()
+            setIsBiometricSupported(compatible)
+        })()
+    })
+
+    const fallBackToDefaultAuth = () => {
+        console.log('fall back to password authentication')
+    }
+
+    const alertComponent = (title, mess, btnText, btnFunc) => {
+        return Alert.alert(title, mess, [
+            {
+                text: btnText,
+                onPress: btnFunc
+            }
+        ])
+    }
+
+    const handleBiometricAuth = async () => {
+        const isBiomettricAvailable = await LocalAuthentication.hasHardwareAsync()
+
+        if (!isBiomettricAvailable)
+            return alertComponent(
+                'Please enter your password',
+                'Biometric auth not supported',
+                'Ok',
+                () => fallBackToDefaultAuth()
+            )
+
+        let supportedBiometrics
+        if (isBiomettricAvailable)
+            supportedBiometrics = await LocalAuthentication.supportedAuthenticationTypesAsync()
+
+        const savedBiometrics = await LocalAuthentication.isEnrolledAsync()
+        if (!savedBiometrics)
+            return alertComponent(
+                'Biometric not found',
+                'Please login with password',
+                'Ok',
+                () => fallBackToDefaultAuth()
+            )
+
+        const biometricauth = await LocalAuthentication.authenticateAsync({
+            promptMessage: 'Login with Biometrics',
+            cancelLabel: 'cancel',
+            disableDeviceFallback: true
+        })
+
+        if (biometricauth) { alertComponent('', 'You are authenticated', 'Ok') }
+        console.log({ isBiomettricAvailable })
+        console.log({ supportedBiometrics })
+        console.log({ savedBiometrics })
+        console.log({ biometricauth })
+    }
+
+
+
+    const onAuthenticate = async () => {
+        const auth = await LocalAuthentication.authenticateAsync({
+            promptMessage: 'Authenticate',
+            fallbackLabel: 'Enter Password'
+        })
+
+        console.log(auth)
+        setAuthenticate(auth.success)
+    }
+
+
 
     const [values, setValues] = useState({
         username: '',
@@ -65,83 +134,28 @@ const Login = () => {
         setValues({ ...values, password: value })
     }
 
-    useEffect(() => {
-        console.log(response)
-
-        // if (response && response.type === 'success') {
-        //     const { authentication: { accessToken } } = response;
-        //     const fetchUser = async () => {
-        //         try {
-        //             const user = await fetchUserInfo(accessToken);
-        //             console.log(user.family_name);
-        //             // Alert.alert(user.family_name)
-        //             // You may want to setUserInfo here
-
-        //         } catch (error) {
-        //             console.error("Error fetching user info:", error);
-        //         }
-        //     };
-        //     fetchUser();
-        // }
-    }, [response])
-
-    const AuthGoogle = async () => {
-        if (response.type === 'success') {
-            const { authentication: { accessToken } } = response;
-            const fetchUser = async () => {
-                try {
-                    const user = await fetchUserInfo(accessToken);
-                    console.log(user.family_name);
-                    // Alert.alert(user.family_name)
-                    // You may want to setUserInfo here
-
-                } catch (error) {
-                    console.error("Error fetching user info:", error);
-                }
-            };
-            fetchUser();
-        }
-
-    }
-
-    async function fetchUserInfo(token) {
-        const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-        });
-
-        return await response.json();
-    }
-
-    const getUserInfo = async (token) => {
-        if (!token) return
-        try {
-            const response = await fetch('https://www.googleapis.com/userinfo/v2/me',
-                {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-
-            const user = await response.json()
-            await AsyncStorage.setItem("@user", JSON.stringify(user))
-        } catch (error) {
-
-        }
+    const AuthBiometric = () => {
 
     }
 
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 20 }}>
+                <Text>
+                    {
+                        isBiometricSupported
+                            ? 'Your device is compatible with biometrics'
+                            : 'Face or fingerprint scanner is available on this device'
+                    }
+                </Text>
+                <TouchableHighlight>
+                    <Button
+                        title='Login with Biometrics'
+                        color='black'
+                        onPress={handleBiometricAuth} />
+                </TouchableHighlight>
 
-
-                <Text>Google Auth</Text>
-                <Button title='Sign in with Google' onPress={() => promptAsync()} />
-                <Button title='Delete local storage' onPress={() => AsyncStorage.removeItem("@user")} />
 
 
 
