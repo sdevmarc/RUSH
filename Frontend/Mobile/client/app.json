@@ -15,10 +15,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSCameraUsageDescription": "Face ID  is used to authenticate the user"
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -33,13 +30,7 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font",
-      [
-        "expo-local-authentication",
-        {
-          "faceIDPermission": "Allow TEST_USER to use Face ID."
-        }
-      ]
+      "expo-font"
     ],
     "extra": {
       "router": {
