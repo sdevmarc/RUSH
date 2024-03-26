@@ -70,14 +70,14 @@ const SelectedStore = () => {
                             </TouchableOpacity>
                             <Animated.View style={{ opacity: opacityTitle1 }}>
                                 <Text style={{ fontSize: width * 0.04, color: '#fff', fontFamily: 'Poppins-Bold' }}>
-                                    STORE
+                                    BARASSI
                                 </Text>
                             </Animated.View>
                             <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
                                 <Ionicons name="search" size={24} color="white" />
                             </TouchableOpacity>
                         </View>
-                        <Animated.View style={{ opacity, position: 'absolute', top: height * 0.12, paddingHorizontal: width * 0.05, width: width }}>
+                        <Animated.View style={{ opacity, flex: 1, justifyContent: 'flex-end', alignItems: 'center', paddingHorizontal: width * 0.05, paddingVertical: height * 0.03, width: width }}>
                             <Text style={{ fontSize: width * 0.07, color: '#fff', fontWeight: '700', fontFamily: 'Poppins-Bold' }}>
                                 BARASSI
                             </Text>

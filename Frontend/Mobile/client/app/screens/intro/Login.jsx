@@ -17,86 +17,10 @@ import Logo from '../../../assets/LogoDark.png'
 import { useRouter } from 'expo-router'
 import axios from 'axios'
 import address from '../../../config/host'
-import * as LocalAuthentication from 'expo-local-authentication'
 
 const { width, height } = Dimensions.get("window")
 
 const Login = () => {
-    const [isBiometric, setBiomettric] = useState(false)
-    const [isAuthenticated, setAuthenticate] = useState(false)
-    const [isBiometricSupported, setIsBiometricSupported] = useState(false)
-
-    useEffect(() => {
-        (async () => {
-            const compatible = await LocalAuthentication.hasHardwareAsync()
-            setIsBiometricSupported(compatible)
-        })()
-    })
-
-    const fallBackToDefaultAuth = () => {
-        console.log('fall back to password authentication')
-    }
-
-    const alertComponent = (title, mess, btnText, btnFunc) => {
-        return Alert.alert(title, mess, [
-            {
-                text: btnText,
-                onPress: btnFunc
-            }
-        ])
-    }
-
-    const handleBiometricAuth = async () => {
-        const isBiomettricAvailable = await LocalAuthentication.hasHardwareAsync()
-
-        if (!isBiomettricAvailable)
-            return alertComponent(
-                'Please enter your password',
-                'Biometric auth not supported',
-                'Ok',
-                () => fallBackToDefaultAuth()
-            )
-
-        let supportedBiometrics
-        if (isBiomettricAvailable)
-            supportedBiometrics = await LocalAuthentication.supportedAuthenticationTypesAsync()
-
-        const savedBiometrics = await LocalAuthentication.isEnrolledAsync()
-        if (!savedBiometrics)
-            return alertComponent(
-                'Biometric not found',
-                'Please login with password',
-                'Ok',
-                () => fallBackToDefaultAuth()
-            )
-
-        const biometricauth = await LocalAuthentication.authenticateAsync({
-            promptMessage: 'Login with Biometrics',
-            cancelLabel: 'cancel',
-            disableDeviceFallback: true
-        })
-
-        if (biometricauth) { alertComponent('', 'You are authenticated', 'Ok') }
-        console.log({ isBiomettricAvailable })
-        console.log({ supportedBiometrics })
-        console.log({ savedBiometrics })
-        console.log({ biometricauth })
-    }
-
-
-
-    const onAuthenticate = async () => {
-        const auth = await LocalAuthentication.authenticateAsync({
-            promptMessage: 'Authenticate',
-            fallbackLabel: 'Enter Password'
-        })
-
-        console.log(auth)
-        setAuthenticate(auth.success)
-    }
-
-
-
     const [values, setValues] = useState({
         username: '',
         password: ''
@@ -141,24 +65,7 @@ const Login = () => {
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
-            <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 20 }}>
-                <Text>
-                    {
-                        isBiometricSupported
-                            ? 'Your device is compatible with biometrics'
-                            : 'Face or fingerprint scanner is available on this device'
-                    }
-                </Text>
-                <TouchableHighlight>
-                    <Button
-                        title='Login with Biometrics'
-                        color='black'
-                        onPress={handleBiometricAuth} />
-                </TouchableHighlight>
-
-
-
-
+            <SafeAreaView>
                 <ScrollView>
                     <View style={{ width: width, height: height * 0.2, justifyContent: 'center' }}>
                         <Image source={Logo} style={{ width: width }} resizeMode='contain' />
@@ -202,13 +109,6 @@ const Login = () => {
                                 Create Account
                             </Text>
                         </TouchableOpacity>
-
-                        <TouchableOpacity onPress={AuthGoogle} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderWidth: width * 0.005 }}>
-                            <Text style={{ fontSize: width * 0.03, fontWeight: 'bold' }}>
-                                Continue with Google
-                            </Text>
-                        </TouchableOpacity>
-
                     </View>
                 </ScrollView>
             </SafeAreaView>
