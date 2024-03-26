@@ -91,10 +91,20 @@ const Home = () => {
         <>
             <StatusBar barStyle="light-content" />
             <View>
-                <Animated.View style={{ width: width, height: headerHeight, paddingHorizontal: width * 0.05, backgroundColor: '#ad3232' }}>
-                    <View style={{ position: 'absolute', top: height * 0.05, paddingHorizontal: width * 0.05, width: width, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Animated.View style={{ width: width, height: headerHeight, backgroundColor: '#ad3232' }}>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            top: height * 0.05,
+                            width: '100%',
+                            paddingHorizontal: width * 0.05,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                        }}
+                    >
                         <TouchableOpacity
-                        onPress={() => navigation.openDrawer()} 
+                            onPress={() => navigation.openDrawer()}
                         >
                             <Ionicons name="menu" size={width * 0.08} color="white" />
                         </TouchableOpacity>
