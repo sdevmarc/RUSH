@@ -34,7 +34,7 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('')
 
     const handleSignUp = async () => {
-        navigation.replace('Successful')
+        navigation.replace('SuccessfulLogin')
 
         // try {
         //     if (values.name === '' || values.username === '' || values.password === '' || confirmPassword === '' || values.contactno === '') {
