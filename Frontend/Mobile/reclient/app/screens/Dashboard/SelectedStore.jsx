@@ -64,9 +64,9 @@ const SelectedStore = () => {
                     <BlurView intensity={50} style={{ width: '100%', height: '100%' }}>
                         <View
                             style={{
-                                position: 'absolute',
+                                position: 'absolute', 
+                                top: height * 0.05,
                                 width: '100%',
-                                height: '100%',
                                 paddingHorizontal: width * 0.05,
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
