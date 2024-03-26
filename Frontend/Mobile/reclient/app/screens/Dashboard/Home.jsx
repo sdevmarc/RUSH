@@ -90,8 +90,8 @@ const Home = () => {
     return (
         <>
             <StatusBar barStyle="light-content" />
-            <View>
-                <Animated.View style={{ width: width, height: headerHeight, backgroundColor: '#ad3232' }}>
+            <View style={{ width: width, height: height }}>
+                <Animated.View style={{ width: '100%', height: headerHeight, backgroundColor: '#ad3232' }}>
                     <View
                         style={{
                             position: 'absolute',
@@ -136,8 +136,8 @@ const Home = () => {
                         )}
                     scrollEventThrottle={16}
                 >
-                    <View style={{ paddingVertical: height * 0.03, gap: height * 0.03, backgroundColor: 'white' }}>
-                        <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03 }}>
+                    <View style={{ width: '100%', paddingVertical: height * 0.03, gap: height * 0.03, backgroundColor: 'white' }}>
+                        <View style={{ width: '100%', gap: height * 0.02, marginHorizontal: width * 0.03 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
                                 <MaterialIcons name="category" size={24} color="#ad3232" />
                                 <Text style={{ fontSize: width * 0.047, color: '#ad3232', fontFamily: 'Poppins-Bold' }}>
@@ -183,14 +183,14 @@ const Home = () => {
                                 ))}
                             </ScrollView>
                         </View> */}
-                        <View style={{ gap: height * 0.02, marginHorizontal: width * 0.03, paddingBottom: height * 0.06 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
+                        <View style={{ width: '100%', gap: height * 0.02, paddingHorizontal: width * 0.03, paddingBottom: height * 0.06 }}>
+                            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
                                 <Ionicons name="storefront" size={24} color="#ad3232" />
                                 <Text style={{ fontSize: width * 0.047, color: '#ad3232', fontFamily: 'Poppins-Bold' }}>
                                     STORES
                                 </Text>
                             </View>
-                            <View style={{ flexDirection: 'row', gap: width * 0.02, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+                            <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.02, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
                                 {Stores.map((item) => (
                                     <TouchableOpacity
                                         key={item.id}
