@@ -15,37 +15,39 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '../../../assets/LogoDark.png'
 import axios from 'axios'
 import address from '../../../config/host'
+import { useNavigation } from '@react-navigation/native'
 
 const { width, height } = Dimensions.get("window")
 
 const Login = () => {
+    const navigation = useNavigation()
     const [values, setValues] = useState({
         username: '',
         password: ''
     })
 
-    // const router = useRouter()
-
     const handleLogin = async () => {
-        try {
-            if (values.username === '' || values.password === '') {
-                Alert.alert('Warning', 'Please fill-in the required fields.')
-            } else {
-                const res = await axios.post(`http://${address}/api/login`, values)
+        navigation.replace('DrawerRoutes')
 
-                if (res.data.success) {
-                    router.navigate('screens/Dashboard')
-                } else {
-                    Alert.alert('Error', `${res.data.message}`)
-                }
-            }
-        } catch (error) {
-            Alert.alert('Error', `Error sign up: ${error}`)
-        }
+        // try {
+        //     if (values.username === '' || values.password === '') {
+        //         Alert.alert('Warning', 'Please fill-in the required fields.')
+        //     } else {
+        //         const res = await axios.post(`http://${address}/api/login`, values)
+
+        //         if (res.data.success) {
+        //             navigation.navigate('Dashboard')
+        //         } else {
+        //             Alert.alert('Error', `${res.data.message}`)
+        //         }
+        //     }
+        // } catch (error) {
+        //     Alert.alert('Error', `Error sign up: ${error}`)
+        // }
     }
 
     const handleSignUp = () => {
-        router.replace('screens/intro/Register')
+        navigation.replace('Register')
     }
 
     const handleOnchangeUsername = (value) => {
