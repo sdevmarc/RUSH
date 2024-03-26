@@ -11,7 +11,6 @@ import {
 } from 'react-native'
 import React, { useRef } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window')
@@ -25,21 +24,31 @@ const SelectedItem = () => {
         outputRange: [height * 0.13, height * 0.11],
         extrapolate: 'clamp',
     })
+
+    const handleAddtoCart = () => {
+        navigation.navigate('Cart')
+    }
+
     return (
         <>
             <StatusBar barStyle="light-content" />
             <View>
-                <Animated.View style={{ position: 'absolute', width: width, height: headerHeight, overflow: 'hidden', zIndex: 1 }}>
-                    <BlurView intensity={50} style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                        <View style={{ width: '100%', height: '100%', paddingHorizontal: width * 0.05, width: width, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={() => navigation.goBack()} >
-                                <Ionicons name="chevron-back-circle" size={height * 0.04} color="white" />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
-                                <Ionicons name="search" size={24} color="white" />
-                            </TouchableOpacity>
-                        </View>
-                    </BlurView>
+                <Animated.View style={{ position: 'absolute', width: width, height: height * 0.1, overflow: 'hidden', zIndex: 1 }}>
+                    <View
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            paddingHorizontal: width * 0.05,
+                            width: width,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-end'
+                        }}
+                    >
+                        <TouchableOpacity onPress={() => navigation.goBack()} >
+                            <Ionicons name="chevron-back-circle" size={height * 0.04} color="black" />
+                        </TouchableOpacity>
+                    </View>
                 </Animated.View>
                 <ScrollView>
                     <View style={{ width: width, height: height }}>
@@ -50,8 +59,8 @@ const SelectedItem = () => {
                                 height: '50%',
                                 backgroundColor: 'white',
                                 borderRadius: height * 0.006,
-                                borderBottomEndRadius: 30,
-                                borderBottomStartRadius: 30
+                                borderBottomEndRadius: 60,
+                                borderBottomStartRadius: 60
                             }}
                         >
                             <Image
@@ -84,6 +93,7 @@ const SelectedItem = () => {
                                 </View>
 
                                 <TouchableOpacity
+                                    onPress={handleAddtoCart}
                                     style={{
                                         width: width * 0.35,
                                         height: height * 0.06,
@@ -94,7 +104,9 @@ const SelectedItem = () => {
                                         borderRadius: height * 0.015
                                     }}
                                 >
-                                    <Text style={{color: 'white'}}>RENT</Text>
+                                    <Text style={{ color: 'white' }}>
+                                        RENT
+                                    </Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
