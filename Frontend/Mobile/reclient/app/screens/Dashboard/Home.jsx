@@ -9,7 +9,7 @@ import {
     StatusBar
 } from 'react-native'
 import React, { useRef } from 'react'
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native'
 
@@ -89,9 +89,9 @@ const Home = () => {
 
     return (
         <>
-            <StatusBar barStyle="light-content" />
-            <View style={{ width: width, height: height }}>
-                <Animated.View style={{ width: '100%', height: headerHeight, backgroundColor: '#ad3232' }}>
+            <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+            <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
+                <Animated.View style={{ width: '100%', height: headerHeight, backgroundColor: '#313d49' }}>
                     <View
                         style={{
                             position: 'absolute',
@@ -106,7 +106,9 @@ const Home = () => {
                         <TouchableOpacity
                             onPress={() => navigation.openDrawer()}
                         >
-                            <Ionicons name="menu" size={width * 0.08} color="white" />
+                            <MaterialCommunityIcons name="dots-grid" size={24} color="white" />
+                            {/* <Entypo name="grid" size={width * 0.08} color="white" /> */}
+                            {/* <Ionicons name="menu" size={width * 0.08} color="white" /> */}
                         </TouchableOpacity>
                         <Animated.View style={{ opacity: opacityTitle1 }}>
                             <Text style={{ fontSize: width * 0.04, color: '#fff', fontFamily: 'Poppins-Bold' }}>
@@ -114,10 +116,10 @@ const Home = () => {
                             </Text>
                         </Animated.View>
                         <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
-                            <Ionicons name="search" size={24} color="white" />
+                            <Ionicons name="search" size={width * 0.05} color="white" />
                         </TouchableOpacity>
                     </View>
-                    <Animated.View style={{ opacity, position: 'absolute', top: height * 0.1, paddingHorizontal: width * 0.05, width: width }}>
+                    <Animated.View style={{ opacity, position: 'absolute', top: height * 0.11, paddingHorizontal: width * 0.05, width: width }}>
                         <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: '#fff', fontFamily: 'Poppins-Bold' }}>
                             Discover
                         </Text>
@@ -136,15 +138,27 @@ const Home = () => {
                         )}
                     scrollEventThrottle={16}
                 >
-                    <View style={{ width: '100%', paddingVertical: height * 0.03, gap: height * 0.03, backgroundColor: 'white' }}>
-                        <View style={{ width: '100%', gap: height * 0.02, marginHorizontal: width * 0.03 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
-                                <MaterialIcons name="category" size={24} color="#ad3232" />
-                                <Text style={{ fontSize: width * 0.047, color: '#ad3232', fontFamily: 'Poppins-Bold' }}>
-                                    CATEGORIES
+                    <View style={{ width: '100%', gap: height * 0.022, backgroundColor: '#313d49' }}>
+                        <View style={{ width: '100%', gap: height * 0.02, paddingTop: height * 0.03 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03, paddingHorizontal: width * 0.03 }}>
+                                <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Regular' }}>
+                                    Categories
                                 </Text>
                             </View>
-                            <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                            <ScrollView contentContainerStyle={{ gap: width * 0.02, paddingStart: width * 0.03 }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <TouchableOpacity
+                                    style={{
+                                        paddingHorizontal: width * 0.05,
+                                        paddingVertical: height * 0.0065,
+                                        borderRadius: height * 0.01,
+                                        backgroundColor: '#d7a152',
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}>
+                                    <Text style={{ fontFamily: 'Poppins-Bold', color: 'white' }}>
+                                        All
+                                        </Text>
+                                </TouchableOpacity>
                                 {Categories.map((item) => (
                                     <TouchableOpacity
                                         key={item.id}
@@ -152,73 +166,50 @@ const Home = () => {
                                             paddingHorizontal: width * 0.05,
                                             paddingVertical: height * 0.0065,
                                             borderRadius: height * 0.01,
-                                            backgroundColor: '#fff',
-                                            borderWidth: width * 0.003
+                                            backgroundColor: '#4b4c59',
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
                                         }}>
-                                        <Text style={{ fontFamily: 'Poppins-Regular' }}>{item.name}</Text>
+                                        <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>{item.name}</Text>
                                     </TouchableOpacity>
                                 ))}
                             </ScrollView>
                         </View>
-
-                        {/* <View style={{ gap: height * 0.02, marginLeft: width * 0.03 }}>
-                            <Text style={{ fontSize: width * 0.047, fontWeight: 'bold', color: '#222' }}>
-                                HOT TRENDS
-                            </Text>
-                            <ScrollView contentContainerStyle={{ flexDirection: 'row', gap: width * 0.02 }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                {Trends.map((item) => (
-                                    <TouchableOpacity
-                                        key={item.id}
-                                        onPress={handleSelectStore}
-                                        style={{
-                                            width: width * 0.55,
-                                            height: height * 0.25,
-                                            borderRadius: height * 0.01,
-                                            backgroundColor: 'grey',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                        }}>
-                                        <Text style={{ color: '#fff', fontFamily: 'Poppins-Regular' }}>{item.name}</Text>
-                                    </TouchableOpacity>
-                                ))}
-                            </ScrollView>
-                        </View> */}
-                        <View style={{ width: '100%', gap: height * 0.02, paddingHorizontal: width * 0.03, paddingBottom: height * 0.06 }}>
+                        <View style={{ width: '100%', gap: height * 0.022, paddingHorizontal: width * 0.03 }}>
                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
-                                <Ionicons name="storefront" size={24} color="#ad3232" />
-                                <Text style={{ fontSize: width * 0.047, color: '#ad3232', fontFamily: 'Poppins-Bold' }}>
-                                    STORES
+                                <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Regular' }}>
+                                    Rent Shops
                                 </Text>
                             </View>
-                            <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.02, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+                            <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
                                 {Stores.map((item) => (
                                     <TouchableOpacity
                                         key={item.id}
                                         onPress={handleSelectStore}
                                         style={{
-                                            width: width * 0.45,
+                                            width: width * 0.452,
                                             height: height * 0.25,
-                                            // borderRadius: height * 0.01,
-                                            // backgroundColor: '#ad3232',
-                                            padding: width * 0.02
+                                            borderRadius: height * 0.02,
+                                            padding: width * 0.02,
+                                            backgroundColor: '#4a4c59'
                                         }}
                                     >
-                                        <View style={{ width: '100%', height: '100%' }}>
-                                            <View style={{ overflow: 'hidden', width: '100%', height: '80%', backgroundColor: 'white', borderRadius: height * 0.006 }}>
+                                        <View style={{ width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                                            <View style={{ overflow: 'hidden', width: '100%', height: '70%', backgroundColor: 'white', borderRadius: height * 0.015 }}>
                                                 <Image
                                                     source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
                                                     resizeMode='cover'
                                                     style={{ width: '100%', height: '100%' }}
                                                 />
                                             </View>
-                                            <View style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}>
-                                                <Text style={{ color: '#222', fontSize: width * 0.04, fontFamily: 'Poppins-Bold' }} >
+                                            <View style={{ width: '100%', alignItems: 'flex-start' }}>
+                                                <Text style={{ color: '#fff', fontSize: width * 0.04, fontFamily: 'Poppins-Regular' }} numberOfLines={1} ellipsizeMode='tail' >
                                                     {item.name}
                                                 </Text>
                                                 <Text
                                                     style={{
                                                         color: '#fff',
-                                                        backgroundColor: '#222',
+                                                        backgroundColor: '#d7a152',
                                                         paddingHorizontal: width * 0.03,
                                                         paddingVertical: width * 0.005,
                                                         borderRadius: height * 0.005,
@@ -231,21 +222,6 @@ const Home = () => {
                                             </View>
                                         </View>
                                     </TouchableOpacity>
-                                    // <TouchableOpacity
-                                    //     key={item.id}
-                                    //     onPress={handleSelectStore}
-                                    //     style={{
-                                    //         width: width * 0.4,
-                                    //         height: height * 0.2,
-                                    //         borderRadius: height * 0.01,
-                                    //         backgroundColor: '#ad3232',
-                                    //         justifyContent: 'center',
-                                    //         alignItems: 'center',
-                                    //     }}>
-                                    //     <Text style={{ color: '#fff', fontFamily: 'Poppins-Regular' }}>
-                                    //         {item.name}
-                                    //     </Text>
-                                    // </TouchableOpacity>
                                 ))}
                             </View>
                         </View>
