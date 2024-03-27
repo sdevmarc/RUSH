@@ -6,7 +6,8 @@ import {
     Dimensions,
     TouchableOpacity,
     Image,
-    StatusBar
+    StatusBar,
+    Platform
 } from 'react-native'
 import React, { useRef } from 'react'
 import { Ionicons } from '@expo/vector-icons';
@@ -54,14 +55,19 @@ const SelectedStore = () => {
 
     return (
         <>
-            <StatusBar barStyle="light-content" />
-            <View style={{ width: width, height: height }}>
-                <Animated.View style={{ width: '100%', height: headerHeight, backgroundColor: '#ad3232', overflow: 'hidden' }}>
-                    <LinearGradient
-                        colors={['transparent', 'rgba(34, 34, 34, 0.7)']}
-                        style={{ position: 'absolute', top: 0, left: 0, width: width, height: height * 0.2 }}
-                    />
-                    <BlurView intensity={50} style={{ width: '100%', height: '100%' }}>
+            <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+            <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
+                <Animated.View style={{ position: 'absolute', width: '100%', height: headerHeight, overflow: 'hidden', zIndex: 1 }}>
+                    <BlurView
+                        intensity={50}
+                        style={{
+                            position: 'absolute',
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: `${Platform.OS === 'android' ? '#313c47' : 'none'}`
+                        }}
+                        tint="dark"
+                    >
                         <View
                             style={{
                                 position: 'absolute',
@@ -73,8 +79,8 @@ const SelectedStore = () => {
                                 alignItems: 'center',
                                 zIndex: 1
                             }}>
-                            <TouchableOpacity onPress={() => navigation.goBack()} >
-                                <Ionicons name="chevron-back-circle" size={height * 0.04} color="white" />
+                            <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <Ionicons name="chevron-back-circle" size={width * 0.09} color="#dedede" />
                             </TouchableOpacity>
                             <Animated.View style={{ opacity: opacityTitle1 }}>
                                 <Text style={{ fontSize: width * 0.04, color: '#fff', fontFamily: 'Poppins-Bold' }}>
@@ -95,9 +101,44 @@ const SelectedStore = () => {
                                 paddingHorizontal: width * 0.05,
                                 paddingVertical: height * 0.02,
                             }}>
-                            <Text style={{ fontSize: width * 0.07, color: '#fff', fontWeight: '700', fontFamily: 'Poppins-Bold' }}>
-                                BARASSI
-                            </Text>
+                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Text style={{ width: '60%', flexWrap: 'wrap', fontSize: width * 0.045, color: '#fff', fontWeight: '700', fontFamily: 'Poppins-Bold' }} numberOfLines={2} ellipsizeMode='tail' >
+                                    BARASSI
+                                </Text>
+                                <View style={{ gap: height * 0.01 }}>
+                                    <TouchableOpacity
+
+                                        style={{
+                                            paddingHorizontal: width * 0.05,
+                                            paddingVertical: height * 0.003,
+                                            borderRadius: height * 0.01,
+                                            backgroundColor: '#d7a152',
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}>
+                                        <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>
+                                            Follow
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+
+                                        style={{
+                                            paddingHorizontal: width * 0.05,
+                                            paddingVertical: height * 0.003,
+                                            borderRadius: height * 0.01,
+                                            backgroundColor: '#4a4c59',
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}>
+                                        <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>
+                                            Message
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+
+
+
                         </Animated.View>
                     </BlurView>
                 </Animated.View>
@@ -109,42 +150,41 @@ const SelectedStore = () => {
                         )}
                     scrollEventThrottle={16}
                 >
-                    <View style={{ width: '100%', paddingVertical: height * 0.03, gap: height * 0.01, backgroundColor: 'white', paddingHorizontal: width * 0.02 }}>
-                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
-                            <Ionicons name="storefront" size={24} color="#ad3232" />
-                            <Text style={{ fontSize: width * 0.047, color: '#ad3232', fontFamily: 'Poppins-Bold' }}>
-                                PRODUCTS
+                    <View style={{ width: '100%', gap: height * 0.022, paddingHorizontal: width * 0.03, paddingTop: height * 0.22 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03, paddingHorizontal: width * 0.03 }}>
+                            <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Regular' }}>
+                                Products
                             </Text>
                         </View>
-                        <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.02, flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+                        <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
                             {Products.map((item) => (
                                 <TouchableOpacity
                                     key={item.id}
                                     onPress={handleSelectItem}
                                     style={{
-                                        width: width * 0.45,
+                                        width: width * 0.452,
                                         height: height * 0.25,
-                                        // borderRadius: height * 0.01,
-                                        // backgroundColor: '#ad3232',
-                                        padding: width * 0.02
+                                        borderRadius: height * 0.02,
+                                        padding: width * 0.02,
+                                        backgroundColor: '#4a4c59'
                                     }}
                                 >
-                                    <View style={{ width: '100%', height: '100%' }}>
-                                        <View style={{ overflow: 'hidden', width: '100%', height: '80%', backgroundColor: 'white', borderRadius: height * 0.006 }}>
+                                    <View style={{ width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                                        <View style={{ overflow: 'hidden', width: '100%', height: '70%', backgroundColor: 'white', borderRadius: height * 0.015 }}>
                                             <Image
                                                 source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
                                                 resizeMode='cover'
                                                 style={{ width: '100%', height: '100%' }}
                                             />
                                         </View>
-                                        <View style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}>
-                                            <Text style={{ color: '#222', fontSize: width * 0.04, fontFamily: 'Poppins-Bold' }} >
+                                        <View style={{ width: '100%', alignItems: 'flex-start' }}>
+                                            <Text style={{ color: '#fff', fontSize: width * 0.04, fontFamily: 'Poppins-Regular' }} >
                                                 {item.name}
                                             </Text>
                                             <Text
                                                 style={{
                                                     color: '#fff',
-                                                    backgroundColor: '#222',
+                                                    backgroundColor: '#d7a152',
                                                     paddingHorizontal: width * 0.03,
                                                     paddingVertical: width * 0.005,
                                                     borderRadius: height * 0.005,
