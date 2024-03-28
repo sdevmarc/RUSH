@@ -12,6 +12,7 @@ import {
 import React, { useRef } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
+import Navbar from '../../components/Navbar';
 
 const { width, height } = Dimensions.get('window')
 
@@ -45,33 +46,7 @@ const Cart = () => {
         <>
             <StatusBar barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <View style={{ position: 'absolute', width: '100%', height: height * 0.1, overflow: 'hidden', zIndex: 1, backgroundColor: '#323d48', paddingVertical: height * 0.009 }}>
-                    <View
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            paddingHorizontal: width * 0.05,
-                            width: width,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-end',
-                            zIndex: 1
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.goBack()}
-                        >
-                            <Ionicons name="chevron-back-circle" size={height * 0.04} color="#8f8f8f" />
-                        </TouchableOpacity>
-
-                    </View>
-
-                    <View style={{ width: '100%', height: '100%', position: 'absolute', justifyContent: 'flex-end', alignItems: 'center' }}>
-                        <Text style={{ fontSize: width * 0.05, fontWeight: 'bold', color: 'white' }}>
-                            Checkout
-                        </Text>
-                    </View>
-                </View>
+                <Navbar title='Checkout' backgroundColor='#323d48' />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.02 }}>
@@ -159,15 +134,15 @@ const Cart = () => {
                                 </View>
                                 <View style={{ width: '100%', paddingHorizontal: width * 0.03, gap: height * 0.007 }}>
                                     <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
-                                       Delivery
+                                        Delivery
                                     </Text>
                                     <Text style={{ color: 'white', textAlign: 'justify' }}>
-                                       Make sure your delivery address is set to your correct location.
+                                        Make sure your delivery address is set to your correct location.
                                     </Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
-                            onPress={handlePaymentOption}
+                                onPress={handlePaymentOption}
                                 style={{ width: '100%', gap: height * 0.007, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between', flexDirection: 'row' }}
                             >
                                 <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
