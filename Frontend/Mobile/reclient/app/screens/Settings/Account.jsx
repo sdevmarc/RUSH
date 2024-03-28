@@ -4,8 +4,7 @@ import {
     Dimensions,
     StatusBar,
     TouchableOpacity,
-    ScrollView,
-    Image
+    ScrollView
 } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
@@ -24,7 +23,16 @@ const Account = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <View style={{ position: 'absolute', width: '100%', height: '10%', overflow: 'hidden', zIndex: 1 }}>
+                <View
+                    style={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: height * 0.12,
+                        zIndex: 1,
+                        backgroundColor: '#323d48',
+                        paddingVertical: height * 0.009
+                    }}
+                >
                     <View
                         style={{
                             width: '100%',
@@ -33,58 +41,68 @@ const Account = () => {
                             width: width,
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            alignItems: 'flex-end'
+                            alignItems: 'flex-end',
+                            zIndex: 1
                         }}
                     >
                         <TouchableOpacity
                             onPress={() => navigation.openDrawer()}
                         >
-                            <MaterialCommunityIcons name="dots-grid" size={24} color="white" />
+                            <MaterialCommunityIcons name="dots-grid" size={width * 0.08} color="white" />
                         </TouchableOpacity>
+                    </View>
+                    <View style={{ width: '100%', height: '100%', position: 'absolute', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <Text style={{ fontSize: width * 0.05, fontWeight: 'bold', color: 'white' }}>
+                            Account
+                        </Text>
                     </View>
                 </View>
                 <ScrollView>
-                    <View style={{ width: width, height: height }}>
-                        <View style={{ width: '100%', height: '40%', justifyContent: 'center', alignItems: 'center', gap: height * 0.01, paddingTop: height * 0.05 }}>
-                            <View
-                                style={{
-                                    overflow: 'hidden',
-                                    width: '55%',
-                                    height: '75%',
-                                    backgroundColor: 'white',
-                                    borderRadius: height * 0.04,
-                                    borderWidth: 6,
-                                    borderColor: '#fff'
-
-                                }}
-                            >
-                                <Image
-                                    source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
-                                    resizeMode='cover'
-                                    style={{ width: '100%', height: '100%' }}
-                                />
-                            </View>
-                            <Text style={{ color: 'white', fontSize: width * 0.05 }}>
-                                Marc Edison
-                            </Text>
-                        </View>
-                        <View style={{ width: '100%', height: '60%', gap: height * 0.01 }}>
+                    <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
+                        <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.01 }}>
                             <TouchableOpacity
-                                style={{
-                                    height: '10%',
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    paddingHorizontal: width * 0.03,
-                                    marginHorizontal: width * 0.03,
-                                    backgroundColor: '#4a4c59',
-                                    borderRadius: height * 0.02
-                                }}
+                                style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                             >
-                                <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-                                    Edit Profile
-                                </Text>
-                                <MaterialIcons name="arrow-forward-ios" size={width * 0.05} color="white" />
+                                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
+                                        Account Details
+                                    </Text>
+                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '500' }}>
+                                        Edit
+                                    </Text>
+                                </View>
+                                <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
+                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        First Name
+                                    </Text>
+                                    <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                        Marc Edison
+                                    </Text>
+                                </View>
+                                <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
+                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        Middle Name
+                                    </Text>
+                                    <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                        Donato
+                                    </Text>
+                                </View>
+                                <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
+                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        Last Name
+                                    </Text>
+                                    <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                        Suarez
+                                    </Text>
+                                </View>
+                                <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
+                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        User Type
+                                    </Text>
+                                    <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                        Rentee
+                                    </Text>
+                                </View>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={handleAddress}
@@ -94,9 +112,8 @@ const Account = () => {
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
                                     paddingHorizontal: width * 0.03,
-                                    marginHorizontal: width * 0.03,
                                     backgroundColor: '#4a4c59',
-                                    borderRadius: height * 0.02
+                                    borderRadius: height * 0.01
                                 }}
                             >
                                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>
@@ -112,9 +129,8 @@ const Account = () => {
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
                                     paddingHorizontal: width * 0.03,
-                                    marginHorizontal: width * 0.03,
                                     backgroundColor: '#4a4c59',
-                                    borderRadius: height * 0.02
+                                    borderRadius: height * 0.01
                                 }}
                             >
                                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>
@@ -129,9 +145,8 @@ const Account = () => {
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
                                     paddingHorizontal: width * 0.03,
-                                    marginHorizontal: width * 0.03,
                                     backgroundColor: '#4a4c59',
-                                    borderRadius: height * 0.02
+                                    borderRadius: height * 0.01
                                 }}
                             >
                                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>
@@ -146,9 +161,8 @@ const Account = () => {
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
                                     paddingHorizontal: width * 0.03,
-                                    marginHorizontal: width * 0.03,
                                     backgroundColor: '#4a4c59',
-                                    borderRadius: height * 0.02
+                                    borderRadius: height * 0.01
                                 }}
                             >
                                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>
@@ -163,9 +177,8 @@ const Account = () => {
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
                                     paddingHorizontal: width * 0.03,
-                                    marginHorizontal: width * 0.03,
                                     backgroundColor: '#4a4c59',
-                                    borderRadius: height * 0.02
+                                    borderRadius: height * 0.01
                                 }}
                             >
                                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>
