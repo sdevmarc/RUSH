@@ -33,7 +33,7 @@ const SelectedStore = () => {
 
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
-        outputRange: [height * 0.2, height * 0.11],
+        outputRange: [height * 0.22, height * 0.14],
         extrapolate: 'clamp',
     })
 
@@ -71,7 +71,7 @@ const SelectedStore = () => {
                         <View
                             style={{
                                 position: 'absolute',
-                                top: height * 0.05,
+                                top: height * 0.07,
                                 width: '100%',
                                 paddingHorizontal: width * 0.05,
                                 flexDirection: 'row',
@@ -80,7 +80,7 @@ const SelectedStore = () => {
                                 zIndex: 1
                             }}>
                             <TouchableOpacity onPress={() => navigation.goBack()}>
-                                <Ionicons name="chevron-back-circle" size={width * 0.09} color="#dedede" />
+                                <Ionicons name="chevron-back-circle" size={width * 0.08} color="#dedede" />
                             </TouchableOpacity>
                             <Animated.View style={{ opacity: opacityTitle1 }}>
                                 <Text style={{ fontSize: width * 0.04, color: '#fff', fontFamily: 'Poppins-Bold' }}>
@@ -136,9 +136,6 @@ const SelectedStore = () => {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-
-
-
                         </Animated.View>
                     </BlurView>
                 </Animated.View>
@@ -150,7 +147,7 @@ const SelectedStore = () => {
                         )}
                     scrollEventThrottle={16}
                 >
-                    <View style={{ width: '100%', gap: height * 0.022, paddingHorizontal: width * 0.03, paddingTop: height * 0.22 }}>
+                    <View style={{ width: '100%', gap: height * 0.022, paddingHorizontal: width * 0.03, paddingTop: height * 0.24 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03, paddingHorizontal: width * 0.03 }}>
                             <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Regular' }}>
                                 Products
