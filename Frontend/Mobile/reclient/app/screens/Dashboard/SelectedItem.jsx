@@ -12,6 +12,7 @@ import {
 import React, { useRef } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
+import Navbar from '../../components/Navbar';
 
 const { width, height } = Dimensions.get('window')
 
@@ -26,25 +27,9 @@ const SelectedItem = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <View style={{ position: 'absolute', width: '100%', height: '10%', overflow: 'hidden', zIndex: 1 }}>
-                    <View
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            paddingHorizontal: width * 0.05,
-                            width: width,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-end'
-                        }}
-                    >
-                        <TouchableOpacity onPress={() => navigation.goBack()} >
-                            <Ionicons name="chevron-back-circle" size={width * 0.09} color="#8f8f8f" />
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                <Navbar backgroundColor='none' />
                 <ScrollView>
-                    <View style={{ width: width, backgroundColor: '#323d48' }}>
+                    <View style={{ width: width, backgroundColor: '#323d48', paddingTop: height * 0.09 }}>
                         <View style={{ width: '100%', height: height * 0.5, padding: height * 0.015, paddingTop: height * 0.04 }}>
                             <View
                                 style={{
@@ -128,43 +113,54 @@ const SelectedItem = () => {
                                 </View>
 
                             </View>
-                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: width * 0.01 }}>
-                                <View
-                                    style={{
-                                        width: width * 0.3,
-                                        height: height * 0.06,
-                                        justifyContent: 'center',
-                                        alignItems: 'flex-start',
-                                        borderRadius: height * 0.015
-                                    }}
-                                >
-                                    <Text style={{ color: 'white', fontWeight: '500', fontSize: width * 0.04 }}>
-                                       Price
-                                    </Text>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.05 }}>
-                                        ₱ 105.00
-                                    </Text>
-                                </View>
 
-                                <TouchableOpacity
-                                    onPress={handleAddtoCart}
-                                    style={{
-                                        width: width * 0.55,
-                                        height: height * 0.06,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: '#d7a152',
-                                        borderRadius: height * 0.02
-                                    }}
-                                >
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.04 }}>
-                                        RENT
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
                         </View>
                     </View>
                 </ScrollView >
+                <View
+                    style={{
+                        position: 'absolute',
+                        bottom: 0, width: '100%',
+                        height: height * 0.13,
+                        backgroundColor: '#323d48',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingTop: height * 0.015,
+                        paddingHorizontal: width * 0.03
+                    }}>
+                    <View
+                        style={{
+                            width: width * 0.3,
+                            height: height * 0.06,
+                            justifyContent: 'center',
+                            alignItems: 'flex-start',
+                            borderRadius: height * 0.015
+                        }}
+                    >
+                        <Text style={{ color: 'white', fontWeight: '500', fontSize: width * 0.04 }}>
+                            Price
+                        </Text>
+                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.05 }}>
+                            ₱ 105.00
+                        </Text>
+                    </View>
+
+                    <TouchableOpacity
+                        onPress={handleAddtoCart}
+                        style={{
+                            width: width * 0.55,
+                            height: height * 0.06,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#d7a152',
+                            borderRadius: height * 0.02
+                        }}
+                    >
+                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.04 }}>
+                            RENT
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             </View >
         </>
     )
