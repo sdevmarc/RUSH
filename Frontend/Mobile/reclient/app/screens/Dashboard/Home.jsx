@@ -58,7 +58,7 @@ const Home = () => {
 
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
-        outputRange: [height * 0.2, height * 0.11],
+        outputRange: [height * 0.22, height * 0.14],
         extrapolate: 'clamp',
     })
 
@@ -95,7 +95,7 @@ const Home = () => {
                     <View
                         style={{
                             position: 'absolute',
-                            top: height * 0.05,
+                            top: height * 0.07,
                             width: '100%',
                             paddingHorizontal: width * 0.05,
                             flexDirection: 'row',
@@ -106,7 +106,7 @@ const Home = () => {
                         <TouchableOpacity
                             onPress={() => navigation.openDrawer()}
                         >
-                            <MaterialCommunityIcons name="dots-grid" size={24} color="white" />
+                            <MaterialCommunityIcons name="dots-grid" size={width * 0.08} color="white" />
                             {/* <Entypo name="grid" size={width * 0.08} color="white" /> */}
                             {/* <Ionicons name="menu" size={width * 0.08} color="white" /> */}
                         </TouchableOpacity>
@@ -119,7 +119,7 @@ const Home = () => {
                             <Ionicons name="search" size={width * 0.05} color="white" />
                         </TouchableOpacity>
                     </View>
-                    <Animated.View style={{ opacity, position: 'absolute', top: height * 0.11, paddingHorizontal: width * 0.05, width: width }}>
+                    <Animated.View style={{ opacity, position: 'absolute', top: height * 0.14, paddingHorizontal: width * 0.05, width: width }}>
                         <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: '#fff', fontFamily: 'Poppins-Bold' }}>
                             Discover
                         </Text>
@@ -127,7 +127,6 @@ const Home = () => {
                             Our Rental Shops
                         </Text>
                     </Animated.View>
-
                 </Animated.View>
 
                 <ScrollView
@@ -138,7 +137,7 @@ const Home = () => {
                         )}
                     scrollEventThrottle={16}
                 >
-                    <View style={{ width: '100%', gap: height * 0.022, backgroundColor: '#313d49' }}>
+                    <View style={{ width: width, gap: height * 0.022, backgroundColor: '#313d49' }}>
                         <View style={{ width: '100%', gap: height * 0.02, paddingTop: height * 0.03 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03, paddingHorizontal: width * 0.03 }}>
                                 <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Regular' }}>
