@@ -86,7 +86,7 @@ const Cart = () => {
                                     backgroundColor: '#4a4c59'
                                 }}
                             >
-                                <View style={{ overflow: 'hidden', width: '40%', height: '100%', backgroundColor: 'white', borderRadius: height * 0.02 }}>
+                                <View style={{ overflow: 'hidden', width: '40%', height: '100%', backgroundColor: 'white', borderRadius: height * 0.01 }}>
                                     <Image
                                         source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
                                         resizeMode='cover'
