@@ -16,6 +16,10 @@ const { width, height } = Dimensions.get('window')
 const ShopInformation = () => {
     const navigation = useNavigation()
 
+    const handleNext = () => {
+        navigation.navigate('BusinessInformation')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -34,7 +38,7 @@ const ShopInformation = () => {
                                 <Text style={{ color: 'white', fontWeight: 'bold' }}>
                                     Pickup Address
                                 </Text>
-                                <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Where is your your shop address?' />
+                                <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Where is your shop located?' />
                             </View>
                             <View style={{ width: '100%', gap: height * 0.01 }}>
                                 <Text style={{ color: 'white', fontWeight: 'bold' }}>
@@ -51,7 +55,7 @@ const ShopInformation = () => {
                         </View>
                     </View>
                 </ScrollView>
-                <BottomBar title='Next' />
+                <BottomBar title='Next' redirect={handleNext} />
             </View>
         </>
     )
