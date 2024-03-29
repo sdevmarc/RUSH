@@ -19,6 +19,10 @@ const Account = () => {
         navigation.navigate('Address')
     }
 
+    const hadnleStartRenting = () => {
+        navigation.navigate('ShopInformation')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -107,7 +111,7 @@ const Account = () => {
                             <TouchableOpacity
                                 onPress={handleAddress}
                                 style={{
-                                    height: '10%',
+                                    padding: width * 0.03,
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
@@ -124,7 +128,7 @@ const Account = () => {
 
                             <TouchableOpacity
                                 style={{
-                                    height: '10%',
+                                    padding: width * 0.03,
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
@@ -140,7 +144,7 @@ const Account = () => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={{
-                                    height: '10%',
+                                    padding: width * 0.03,
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
@@ -156,7 +160,7 @@ const Account = () => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={{
-                                    height: '10%',
+                                    padding: width * 0.03,
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
@@ -171,8 +175,9 @@ const Account = () => {
                                 <MaterialIcons name="arrow-forward-ios" size={width * 0.05} color="white" />
                             </TouchableOpacity>
                             <TouchableOpacity
+                                onPress={hadnleStartRenting}
                                 style={{
-                                    height: '10%',
+                                    padding: width * 0.03,
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
