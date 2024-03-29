@@ -15,6 +15,10 @@ const { width, height } = Dimensions.get('window')
 const Store = () => {
     const navigation = useNavigation()
 
+    const handleProduct = () => {
+        navigation.navigate('Products')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -74,6 +78,7 @@ const Store = () => {
                                 <MaterialIcons name="arrow-forward-ios" size={width * 0.05} color="white" />
                             </TouchableOpacity>
                             <TouchableOpacity
+                                onPress={handleProduct}
                                 style={{
                                     height: '10%',
                                     flexDirection: 'row',
