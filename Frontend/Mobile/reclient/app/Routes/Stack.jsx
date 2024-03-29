@@ -11,6 +11,8 @@ import SuccessfulCheckout from '../screens/Dashboard/Successful';
 import DeliveryAddress from '../screens/Settings/DeliveryAddress';
 import ShippingOption from '../screens/Dashboard/ShippingOption';
 import PaymentOption from '../screens/Dashboard/PaymentOption';
+import Product from '../screens/Seller/Product';
+import ShopInformation from '../screens/Seller/AddStore/ShopInformation';
 
 
 const Stack = createNativeStackNavigator()
@@ -33,7 +35,9 @@ function StackRoutes() {
                 <Stack.Screen name="SuccessfulCheckout" component={SuccessfulCheckout} options={{ headerTitle: 'SuccessfulCheckout', headerTitleAlign: 'center', headerShown: false }} />
                 {/* ACCOUNT */}
                 <Stack.Screen name="Address" component={DeliveryAddress} options={{ headerTitle: 'Address', headerTitleAlign: 'center', headerShown: false }} />
-                {/*  <Stack.Screen name="Login" component={Home} options={{ headerTitle: 'Login', headerTitleAlign: 'center', headerShown: false }} /> */}
+                <Stack.Screen name="ShopInformation" component={ShopInformation} options={{ headerTitle: 'ShopInformation', headerTitleAlign: 'center', headerShown: false }} />
+                 {/* SELLER */}
+                 <Stack.Screen name="Products" component={Product} options={{ headerTitle: 'Products', headerTitleAlign: 'center', headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
