@@ -156,7 +156,7 @@ const Home = () => {
                                     }}>
                                     <Text style={{ fontFamily: 'Poppins-Bold', color: 'white' }}>
                                         All
-                                        </Text>
+                                    </Text>
                                 </TouchableOpacity>
                                 {Categories.map((item) => (
                                     <TouchableOpacity
@@ -189,19 +189,18 @@ const Home = () => {
                                             width: width * 0.452,
                                             height: height * 0.25,
                                             borderRadius: height * 0.02,
-                                            padding: width * 0.02,
                                             backgroundColor: '#4a4c59'
                                         }}
                                     >
-                                        <View style={{ width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                            <View style={{ overflow: 'hidden', width: '100%', height: '70%', backgroundColor: 'white', borderRadius: height * 0.015 }}>
+                                        <View style={{ width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'center', padding: width * 0.03 }}>
+                                            <View style={{ overflow: 'hidden', width: '100%', height: '80%', backgroundColor: 'white', borderRadius: height * 0.015 }}>
                                                 <Image
                                                     source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
                                                     resizeMode='cover'
                                                     style={{ width: '100%', height: '100%' }}
                                                 />
                                             </View>
-                                            <View style={{ width: '100%', alignItems: 'flex-start' }}>
+                                            <View style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}>
                                                 <Text style={{ color: '#fff', fontSize: width * 0.04, fontFamily: 'Poppins-Regular' }} numberOfLines={1} ellipsizeMode='tail' >
                                                     {item.name}
                                                 </Text>
