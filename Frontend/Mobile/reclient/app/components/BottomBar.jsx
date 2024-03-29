@@ -1,14 +1,15 @@
-import { 
-    View, 
-    Text, 
+import {
+    View,
+    Text,
     TouchableOpacity,
     Dimensions
- } from 'react-native'
+} from 'react-native'
 import React from 'react'
 
 const { width, height } = Dimensions.get('window')
 
 const BottomBar = (props) => {
+
     return (
         <>
             <View
