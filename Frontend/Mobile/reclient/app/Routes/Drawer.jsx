@@ -4,10 +4,13 @@ import Account from '../screens/Settings/Account';
 import Store from '../screens/Seller/Store';
 import Orders from '../screens/Settings/Orders';
 import Settings from '../screens/Settings/Settings';
+import { useState } from 'react';
 
 const Drawer = createDrawerNavigator();
 
 const DrawerRoutes = () => {
+    const [isRenter, setIsRenter] = useState(false)
+
     return (
         <Drawer.Navigator>
             <Drawer.Screen name="Home" component={Home} options={{ drawerLabel: 'Home', headerTitle: 'Home', headerTitleAlign: 'center', headerShown: false }} />
