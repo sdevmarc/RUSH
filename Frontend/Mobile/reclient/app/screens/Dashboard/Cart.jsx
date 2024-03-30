@@ -27,7 +27,11 @@ const Cart = () => {
     })
 
     const handleCheckout = () => {
-        navigation.replace('SuccessfulCheckout')
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'SuccessfulCheckout' }]
+        })
+        // navigation.replace('SuccessfulCheckout')
     }
 
     const handleAddress = () => {
