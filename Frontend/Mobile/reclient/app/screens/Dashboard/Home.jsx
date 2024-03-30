@@ -192,7 +192,7 @@ const Home = () => {
                                             backgroundColor: '#4a4c59'
                                         }}
                                     >
-                                        <View style={{ width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'center', padding: width * 0.03 }}>
+                                        <View style={{ width: '100%', height: '100%', alignItems: 'center', padding: width * 0.03 }}>
                                             <View style={{ overflow: 'hidden', width: '100%', height: '80%', backgroundColor: 'white', borderRadius: height * 0.015 }}>
                                                 <Image
                                                     source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
@@ -200,8 +200,8 @@ const Home = () => {
                                                     style={{ width: '100%', height: '100%' }}
                                                 />
                                             </View>
-                                            <View style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}>
-                                                <Text style={{ color: '#fff', fontSize: width * 0.04, fontFamily: 'Poppins-Regular' }} numberOfLines={1} ellipsizeMode='tail' >
+                                            <View style={{ width: '100%', height: '20%',justifyContent: 'center', alignItems: 'flex-start' }}>
+                                                <Text style={{ color: '#fff', fontSize: width * 0.03, fontFamily: 'Poppins-Regular' }} numberOfLines={1} ellipsizeMode='tail' >
                                                     {item.name}
                                                 </Text>
                                                 <Text
@@ -211,7 +211,7 @@ const Home = () => {
                                                         paddingHorizontal: width * 0.03,
                                                         paddingVertical: width * 0.005,
                                                         borderRadius: height * 0.005,
-                                                        fontSize: width * 0.03,
+                                                        fontSize: width * 0.023,
                                                         fontFamily: 'Poppins-Regular'
                                                     }}
                                                 >
