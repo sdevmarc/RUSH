@@ -19,7 +19,7 @@ const Account = () => {
         navigation.navigate('Address')
     }
 
-    const hadnleStartRenting = () => {
+    const handleStartRenting = () => {
         navigation.navigate('ShopInformation')
     }
 
@@ -175,7 +175,7 @@ const Account = () => {
                                 <MaterialIcons name="arrow-forward-ios" size={width * 0.05} color="white" />
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={hadnleStartRenting}
+                                onPress={handleStartRenting}
                                 style={{
                                     padding: width * 0.03,
                                     flexDirection: 'row',
