@@ -23,19 +23,9 @@ app.use(express.json())
 connectDb()
 
 app.get('/', (req, res) => {
-    // res.json({
-    //     message: `This is Home`
-    // })
-    try {
-        console.log(req.oidc.isAuthenticated())
-        if (req.oidc.isAuthenticated()) {
-            res.json({ authenticate: true, message: 'Authenticated' })
-        } else {
-            res.json({ authenticate: false, message: 'Not Authenticated' })
-        }
-    } catch (error) {
-        res.json({ message: `Error / route: ${error}` })
-    }
+    res.json({
+        message: `This is Home`
+    })
 })
 
 
