@@ -14,14 +14,79 @@ import { useNavigation } from '@react-navigation/native'
 import BottomBar from '../../../components/BottomBar'
 import { Picker } from '@react-native-picker/picker';
 import { Checkbox } from 'expo-checkbox'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window')
 
 const BusinessInformation = () => {
     const navigation = useNavigation()
-    const [IsSellerType, setIsSellerType] = useState();
+    const [values, setValues] = useState({
+        userId: '',
+        shopInformation: {
+            shopName: '',
+            pickupAddress: '',
+            email: '',
+            mobileNumber: ''
+        },
+        businessInformation: {
+            sellerType: '',
+            registeredName: {
+                lastname: '',
+                firstname: '',
+                middlename: ''
+            },
+            registeredAddress: {
+                city: '',
+                province: '',
+                municipality: '',
+                barangay: ''
+            },
+            taxIdentificationNumber: {
+                taxNumber: '',
+                certificateOfRegistration: '',
+                businessName: ''
+            }
+        },
+        products: [
+            {
+                productName: '',
+                productPhoto: '',
+                productDescription: '',
+                productPrice: ''
+            }
+        ],
+        termsAndConditions: false
+
+    })
+    const [IsSellerType, setIsSellerType] = useState('');
     const [IsTin, setIsTin] = useState('No');
     const [IsAgree, setIsAgree] = useState(false);
+
+    const fetchShopInfo = async () => {
+        const data = await AsyncStorage.getItem('shopInfo')
+
+        const result = JSON.parse(data);
+        const { shopName, pickupAddress, email, mobileNumber } = result;
+
+        setValues({
+            ...values,
+            shopInformation: {
+                shopName,
+                pickupAddress,
+                email,
+                mobileNumber
+            }
+        })
+    }
+
+    const removeData = async () => {
+        await AsyncStorage.removeItem('shopInfo')
+        console.log('Data removed successfully')
+    }
+
+    useEffect(() => {
+        fetchShopInfo()
+    }, [])
 
     const pickerRef = useRef();
 
@@ -34,9 +99,68 @@ const BusinessInformation = () => {
     }
 
     const handleSubmit = () => {
+        console.log(values)
         navigation.reset({
             index: 0,
             routes: [{ name: 'DrawerRoutes' }]
+        })
+        removeData()
+    }
+
+    const handleSellerType = (value) => {
+        setValues(prevValues => ({
+            ...prevValues,
+            businessInformation: {
+                ...prevValues.sellerType,
+                sellerType: value
+            }
+        }))
+    }
+
+
+    const handleRegisteredName = (field, value) => {
+        setValues(prevValues => ({
+            ...prevValues,
+            businessInformation: {
+                ...prevValues.businessInformation,
+                registeredName: {
+                    ...prevValues.businessInformation.registeredName,
+                    [field]: value
+                }
+            }
+        }))
+    }
+
+    const handleRegisteredAddress = (field, value) => {
+        setValues(prevValues => ({
+            ...prevValues,
+            businessInformation: {
+                ...prevValues.businessInformation,
+                registeredAddress: {
+                    ...prevValues.businessInformation.registeredAddress,
+                    [field]: value
+                }
+            }
+        }))
+    }
+
+    const handleRegisteredTIN = (field, value) => {
+        setValues(prevValues => ({
+            ...prevValues,
+            businessInformation: {
+                ...prevValues.businessInformation,
+                taxIdentificationNumber: {
+                    ...prevValues.businessInformation.taxIdentificationNumber,
+                    [field]: value
+                }
+            }
+        }))
+    }
+
+    const handleTermsAndConditions = (value) => {
+        setValues({
+            ...values,
+            termsAndConditions: value
         })
     }
 
@@ -55,7 +179,10 @@ const BusinessInformation = () => {
                                     </Text>
                                     <Picker
                                         selectedValue={IsSellerType}
-                                        onValueChange={(itemValue, itemIndex) => setIsSellerType(itemValue)}
+                                        onValueChange={(itemValue, itemIndex) => {
+                                            setIsSellerType(itemValue)
+                                            handleSellerType(itemValue)
+                                        }}
                                         mode='drop'
                                         dropdownIconColor={'#000'}
                                         dropdownIconRippleColor={'#d9d8d7'}
@@ -63,6 +190,7 @@ const BusinessInformation = () => {
                                         selectionColor={'#000'}
                                         style={{ backgroundColor: '#d9d8d7', color: '#000', borderRadius: height * 0.01 }}
                                     >
+                                        <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="" value="" />
                                         <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="Individual" value="Individual" />
                                         <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="Business" value="Business" />
                                     </Picker>
@@ -76,6 +204,7 @@ const BusinessInformation = () => {
                                             Last Name
                                         </Text>
                                         <TextInput
+                                            onChangeText={(value) => handleRegisteredName('lastname', value)}
                                             style={{
                                                 height: height * 0.06,
                                                 backgroundColor: '#e8e8e8',
@@ -91,6 +220,7 @@ const BusinessInformation = () => {
                                             First Name
                                         </Text>
                                         <TextInput
+                                            onChangeText={(value) => handleRegisteredName('firstname', value)}
                                             style={{
                                                 height: height * 0.06,
                                                 backgroundColor: '#e8e8e8',
@@ -106,6 +236,7 @@ const BusinessInformation = () => {
                                             Middle Name
                                         </Text>
                                         <TextInput
+                                            onChangeText={(value) => handleRegisteredName('middlename', value)}
                                             style={{
                                                 height: height * 0.06,
                                                 backgroundColor: '#e8e8e8',
@@ -126,6 +257,7 @@ const BusinessInformation = () => {
                                             City
                                         </Text>
                                         <TextInput
+                                            onChangeText={(value) => handleRegisteredAddress('city', value)}
                                             style={{
                                                 height: height * 0.06,
                                                 backgroundColor: '#e8e8e8',
@@ -141,6 +273,7 @@ const BusinessInformation = () => {
                                             Province
                                         </Text>
                                         <TextInput
+                                            onChangeText={(value) => handleRegisteredAddress('province', value)}
                                             style={{
                                                 height: height * 0.06,
                                                 backgroundColor: '#e8e8e8',
@@ -156,6 +289,7 @@ const BusinessInformation = () => {
                                             Municipality
                                         </Text>
                                         <TextInput
+                                            onChangeText={(value) => handleRegisteredAddress('municipality', value)}
                                             style={{
                                                 height: height * 0.06,
                                                 backgroundColor: '#e8e8e8',
@@ -171,6 +305,7 @@ const BusinessInformation = () => {
                                             Barangay
                                         </Text>
                                         <TextInput
+                                            onChangeText={(value) => handleRegisteredAddress('barangay', value)}
                                             style={{
                                                 height: height * 0.06,
                                                 backgroundColor: '#e8e8e8',
@@ -199,8 +334,8 @@ const BusinessInformation = () => {
                                             selectionColor={'#000'}
                                             style={{ backgroundColor: '#d9d8d7', color: '#000', borderRadius: height * 0.01 }}
                                         >
-                                            <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="Yes" value='Yes' />
                                             <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="No" value='No' />
+                                            <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="Yes" value='Yes' />
                                         </Picker>
                                     </View>
                                 </View>
@@ -211,6 +346,7 @@ const BusinessInformation = () => {
                                                 Input 9 digit Taxpayer Identification Number (TIN)
                                             </Text>
                                             <TextInput
+                                                onChangeText={(value) => handleRegisteredTIN('taxNumber', value)}
                                                 style={{
                                                     height: height * 0.06,
                                                     backgroundColor: '#e8e8e8',
@@ -226,6 +362,7 @@ const BusinessInformation = () => {
                                                 Upload Image Certification of Registration
                                             </Text>
                                             <TextInput
+                                                onChangeText={(value) => handleRegisteredTIN('certificateOfRegistration', value)}
                                                 style={{
                                                     height: height * 0.06,
                                                     backgroundColor: '#e8e8e8',
@@ -241,6 +378,7 @@ const BusinessInformation = () => {
                                                 Business Name/ Style
                                             </Text>
                                             <TextInput
+                                                onChangeText={(value) => handleRegisteredTIN('businessName', value)}
                                                 style={{
                                                     height: height * 0.06,
                                                     backgroundColor: '#e8e8e8',
@@ -255,7 +393,10 @@ const BusinessInformation = () => {
                                     : null}
 
                                 <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.02, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.03 }}>
-                                    <Checkbox style={{ margin: 0, backgroundColor: 'white' }} value={IsAgree} onValueChange={setIsAgree} />
+                                    <Checkbox style={{ margin: 0, backgroundColor: 'white' }} value={IsAgree} onValueChange={(value) => {
+                                        setIsAgree(value)
+                                        handleTermsAndConditions(value)
+                                    }} />
                                     <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
                                         AGREE TO TERMS AND CONDITIONS.
                                     </Text>
@@ -271,3 +412,5 @@ const BusinessInformation = () => {
 }
 
 export default BusinessInformation
+
+
