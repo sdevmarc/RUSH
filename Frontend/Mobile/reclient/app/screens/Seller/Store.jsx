@@ -19,6 +19,10 @@ const Store = () => {
         navigation.navigate('Products')
     }
 
+    const handleOpenDrawer = () => {
+        navigation.openDrawer()
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -47,7 +51,7 @@ const Store = () => {
                         }}
                     >
                         <TouchableOpacity
-                            onPress={() => navigation.openDrawer()}
+                            onPress={handleOpenDrawer}
                         >
                             <MaterialCommunityIcons name="dots-grid" size={width * 0.08} color="white" />
                         </TouchableOpacity>
