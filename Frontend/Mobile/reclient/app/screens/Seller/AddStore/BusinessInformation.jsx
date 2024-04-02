@@ -6,7 +6,8 @@ import {
     StatusBar,
     TextInput,
     Platform,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Alert
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '../../../components/Navbar'
@@ -14,7 +15,9 @@ import { useNavigation } from '@react-navigation/native'
 import BottomBar from '../../../components/BottomBar'
 import { Picker } from '@react-native-picker/picker';
 import { Checkbox } from 'expo-checkbox'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import address from '../../../../config/host'
+import axios from 'axios'
 
 const { width, height } = Dimensions.get('window')
 
@@ -61,20 +64,22 @@ const BusinessInformation = () => {
     const [IsSellerType, setIsSellerType] = useState('');
     const [IsTin, setIsTin] = useState('No');
     const [IsAgree, setIsAgree] = useState(false);
+    const [IsToken, setToken] = useState('')
 
     const fetchShopInfo = async () => {
-        const data = await AsyncStorage.getItem('shopInfo')
+        const shopData = JSON.parse(await AsyncStorage.getItem('shopInfo'))
+        const token = await AsyncStorage.getItem('token')
+        const userId = await AsyncStorage.getItem('userId')
 
-        const result = JSON.parse(data);
-        const { shopName, pickupAddress, email, mobileNumber } = result;
-
+        setToken(token)
         setValues({
             ...values,
+            userId: userId,
             shopInformation: {
-                shopName,
-                pickupAddress,
-                email,
-                mobileNumber
+                shopName: shopData.shopName,
+                pickupAddress: shopData.pickupAddress,
+                email: shopData.email,
+                mobileNumber: shopData.mobileNumber
             }
         })
     }
@@ -84,9 +89,9 @@ const BusinessInformation = () => {
         console.log('Data removed successfully')
     }
 
-    useEffect(() => {
-        fetchShopInfo()
-    }, [])
+    // useEffect(() => {
+    //     fetchShopInfo()
+    // }, [])
 
     const pickerRef = useRef();
 
@@ -98,13 +103,33 @@ const BusinessInformation = () => {
         pickerRef.current.blur();
     }
 
-    const handleSubmit = () => {
-        console.log(values)
+    const handleSubmit = async () => {
         navigation.reset({
             index: 0,
             routes: [{ name: 'DrawerRoutes' }]
         })
-        removeData()
+
+        // try {
+        //     const data = await axios.post(`http:${address}/api/addstore`, values, {
+        //         headers: {
+        //             Authorization: `Bearer ${IsToken}`
+        //         }
+        //     })
+
+        //     if (data.data.success) {
+        //         Alert.alert(data.data.message)
+        //         navigation.reset({
+        //             index: 0,
+        //             routes: [{ name: 'DrawerRoutes' }]
+        //         })
+        //         removeData()
+        //     } else {
+        //         Alert.alert(data.data.message)
+        //     }
+        // } catch (error) {
+        //     console.log(error)
+        // }
+
     }
 
     const handleSellerType = (value) => {
@@ -116,7 +141,6 @@ const BusinessInformation = () => {
             }
         }))
     }
-
 
     const handleRegisteredName = (field, value) => {
         setValues(prevValues => ({
@@ -190,7 +214,12 @@ const BusinessInformation = () => {
                                         selectionColor={'#000'}
                                         style={{ backgroundColor: '#d9d8d7', color: '#000', borderRadius: height * 0.01 }}
                                     >
-                                        <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="" value="" />
+                                        {
+                                            Platform.OS === 'android'
+                                                ? null
+                                                : <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="" value="" />
+                                        }
+
                                         <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="Individual" value="Individual" />
                                         <Picker.Item color={Platform.OS === 'android' ? '#000' : '#000'} label="Business" value="Business" />
                                     </Picker>
