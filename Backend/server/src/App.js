@@ -7,11 +7,14 @@ const app = express()
 const connectDb = require('../config/db')
 //Middlewares
 const mainMiddleware = require('../middleware/Website/mainMiddleware')
+const authenticateUser = require('../middleware/AuthHome')
 
 //Routes
 const SignupRoute = require('../routes/SignUp')
 const LoginRoute = require('../routes/Login')
-const AddStore = require('../routes/AddStore')
+const LogoutRoute = require('../routes/Logout')
+const StoreRoute = require('../routes/Store')
+
 
 app.use(cors({
     origin: '*',
@@ -22,19 +25,19 @@ app.use(cors({
 app.use(express.json())
 connectDb()
 
-app.get('/', (req, res) => {
+app.get('/', authenticateUser, (req, res) => {
     res.json({
         message: `This is Home`
     })
 })
 
-
-app.use('/api', SignupRoute)
 app.use('/api', LoginRoute)
 
-app.use('/api', AddStore)
+app.use('/api', SignupRoute)
 
+app.use('/api', StoreRoute)
 
+app.use('/api', LogoutRoute)
 
 // app.use(mainMiddleware.notFound);
 // app.use(mainMiddleware.errorHandler);
