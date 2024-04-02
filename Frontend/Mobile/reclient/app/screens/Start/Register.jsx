@@ -34,31 +34,31 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('')
 
     const handleSignUp = async () => {
-        navigation.replace('SuccessfulLogin')
+        // navigation.replace('SuccessfulLogin')
 
-        // try {
-        //     if (values.name === '' || values.username === '' || values.password === '' || confirmPassword === '' || values.contactno === '') {
-        //         Alert.alert('Warning', 'Please fill-in the required fields')
-        //     } else {
-        //         if (values.password === confirmPassword) {
-        //             if (isChecked) {
-        //                 const res = await axios.post(`http://${address}/api/signup`, values)
+        try {
+            if (values.name === '' || values.username === '' || values.password === '' || confirmPassword === '' || values.contactno === '') {
+                Alert.alert('Warning', 'Please fill-in the required fields')
+            } else {
+                if (values.password === confirmPassword) {
+                    if (isChecked) {
+                        const res = await axios.post(`http://${address}/api/signup`, values)
 
-        //                 if (res.data.success) {
-        //                     navigation.replace('Successful')
-        //                 } else {
-        //                     Alert.alert('Error', `${res.data.message}`)
-        //                 }
-        //             } else {
-        //                 Alert.alert('Warning', 'Please check the terms and agreement!')
-        //             }
-        //         } else {
-        //             Alert.alert('Warning', 'Password do not match!')
-        //         }
-        //     }
-        // } catch (error) {
-        //     Alert.alert(`Error`, `Register error: ${error}`)
-        // }
+                        if (res.data.success) {
+                             navigation.replace('SuccessfulLogin')
+                        } else {
+                            Alert.alert('Error', `${res.data.message}`)
+                        }
+                    } else {
+                        Alert.alert('Warning', 'Please check the terms and agreement!')
+                    }
+                } else {
+                    Alert.alert('Warning', 'Password do not match!')
+                }
+            }
+        } catch (error) {
+            Alert.alert(`Error`, `Register error: ${error}`)
+        }
     }
 
     const handleOnChangeName = (value) => {
