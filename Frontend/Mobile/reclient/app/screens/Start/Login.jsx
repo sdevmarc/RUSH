@@ -16,6 +16,7 @@ import Logo from '../../../assets/LogoDark.png'
 import axios from 'axios'
 import address from '../../../config/host'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width, height } = Dimensions.get("window")
 
@@ -30,13 +31,17 @@ const Login = () => {
         navigation.replace('DrawerRoutes')
 
         // try {
+
         //     if (values.username === '' || values.password === '') {
         //         Alert.alert('Warning', 'Please fill-in the required fields.')
         //     } else {
         //         const res = await axios.post(`http://${address}/api/login`, values)
 
         //         if (res.data.success) {
-        //             navigation.navigate('Dashboard')
+                   
+        //             await AsyncStorage.setItem('token', res.data.token)
+        //             await AsyncStorage.setItem('userId', res.data.userId)
+        //             navigation.replace('DrawerRoutes')
         //         } else {
         //             Alert.alert('Error', `${res.data.message}`)
         //         }
