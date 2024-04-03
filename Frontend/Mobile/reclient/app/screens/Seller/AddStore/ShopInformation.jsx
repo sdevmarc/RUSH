@@ -22,21 +22,16 @@ const { width, height } = Dimensions.get('window')
 
 const ShopInformation = () => {
     const [IsPickupAddress, setIsPickupAddress] = useState('');
-    const [IsModalOpen, setIsModalOpen] = useState({
-        municipality: false,
-        barangay: false
-    })
+    const [IsModalOpen, setIsModalOpen] = useState(false)
     const [values, setValues] = useState({
         shopName: '',
-        pickupAddress: '',
+        pickupAddress: {
+            municipality: '',
+            barangay: ''
+        },
         email: '',
         mobileNumber: ''
     })
-    const [addressName, setAddressName] = useState({
-        municipality: '',
-        barangay: ''
-    })
-    const [IsAddress, setIsAddress] = useState([])
 
     const navigation = useNavigation()
 
@@ -45,16 +40,9 @@ const ShopInformation = () => {
     }, [])
 
     const fetchAddress = async () => {
-        const data = await axios.get('https://psgc.gitlab.io/api/provinces/025000000/municipalities')
+        await axios.get('https://psgc.gitlab.io/api/provinces/025000000/municipalities')
 
     }
-
-    const handleUpdateMunicipality = useCallback((value) => {
-        setAddressName(prevState => ({
-            ...prevState,
-            municipality: value
-        }));
-    }, [setAddressName]);
 
     const handleModal = (e, value) => {
         setIsModalOpen((prevValue) => ({
@@ -63,17 +51,22 @@ const ShopInformation = () => {
         }))
     }
 
-    const handleOnChangeShopName = (value) => {
-        setValues({ ...values, shopName: value })
+    const handleOnChangeNames = (e, value) => {
+        setValues((prevValue) => ({
+            ...prevValue,
+            [e]: value
+        }))
     }
-    const handleOnChangePickupAddress = (value) => {
-        setValues({ ...values, pickupAddress: value })
-    }
-    const handleOnChangeEmail = (value) => {
-        setValues({ ...values, email: value })
-    }
-    const handleOnChangeMobileNumber = (value) => {
-        setValues({ ...values, mobileNumber: value })
+
+    const handleOnChangeAddress = (e, value) => {
+        setValues((prevValue) => ({
+            ...prevValue,
+            pickupAddress: {
+                ...prevValue.pickupAddress,
+                [e]: value
+            }
+        }))
+        console.log(values)
     }
 
     const handleNext = async () => {
@@ -93,9 +86,8 @@ const ShopInformation = () => {
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
                 <Navbar title='Shop Information' backgroundColor='#323d48' />
-                <Context.Provider value={{ IsModalOpen, setIsModalOpen }}>
-                    <AddressModal place='municipality' title='municipality' address='municipalities' setAddressName={handleUpdateMunicipality} />
-                    <AddressModal place='barangay' title='barangay' address='barangays' />
+                <Context.Provider value={[IsModalOpen, setIsModalOpen]}>
+                    <AddressModal title='municipality' onSelectMunicipality={(value) => handleOnChangeAddress('municipality', value)} />
                 </Context.Provider>
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
@@ -103,7 +95,7 @@ const ShopInformation = () => {
                             <View style={{ width: '100%', gap: height * 0.01 }}>
                                 <Text style={{ color: 'white', fontWeight: 'bold' }}>Shop Name</Text>
                                 <TextInput
-                                    onChangeText={handleOnChangeShopName}
+                                    onChangeText={(value) => handleOnChangeNames('shopName', value)}
                                     style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }}
                                     placeholder='What is your shop name?'
                                 />
@@ -126,23 +118,11 @@ const ShopInformation = () => {
                                                     Municipality
                                                 </Text>
                                                 <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                                    {addressName.municipality}
+                                                    {values.pickupAddress.municipality}
                                                 </Text>
                                             </View>
                                         </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => handleModal('barangay', true)}
-                                            style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
-                                        >
-                                            <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
-                                                <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
-                                                    Barangay
-                                                </Text>
-                                                <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                                    Marc Edison
-                                                </Text>
-                                            </View>
-                                        </TouchableOpacity>
+
                                     </>
                                 )
                                 :
@@ -161,7 +141,7 @@ const ShopInformation = () => {
                                                     mode='drop'
                                                     dropdownIconColor={'#000'}
                                                     dropdownIconRippleColor={'#d9d8d7'}
-                                                    prompt='Select Muhn'
+                                                    prompt='Select Municipality'
                                                     selectionColor={'#000'}
                                                     style={{ backgroundColor: '#d9d8d7', color: '#000', borderRadius: height * 0.01 }}
                                                 >
@@ -201,14 +181,12 @@ const ShopInformation = () => {
                                     </>
                                 )
                             }
-
-
                             <TouchableOpacity style={{ width: '100%', gap: height * 0.01 }}>
                                 <Text style={{ color: 'white', fontWeight: 'bold' }}>
-                                    Pickup Address
+                                    Barangay
                                 </Text>
                                 <TextInput
-                                    onChangeText={handleOnChangePickupAddress}
+                                    onChangeText={(value) => handleOnChangeAddress('barangay', value)}
                                     style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Where is your shop located?' />
                             </TouchableOpacity>
                             <View style={{ width: '100%', gap: height * 0.01 }}>
@@ -216,7 +194,7 @@ const ShopInformation = () => {
                                     Email
                                 </Text>
                                 <TextInput
-                                    onChangeText={handleOnChangeEmail}
+                                    onChangeText={(value) => handleOnChangeNames('email', value)}
                                     style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='What is your email?' />
                             </View>
                             <View style={{ width: '100%', gap: height * 0.01 }}>
@@ -224,7 +202,7 @@ const ShopInformation = () => {
                                     Mobile Number
                                 </Text>
                                 <TextInput
-                                    onChangeText={handleOnChangeMobileNumber}
+                                    onChangeText={(value) => handleOnChangeNames('mobileNumber', value)}
                                     style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='What is your mobile number?' />
                             </View>
                         </View>
