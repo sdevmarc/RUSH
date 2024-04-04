@@ -14,7 +14,7 @@ const StoreController = {
     },
     GetStore: async (req, res) => {
         try {
-            const { userId } = req.body
+            const { userId } = req.params
             const data = await Stores.find({ userId: userId })
             res.json({ success: true, message: 'get store successfully', data: data })
         } catch (error) {
@@ -24,11 +24,18 @@ const StoreController = {
     UpdateSellerType: async (req, res, next) => {
         try {
             const { userId } = req.body
-
             await Users.findByIdAndUpdate({ _id: userId }, { UserType: 'Renter' }, { new: true })
             next()
         } catch (error) {
-            res.json({ success: false, message: `Error get store controller: ${error}` })
+            res.json({ success: false, message: `Error update store controller: ${error}` })
+        }
+    },
+    GetAllStore: async (req, res) => {
+        try {
+            const data = await Stores.find()
+            res.json({ success: true, message: 'Fetched all stores successfully', data: data })
+        } catch (error) {
+            res.json({ success: false, message: `Error get all store controller: ${error}` })
         }
     }
 }
