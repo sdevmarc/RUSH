@@ -71,7 +71,7 @@ const Register = () => {
     }
 
     const handleOnChangeUsername = (value) => {
-        setValues({ ...values, username: value })
+        setValues({ ...values, username: value.toLocaleLowerCase() })
     }
 
     const handleOnChangePassword = (value) => {
