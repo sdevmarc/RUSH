@@ -6,7 +6,9 @@ import {
     ScrollView,
     TextInput,
     Platform,
-    TouchableOpacity
+    TouchableOpacity,
+    Image,
+    Button
 } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
@@ -17,6 +19,8 @@ import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddressModal from '../../../components/AddressModal'
 import Context from '../../../components/Context'
+import * as ImagePicker from 'expo-image-picker'
+
 
 const { width, height } = Dimensions.get('window')
 
@@ -24,6 +28,7 @@ const ShopInformation = () => {
     const [IsPickupAddress, setIsPickupAddress] = useState('');
     const [IsModalOpen, setIsModalOpen] = useState(false)
     const [values, setValues] = useState({
+        shopImage: '',
         shopName: '',
         pickupAddress: {
             municipality: '',
@@ -66,26 +71,31 @@ const ShopInformation = () => {
                 [e]: value
             }
         }))
-        console.log(values)
     }
 
     const handleNext = async () => {
-        navigation.navigate('BusinessInformation')
+        // navigation.navigate('BusinessInformation')
 
-        // try {
-        //     const dataShopInformation = JSON.stringify(values)
-        //     await AsyncStorage.setItem('shopInfo', dataShopInformation)
-        //     navigation.navigate('BusinessInformation')
-        // } catch (error) {
-        //     console.error(error)
-        // }
+        try {
+            const dataShopInformation = JSON.stringify(values)
+            await AsyncStorage.setItem('shopInfo', dataShopInformation)
+            navigation.navigate('BusinessInformation')
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const removeData = async () => {
+        console.log('Removing')
+        await AsyncStorage.removeItem('shopInfo')
+        console.log('Data removed successfully')
     }
 
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <Navbar title='Shop Information' backgroundColor='#323d48' />
+                <Navbar title='Shop Information' backgroundColor='#323d48' remove={removeData} />
                 <Context.Provider value={[IsModalOpen, setIsModalOpen]}>
                     <AddressModal title='municipality' onSelectMunicipality={(value) => handleOnChangeAddress('municipality', value)} />
                 </Context.Provider>
