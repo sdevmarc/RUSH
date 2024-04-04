@@ -27,7 +27,8 @@ const Register = () => {
         name: '',
         contactno: '',
         username: '',
-        password: ''
+        password: '',
+        UserType: 'Rentee'
 
     })
 
@@ -45,7 +46,7 @@ const Register = () => {
                         const res = await axios.post(`http://${address}/api/signup`, values)
 
                         if (res.data.success) {
-                             navigation.replace('SuccessfulLogin')
+                            navigation.replace('SuccessfulLogin')
                         } else {
                             Alert.alert('Error', `${res.data.message}`)
                         }
@@ -107,9 +108,9 @@ const Register = () => {
                                 </View>
                                 <View style={{ gap: height * 0.01 }}>
                                     <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
-                                        Full Name
+                                        Display Name
                                     </Text>
-                                    <TextInput onChangeText={handleOnChangeName} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Full Name' />
+                                    <TextInput onChangeText={handleOnChangeName} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Display Name' />
                                 </View>
                                 <View style={{ gap: height * 0.01 }}>
                                     <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
