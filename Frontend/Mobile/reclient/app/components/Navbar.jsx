@@ -14,17 +14,17 @@ const Navbar = (props) => {
     const navigation = useNavigation()
 
     return (
-        <View 
-        style={{ 
-            position: 'absolute', 
-            width: '100%', 
-            height: height * 0.12, 
-            overflow: 'hidden', 
-            zIndex: 1, 
-            backgroundColor: `${props.backgroundColor}`, 
-            paddingVertical: height * 0.009 
+        <View
+            style={{
+                position: 'absolute',
+                width: '100%',
+                height: height * 0.12,
+                overflow: 'hidden',
+                zIndex: 1,
+                backgroundColor: `${props.backgroundColor}`,
+                paddingVertical: height * 0.009
             }}
-            >
+        >
             <View
                 style={{
                     width: '100%',
@@ -37,7 +37,10 @@ const Navbar = (props) => {
                     zIndex: 1
                 }}
             >
-                <TouchableOpacity onPress={() => navigation.goBack()} >
+                <TouchableOpacity onPress={() => {
+                    {props.remove}
+                    navigation.goBack()
+                }} >
                     <Ionicons name="chevron-back-circle" size={width * 0.08} color="#8f8f8f" />
                 </TouchableOpacity>
             </View>
