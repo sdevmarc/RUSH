@@ -6,14 +6,30 @@ import {
     TouchableOpacity,
     ScrollView
 } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import axios from 'axios'
+import address from '../../../config/host'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width, height } = Dimensions.get('window')
 
 const Account = () => {
     const navigation = useNavigation()
+    const [values, setValues] = useState([])
+
+
+
+    const fetchData = async () => {
+        const userId = await AsyncStorage.getItem('userId')
+        const data = await axios.get(`http:${address}/api/getuser/${userId}`)
+        setValues(data.data.data)
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     const handleAddress = () => {
         navigation.navigate('Address')
@@ -77,26 +93,26 @@ const Account = () => {
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
                                     <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
-                                        First Name
+                                        Username
                                     </Text>
                                     <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                        Marc Edison
+                                        {values.username}
                                     </Text>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
                                     <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
-                                        Middle Name
+                                        Display Name
                                     </Text>
                                     <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                        Donato
+                                        {values.name}
                                     </Text>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
                                     <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
-                                        Last Name
+                                        Contact Number
                                     </Text>
                                     <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                        Suarez
+                                        {values.contactno}
                                     </Text>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
@@ -104,7 +120,7 @@ const Account = () => {
                                         User Type
                                     </Text>
                                     <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                        Rentee
+                                        {values.UserType}
                                     </Text>
                                 </View>
                             </TouchableOpacity>
