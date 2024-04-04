@@ -26,7 +26,6 @@ const StoreController = {
             const { userId } = req.body
 
             await Users.findByIdAndUpdate({ _id: userId }, { UserType: 'Renter' }, { new: true })
-            console.log('User updated to renter')
             next()
         } catch (error) {
             res.json({ success: false, message: `Error get store controller: ${error}` })
