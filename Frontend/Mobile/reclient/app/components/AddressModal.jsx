@@ -8,8 +8,8 @@ import Context from './Context';
 const { width, height } = Dimensions.get('window');
 
 const AddressModal = ({ title, onSelectMunicipality }) => {
-    const [IsMunicipality, setIsMunicipality] = useState('');
-    const [IsModalOpen, setIsModalOpen] = useContext(Context);
+    const [IsMunicipality, setIsMunicipality] = useState('')
+    const [IsModalOpen, setIsModalOpen] = useContext(Context)
     const [IsAddress, setIsAddress] = useState([]);
 
     useEffect(() => {
@@ -17,8 +17,8 @@ const AddressModal = ({ title, onSelectMunicipality }) => {
     }, []);
 
     const fetchMunicipality = async () => {
-        const response = await axios.get(`https://psgc.gitlab.io/api/provinces/025000000/municipalities`);
-        const sortedData = response.data.sort((a, b) => {
+        const data = await axios.get(`https://psgc.gitlab.io/api/provinces/025000000/municipalities`);
+        const sortedData = data.data.sort((a, b) => {
             if (a.name < b.name) {
                 return -1;
             }
@@ -27,8 +27,7 @@ const AddressModal = ({ title, onSelectMunicipality }) => {
             }
             return 0;
         })
-        setIsAddress(sortedData);
-        // setIsMunicipalityCode(data.data.municipalityCode)s
+        setIsAddress(sortedData)
     }
 
     const handleValueChange = (itemValue) => {
