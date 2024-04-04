@@ -89,9 +89,9 @@ const BusinessInformation = () => {
         console.log('Data removed successfully')
     }
 
-    // useEffect(() => {
-    //     fetchShopInfo()
-    // }, [])
+    useEffect(() => {
+        fetchShopInfo()
+    }, [])
 
     const pickerRef = useRef();
 
@@ -104,31 +104,32 @@ const BusinessInformation = () => {
     }
 
     const handleSubmit = async () => {
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'DrawerRoutes' }]
-        })
+        // navigation.reset({
+        //     index: 0,
+        //     routes: [{ name: 'DrawerRoutes' }]
+        // })
 
-        // try {
-        //     const data = await axios.post(`http:${address}/api/addstore`, values, {
-        //         headers: {
-        //             Authorization: `Bearer ${IsToken}`
-        //         }
-        //     })
+        try {
+            const data = await axios.post(`http:${address}/api/addstore`, values, {
+                headers: {
+                    Authorization: `Bearer ${IsToken}`
+                }
+            })
 
-        //     if (data.data.success) {
-        //         Alert.alert(data.data.message)
-        //         navigation.reset({
-        //             index: 0,
-        //             routes: [{ name: 'DrawerRoutes' }]
-        //         })
-        //         removeData()
-        //     } else {
-        //         Alert.alert(data.data.message)
-        //     }
-        // } catch (error) {
-        //     console.log(error)
-        // }
+            if (data.data.success) {
+                Alert.alert(data.data.message)
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'DrawerRoutes' }]
+                })
+                removeData()
+            } else {
+                Alert.alert(data.data.message)
+                removeData()
+            }
+        } catch (error) {
+            console.log(error)
+        }
 
     }
 
