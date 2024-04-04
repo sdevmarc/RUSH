@@ -13,6 +13,8 @@ import { Ionicons, MaterialIcons, Entypo, MaterialCommunityIcons } from '@expo/v
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
+import address from '../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
@@ -54,12 +56,18 @@ const Stores = [
 ]
 
 const Home = () => {
+    const [stores, setStores] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
     const [IsValidated, setIsValidated] = useState({
         token: '',
         userId: ''
     })
+
+    useEffect(() => {
+        fetchToken()
+        fetchStores()
+    }, [])
 
     const fetchToken = async () => {
         setIsValidated({
@@ -69,9 +77,14 @@ const Home = () => {
         })
     }
 
-    useEffect(() => {
-        fetchToken()
-    }, [])
+    const fetchStores = async () => {
+        const data = await axios.get(`http://${address}/api/getallstore`, {
+            headers: {
+                Authorization: `Bearer ${IsValidated.token}`
+            }
+        })
+        setStores(data.data.data)
+    }
 
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
@@ -198,9 +211,9 @@ const Home = () => {
                                 </Text>
                             </View>
                             <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                                {Stores.map((item) => (
+                                {stores.map((item) => (
                                     <TouchableOpacity
-                                        key={item.id}
+                                        key={item._id}
                                         onPress={handleSelectStore}
                                         style={{
                                             width: width * 0.452,
@@ -212,14 +225,14 @@ const Home = () => {
                                         <View style={{ width: '100%', height: '100%', alignItems: 'center', padding: width * 0.03 }}>
                                             <View style={{ overflow: 'hidden', width: '100%', height: '80%', backgroundColor: 'white', borderRadius: height * 0.015 }}>
                                                 <Image
-                                                    source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
+                                                    source={{ uri: `${item.shopInformation.shopImage}` }}
                                                     resizeMode='cover'
                                                     style={{ width: '100%', height: '100%' }}
                                                 />
                                             </View>
                                             <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'flex-start' }}>
                                                 <Text style={{ color: '#fff', fontSize: width * 0.03, fontFamily: 'Poppins-Regular' }} numberOfLines={1} ellipsizeMode='tail' >
-                                                    {item.name}
+                                                    {item.shopInformation.shopName}
                                                 </Text>
                                                 <Text
                                                     style={{
@@ -232,7 +245,7 @@ const Home = () => {
                                                         fontFamily: 'Poppins-Regular'
                                                     }}
                                                 >
-                                                    {item.category}
+                                                    Category
                                                 </Text>
                                             </View>
                                         </View>
