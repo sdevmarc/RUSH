@@ -14,8 +14,8 @@ const authenticateUser = (req, res, next) => {
         // if (err) return res.sendStatus(403)
         if (err) return res.json({ authorization: `You are not authorized. : ${err}` })
 
-        req.userPass = decoded.userPass
-        req.userId = decoded.userId
+        req.username = decoded.username
+        req.userId = decoded._id
         next()
     })
 }
