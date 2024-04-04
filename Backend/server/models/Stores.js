@@ -7,8 +7,12 @@ const StoreSchema = new mongoose.Schema({
     },
     shopInformation:
     {
+        shopImage: String,
         shopName: String,
-        pickupAddress: String,
+        pickupAddress: {
+            municipality: String,
+            barangay: String
+        },
         email: String,
         mobileNumber: String
     },
@@ -31,7 +35,6 @@ const StoreSchema = new mongoose.Schema({
             certificateOfRegistration: String,
             businessName: String
         }
-
     },
     products: [
         {
