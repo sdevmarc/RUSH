@@ -28,27 +28,27 @@ const Login = () => {
     })
 
     const handleLogin = async () => {
-        navigation.replace('DrawerRoutes')
+        // navigation.replace('DrawerRoutes')
 
-        // try {
+        try {
+            if (values.username === '' || values.password === '') {
+                Alert.alert('Warning', 'Please fill-in the required fields.')
+            } else {
+                const res = await axios.post(`http://${address}/api/login`, values)
 
-        //     if (values.username === '' || values.password === '') {
-        //         Alert.alert('Warning', 'Please fill-in the required fields.')
-        //     } else {
-        //         const res = await axios.post(`http://${address}/api/login`, values)
+                if (res.data.success) {
 
-        //         if (res.data.success) {
-                   
-        //             await AsyncStorage.setItem('token', res.data.token)
-        //             await AsyncStorage.setItem('userId', res.data.userId)
-        //             navigation.replace('DrawerRoutes')
-        //         } else {
-        //             Alert.alert('Error', `${res.data.message}`)
-        //         }
-        //     }
-        // } catch (error) {
-        //     Alert.alert('Error', `Error sign up: ${error}`)
-        // }
+                    await AsyncStorage.setItem('token', res.data.token)
+                    await AsyncStorage.setItem('userId', res.data.userId)
+                    navigation.replace('DrawerRoutes')
+                } else {
+                    Alert.alert('Error', `${res.data.message}`)
+                }
+            }
+        } catch (error) {
+            Alert.alert('Error', `Error sign up: ${error}`)
+            console.log(error)
+        }
     }
 
     const handleSignUp = () => {
