@@ -16,11 +16,10 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    UserType: {
+        type: String
     }
-    // role: {
-    //     type: String,
-    //     required: true
-    // }
 }, { timestamps: true })
 
 const UserModel = mongoose.model('Users', UserSchema)
