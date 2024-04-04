@@ -6,6 +6,7 @@ const authenticateUser = require('../middleware/AuthHome')
 const checkStoreIfExists = require('../middleware/checkStore')
 
 router.post('/addstore', authenticateUser, checkStoreIfExists, Stores.UpdateSellerType, Stores.CreateStore)
-router.get('/getstore', authenticateUser, Stores.GetStore)
+router.get('/getstore/:userId', authenticateUser, Stores.GetStore)
+router.get('/getallstore', authenticateUser, Stores.GetAllStore)
 
 module.exports = router
