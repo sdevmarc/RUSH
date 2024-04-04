@@ -26,6 +26,7 @@ const BusinessInformation = () => {
     const [values, setValues] = useState({
         userId: '',
         shopInformation: {
+            shopImage: '',
             shopName: '',
             pickupAddress: '',
             email: '',
@@ -39,7 +40,7 @@ const BusinessInformation = () => {
                 middlename: ''
             },
             registeredAddress: {
-                city: '',
+                city: 'South Luzon',
                 province: '',
                 municipality: '',
                 barangay: ''
@@ -66,29 +67,6 @@ const BusinessInformation = () => {
     const [IsAgree, setIsAgree] = useState(false);
     const [IsToken, setToken] = useState('')
 
-    const fetchShopInfo = async () => {
-        const shopData = JSON.parse(await AsyncStorage.getItem('shopInfo'))
-        const token = await AsyncStorage.getItem('token')
-        const userId = await AsyncStorage.getItem('userId')
-
-        setToken(token)
-        setValues({
-            ...values,
-            userId: userId,
-            shopInformation: {
-                shopName: shopData.shopName,
-                pickupAddress: shopData.pickupAddress,
-                email: shopData.email,
-                mobileNumber: shopData.mobileNumber
-            }
-        })
-    }
-
-    const removeData = async () => {
-        await AsyncStorage.removeItem('shopInfo')
-        console.log('Data removed successfully')
-    }
-
     useEffect(() => {
         fetchShopInfo()
     }, [])
@@ -104,10 +82,12 @@ const BusinessInformation = () => {
     }
 
     const handleSubmit = async () => {
-        // navigation.reset({
-        //     index: 0,
-        //     routes: [{ name: 'DrawerRoutes' }]
-        // })
+        console.log(values)
+
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'DrawerRoutes' }]
+        })
 
         try {
             const data = await axios.post(`http:${address}/api/addstore`, values, {
@@ -129,8 +109,38 @@ const BusinessInformation = () => {
             }
         } catch (error) {
             console.log(error)
-        }
 
+
+        }
+    }
+
+    const fetchShopInfo = async () => {
+        try {
+            const shopData = JSON.parse(await AsyncStorage.getItem('shopInfo'))
+            const token = await AsyncStorage.getItem('token')
+            const userId = await AsyncStorage.getItem('userId')
+
+            setToken(token)
+            setValues({
+                ...values,
+                userId: userId,
+                shopInformation: {
+                    shopImage: shopData.shopImage,
+                    shopName: shopData.shopName,
+                    pickupAddress: shopData.pickupAddress,
+                    email: shopData.email,
+                    mobileNumber: shopData.mobileNumber
+                }
+            })
+        } catch (error) {
+            console.error(`Error fetch Shop Info for IOS: ${error}`)
+        }
+    }
+
+
+    const removeData = async () => {
+        await AsyncStorage.removeItem('shopInfo')
+        console.log('Data removed successfully')
     }
 
     const handleSellerType = (value) => {
@@ -282,22 +292,6 @@ const BusinessInformation = () => {
                                     <Text style={{ color: 'white', fontWeight: 'bold' }}>
                                         REGISTERED ADDRESS
                                     </Text>
-                                    <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
-                                            City
-                                        </Text>
-                                        <TextInput
-                                            onChangeText={(value) => handleRegisteredAddress('city', value)}
-                                            style={{
-                                                height: height * 0.06,
-                                                backgroundColor: '#e8e8e8',
-                                                borderRadius: 10,
-                                                paddingHorizontal: width * 0.05,
-                                                fontSize: width * 0.035
-                                            }}
-                                            placeholder='What is your city?'
-                                        />
-                                    </View>
                                     <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
                                         <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
                                             Province
