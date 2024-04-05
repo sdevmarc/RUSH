@@ -36,16 +36,8 @@ const StoreSchema = new mongoose.Schema({
             businessName: String
         }
     },
-    products: [
-        {
-            productName: String,
-            productPhoto: String,
-            productDescription: String,
-            productPrice: String
-        }
-    ],
     termsAndConditions: Boolean
-})
+}, { timestamps: true })
 
 const StoresModel = mongoose.model('Stores', StoreSchema)
 module.exports = StoresModel
