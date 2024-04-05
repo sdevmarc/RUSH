@@ -15,6 +15,7 @@ const LoginRoute = require('../routes/Login')
 const LogoutRoute = require('../routes/Logout')
 const StoreRoute = require('../routes/Store')
 const UserRoute = require('../routes/Users')
+const ProductRoute = require('../routes/Product')
 
 
 app.use(cors({
@@ -41,6 +42,8 @@ app.use('/api', StoreRoute)
 app.use('/api', UserRoute)
 
 app.use('/api', LogoutRoute)
+
+app.use('/api', ProductRoute)
 
 
 
