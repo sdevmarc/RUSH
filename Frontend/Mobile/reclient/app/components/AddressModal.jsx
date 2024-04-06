@@ -1,31 +1,31 @@
 // AddressModal.js
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, Platform, Dimensions, TouchableOpacity } from 'react-native';
-import axios from 'axios';
-import { Picker } from '@react-native-picker/picker';
-import Context from './Context';
+import React, { useState, useEffect, useContext } from 'react'
+import { View, Text, Platform, Dimensions, TouchableOpacity } from 'react-native'
+import axios from 'axios'
+import { Picker } from '@react-native-picker/picker'
+import Context from './Context'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 const AddressModal = ({ title, onSelectMunicipality }) => {
     const [IsMunicipality, setIsMunicipality] = useState('')
     const [IsModalOpen, setIsModalOpen] = useContext(Context)
-    const [IsAddress, setIsAddress] = useState([]);
+    const [IsAddress, setIsAddress] = useState([])
 
     useEffect(() => {
         fetchMunicipality()
-    }, []);
+    }, [])
 
     const fetchMunicipality = async () => {
-        const data = await axios.get(`https://psgc.gitlab.io/api/provinces/025000000/municipalities`);
+        const data = await axios.get(`https://psgc.gitlab.io/api/provinces/025000000/municipalities`)
         const sortedData = data.data.sort((a, b) => {
             if (a.name < b.name) {
-                return -1;
+                return -1
             }
             if (a.name > b.name) {
-                return 1;
+                return 1
             }
-            return 0;
+            return 0
         })
         setIsAddress(sortedData)
     }
@@ -33,11 +33,11 @@ const AddressModal = ({ title, onSelectMunicipality }) => {
     const handleValueChange = (itemValue) => {
         onSelectMunicipality(itemValue)
         setIsMunicipality(itemValue)
-    };
+    }
 
     const handlModal = (value) => {
         setIsModalOpen(value)
-    };
+    }
 
     return (
         <>
@@ -83,7 +83,7 @@ const AddressModal = ({ title, onSelectMunicipality }) => {
                 )
             }
         </>
-    );
-};
+    )
+}
 
-export default AddressModal;
+export default AddressModal
