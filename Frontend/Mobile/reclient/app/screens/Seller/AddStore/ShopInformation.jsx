@@ -84,7 +84,6 @@ const ShopInformation = () => {
 
     const handleNext = async () => {
         // navigation.navigate('BusinessInformation')
-        console.log(values)
         try {
             const dataShopInformation = JSON.stringify(values)
             await AsyncStorage.setItem('shopInfo', dataShopInformation)
@@ -95,7 +94,6 @@ const ShopInformation = () => {
     }
 
     const removeData = async () => {
-        console.log('Removing')
         await AsyncStorage.removeItem('shopInfo')
         console.log('Data removed successfully')
     }
@@ -104,9 +102,9 @@ const ShopInformation = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <Navbar title='Shop Information' backgroundColor='#323d48' remove={removeData} />
+                <Navbar title='Shop Information' backgroundColor='#323d48' remove={() => removeData()} />
                 <Context.Provider value={[IsModalOpen, setIsModalOpen]}>
-                    <AddressModal title='municipality' onSelectMunicipality={(value) => handleOnChangeAddress('municipality', value)} />
+                    <AddressModal onSelectMunicipality={(value) => handleOnChangeAddress('municipality', value)} />
                 </Context.Provider>
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
@@ -133,6 +131,9 @@ const ShopInformation = () => {
                                             style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                         >
                                             <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
+                                                <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                                    Municipality
+                                                </Text>
                                                 <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
                                                     {values.pickupAddress.municipality}
                                                 </Text>
