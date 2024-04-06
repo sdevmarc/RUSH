@@ -59,28 +59,18 @@ const Home = () => {
     const [stores, setStores] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
-    const [IsValidated, setIsValidated] = useState({
-        token: '',
-        userId: ''
-    })
+    const [IsToken, setIstoken] = useState('')
 
     useEffect(() => {
-        fetchToken()
         fetchStores()
     }, [])
 
-    const fetchToken = async () => {
-        setIsValidated({
-            ...IsValidated,
-            token: await AsyncStorage.getItem('token'),
-            userId: await AsyncStorage.getItem('userId')
-        })
-    }
-
     const fetchStores = async () => {
+        const token = await AsyncStorage.getItem('token')
+
         const data = await axios.get(`http://${address}/api/getallstore`, {
             headers: {
-                Authorization: `Bearer ${IsValidated.token}`
+                Authorization: `Bearer ${token}`
             }
         })
         setStores(data.data.data)
@@ -213,7 +203,7 @@ const Home = () => {
                             <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
                                 {stores.map((item) => (
                                     <TouchableOpacity
-                                        key={item._id}
+                                        key={item.userId}
                                         onPress={handleSelectStore}
                                         style={{
                                             width: width * 0.452,
