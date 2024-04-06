@@ -6,15 +6,15 @@ import {
     TouchableOpacity,
     Alert
 } from 'react-native'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Context from './Context'
 import { Picker } from '@react-native-picker/picker'
 
 const { width, height } = Dimensions.get('window')
 
-const Modal = ({ title, onSelectedValue, fetchedData, key }) => {
+const Modal = ({ title, onSelectedValue, fetchedData, modalId }) => {
     const [IsSelect, setIsSelect] = useState('')
-    const [IsModalOpen, setIsModalOpen] = useContext(Context)
+    const { IsModalOpen, setIsModalOpen } = useContext(Context)
 
     const handleModalState = (IsTrue) => {
         if (IsTrue) {
@@ -32,7 +32,7 @@ const Modal = ({ title, onSelectedValue, fetchedData, key }) => {
     return (
         <>
             {
-                IsModalOpen &&
+                IsModalOpen[modalId] &&
                 (
                     <>
                         <View style={{ position: 'absolute', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', opacity: .4, zIndex: 1 }} />
@@ -53,7 +53,7 @@ const Modal = ({ title, onSelectedValue, fetchedData, key }) => {
                                 >
                                     {Platform.OS === 'ios' && <Picker.Item color='#000' label="" value="" />}
                                     {fetchedData.map((item) => (
-                                        <Picker.Item key={[key]} color={Platform.OS === 'android' ? '#000' : '#000'} label={item.name} value={item.name} />
+                                        <Picker.Item key={item.id} color={Platform.OS === 'android' ? '#000' : '#000'} label={item.name} value={item.name} />
                                     ))}
                                 </Picker>
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center', gap: width * 0.05 }}>
