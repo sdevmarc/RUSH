@@ -41,7 +41,7 @@ const BusinessInformation = () => {
             },
             registeredAddress: {
                 city: 'South Luzon',
-                province: '',
+                province: 'Nueva Vizcaya',
                 municipality: '',
                 barangay: ''
             },
@@ -51,14 +51,6 @@ const BusinessInformation = () => {
                 businessName: ''
             }
         },
-        products: [
-            {
-                productName: '',
-                productPhoto: '',
-                productDescription: '',
-                productPrice: ''
-            }
-        ],
         termsAndConditions: false
 
     })
@@ -82,13 +74,6 @@ const BusinessInformation = () => {
     }
 
     const handleSubmit = async () => {
-        console.log(values)
-
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'DrawerRoutes' }]
-        })
-
         try {
             const data = await axios.post(`http:${address}/api/addstore`, values, {
                 headers: {
@@ -98,19 +83,18 @@ const BusinessInformation = () => {
 
             if (data.data.success) {
                 Alert.alert(data.data.message)
+                removeData()
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'DrawerRoutes' }]
+
                 })
-                removeData()
             } else {
                 Alert.alert(data.data.message)
                 removeData()
             }
         } catch (error) {
             console.log(error)
-
-
         }
     }
 
@@ -292,22 +276,6 @@ const BusinessInformation = () => {
                                     <Text style={{ color: 'white', fontWeight: 'bold' }}>
                                         REGISTERED ADDRESS
                                     </Text>
-                                    <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
-                                            Province
-                                        </Text>
-                                        <TextInput
-                                            onChangeText={(value) => handleRegisteredAddress('province', value)}
-                                            style={{
-                                                height: height * 0.06,
-                                                backgroundColor: '#e8e8e8',
-                                                borderRadius: 10,
-                                                paddingHorizontal: width * 0.05,
-                                                fontSize: width * 0.035
-                                            }}
-                                            placeholder='What is your province?'
-                                        />
-                                    </View>
                                     <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
                                         <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
                                             Municipality
