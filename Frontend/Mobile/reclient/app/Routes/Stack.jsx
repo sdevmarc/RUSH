@@ -14,6 +14,7 @@ import PaymentOption from '../screens/Dashboard/PaymentOption';
 import Product from '../screens/Seller/Product';
 import ShopInformation from '../screens/Seller/AddStore/ShopInformation';
 import BusinessInformation from '../screens/Seller/AddStore/BusinessInformation';
+import AddProducts from '../screens/Seller/Add Products/AddProducts';
 
 
 const Stack = createNativeStackNavigator()
@@ -40,6 +41,7 @@ function StackRoutes() {
                 <Stack.Screen name="BusinessInformation" component={BusinessInformation} options={{ headerTitle: 'BusinessInformation', headerTitleAlign: 'center', headerShown: false }} />
                 {/* SELLER */}
                 <Stack.Screen name="Products" component={Product} options={{ headerTitle: 'Products', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="AddProduct" component={AddProducts} options={{ headerTitle: 'AddProducts', headerTitleAlign: 'center', headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
