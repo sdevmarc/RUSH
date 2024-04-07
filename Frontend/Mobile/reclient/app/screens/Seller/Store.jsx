@@ -6,14 +6,34 @@ import {
     TouchableOpacity,
     ScrollView
 } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
+import address from '../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
 const Store = () => {
     const navigation = useNavigation()
+
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    const fetchData = async () => {
+        const userId = await AsyncStorage.getItem('userId')
+        const token = await AsyncStorage.getItem('token')
+
+        const res = await axios.get(`http://${address}/api/getstore/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        await AsyncStorage.setItem('storeId', res.data._id)
+    }
 
     const handleProduct = () => {
         navigation.navigate('Products')

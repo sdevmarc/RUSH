@@ -7,6 +7,7 @@ const LoginAuth = async (req, res, next) => {
     try {
         const { username, password } = req.body
 
+
         const User = await Users.findOne({ username: username })
 
         if (User) {

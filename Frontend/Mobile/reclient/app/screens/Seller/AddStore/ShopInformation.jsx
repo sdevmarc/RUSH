@@ -6,20 +6,17 @@ import {
     ScrollView,
     TextInput,
     Platform,
-    TouchableOpacity,
-    Image,
-    Button
+    TouchableOpacity
 } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import axios from 'axios'
 import Navbar from '../../../components/Navbar'
 import { useNavigation } from '@react-navigation/native'
 import BottomBar from '../../../components/BottomBar'
-import { Picker } from '@react-native-picker/picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import AddressModal from '../../../components/AddressModal'
 import Context from '../../../components/Context'
-import * as ImagePicker from 'expo-image-picker'
 
 
 const { width, height } = Dimensions.get('window')
@@ -145,8 +142,11 @@ const ShopInformation = () => {
                                 :
                                 (
                                     <>
-                                        <View style={{ width: '100%', paddingHorizontal: width * 0.03, gap: height * 0.01 }}>
+                                        <View style={{ width: '100%', gap: height * 0.01 }}>
                                             <View style={{ width: '100%', gap: height * 0.01 }}>
+                                                <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                                    Municipality
+                                                </Text>
                                                 <Picker
                                                     selectedValue={values.pickupAddress.municipality}
                                                     onValueChange={(value) => handleOnChangeAddress('municipality', value)}

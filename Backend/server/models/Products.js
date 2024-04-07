@@ -9,7 +9,7 @@ const ProductSchema = new mongoose.Schema({
         productName: String,
         productDescription: String,
         category: String,
-        date: String,
+        days: String,
         gallery: [
             { uri: String }
         ],

@@ -18,42 +18,44 @@ import BottomBar from '../../../components/BottomBar'
 import * as ImagePicker from 'expo-image-picker'
 import Context from '../../../components/Context'
 import Modal from '../../../components/Modal'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
+import address from '../../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
 const SampleCategory = [
-    { id: 1, name: 'PiaCat' },
-    { id: 2, name: 'Pia1' },
-    { id: 3, name: 'Pia2' },
+    { id: 1, name: 'Clothes' },
+    { id: 2, name: 'Electric' },
+    { id: 3, name: 'Goods' },
 ]
 
-const SampleDays = [
-    { id: 1, name: 'Day' },
-    { id: 2, name: 'Day1' },
-    { id: 3, name: 'Day2' },
+const SampleSizes = [
+    { id: 1, name: 'XS' },
+    { id: 2, name: 'S' },
+    { id: 3, name: 'M' },
+    { id: 4, name: 'L' },
+    { id: 5, name: 'XL' },
+    { id: 6, name: 'XXL' }
 ]
 
+const SampleShipping = [
+    { id: 1, name: 'Delivery' },
+    { id: 2, name: 'Pickup' }
+]
 
 const AddProducts = () => {
     const [IsModalOpen, setIsModalOpen] = useState({
         category: false,
-        days: false,
-        size: false,
+        sizes: false,
         shipping: false
     })
-    const [IsModalValueTest, setIsModalValueTest] = useState({
-        category: '',
-        days: '',
-        size: '',
-        shipping: 'false'
-    })
-    const [IsFetched, setIsFetched] = ([])
     const [values, setValues] = useState({
         storeId: '',
         productInformation: {
             productName: '',
             productDescription: '',
-            date: '',
+            days: '',
             category: [],
             gallery: [],
             sizes: [],
@@ -64,16 +66,36 @@ const AddProducts = () => {
     })
 
     useEffect(() => {
+        fetchData()
         console.log(values.productInformation.gallery)
-    }, [values])
+    }, [])
+
+    const fetchData = async () => {
+        const storeId = await AsyncStorage.getItem('storeId')
+        setValues((prevValue) => ({
+            ...prevValue,
+            storeId: storeId
+        }))
+
+    }
+
+    const handlePublish = async () => {
+        await axios.post(`http://${address}/api/addproduct`, values)
+
+    }
 
     const pickImage = async () => {
+        if (values.productInformation.gallery.length >= 8) {
+            Alert.alert('Maximum 8 images allowed');
+            return;
+        }
+
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
-        });
+        })
 
         if (!result.canceled) {
             const newGalleryItem = { uri: result.assets[0].uri };
@@ -92,20 +114,27 @@ const AddProducts = () => {
         console.log(IsModalOpen)
     }
 
-    const handleOnChangeModal = (e, value) => {
-        Alert.alert(value)
-        setIsModalValueTest((prevValue => ({
-            ...prevValue,
-            [e]: value
-        })))
-    }
+    const handleOnChangeProductInformationArray = (e, object, value, limit) => {
+        if (values.productInformation[e].length >= limit) {
+            Alert.alert('Maximum requirements are already met');
+            return
+        }
 
-    const handleOnChangeProductInformationArray = (e, object, value) => {
         setValues(prevValue => ({
             ...prevValue,
             productInformation: {
                 ...prevValue.productInformation,
                 [e]: [...prevValue.productInformation[e], { [object]: value }]
+            }
+        }))
+    }
+
+    const handleOnChangeText = (e, value) => {
+        setValues((prevValue) => ({
+            ...prevValue,
+            productInformation: {
+                ...prevValue.productInformation,
+                [e]: value
             }
         }))
     }
@@ -116,9 +145,9 @@ const AddProducts = () => {
             <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
                 <Navbar title='Add Product' backgroundColor='#323d48' />
                 <Context.Provider value={{ IsModalOpen, setIsModalOpen }}>
-                    <Modal title='Category' onSelectedValue={(item) => handleOnChangeProductInformationArray('category', 'name', item)} fetchedData={SampleCategory} modalId='category' />
-                    <Modal title='Days' onSelectedValue={(item) => handleOnChangeProductInformationArray('sizes', 'size', item)} fetchedData={SampleDays} modalId='size' />
-                    <Modal title='Shipping Availability' onSelectedValue={(item) => handleOnChangeProductInformationArray('shippingAvailability', 'shippingName', item)} fetchedData={SampleDays} modalId='shipping' />
+                    <Modal title='Category' onSelectedValue={(item) => handleOnChangeProductInformationArray('category', 'name', item, 3)} fetchedData={SampleCategory} modalId='category' />
+                    <Modal title='sizes' onSelectedValue={(item) => handleOnChangeProductInformationArray('sizes', 'size', item, 6)} fetchedData={SampleSizes} modalId='sizes' />
+                    <Modal title='Shipping Availability' onSelectedValue={(item) => handleOnChangeProductInformationArray('shippingAvailability', 'shippingName', item, 2)} fetchedData={SampleShipping} modalId='shipping' />
                 </Context.Provider>
                 <KeyboardAvoidingView behavior="padding">
                     <ScrollView>
@@ -130,12 +159,7 @@ const AddProducts = () => {
                                     </Text>
                                 </View>
                                 <View style={{ width: '100%', justifyContent: 'flex-start', flexDirection: 'row', gap: width * 0.02, flexWrap: 'wrap' }}>
-                                    <View style={{ width: '22%', height: height * 0.1, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', backgroundColor: '#AEAEAE' }}>
-                                        <Text style={{ color: 'white', fontWeight: '500' }}>
-                                            None
-                                        </Text>
-                                    </View>
-                                    {/* {values.productInformation.gallery.uri !== ''
+                                    {values.productInformation.gallery.length !== 0
                                         ? (
                                             <>
                                                 {
@@ -156,7 +180,7 @@ const AddProducts = () => {
                                                 None
                                             </Text>
                                         </View>
-                                    } */}
+                                    }
                                 </View>
                                 <TouchableOpacity
                                     onPress={pickImage}
@@ -167,7 +191,7 @@ const AddProducts = () => {
                                             Add Photo
                                         </Text>
                                         <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                            0/8
+                                            {values.productInformation.gallery.length}/8
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
@@ -176,7 +200,7 @@ const AddProducts = () => {
                                         Product Name
                                     </Text>
                                     <TextInput
-                                        // onChangeText={(value) => handleOnChangeAddress('barangay', value)}
+                                        onChangeText={(value) => handleOnChangeText('productName', value)}
                                         style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='What is the name of your product?' />
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
@@ -184,13 +208,22 @@ const AddProducts = () => {
                                         Product Description
                                     </Text>
                                     <TextInput
-                                        // onChangeText={(value) => handleOnChangeAddress('barangay', value)}
+                                        onChangeText={(value) => handleOnChangeText('productDescription', value)}
                                         style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Can you describe what your product is?' />
                                 </View>
-                                <View style={{ width: '100%', flexDirection: 'row' }}>
+                                <View style={{ width: '100%', flexDirection: 'column', gap: height * 0.005 }}>
                                     <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
                                         Category
                                     </Text>
+                                    <View style={{ width: '100%', gap: width * 0.02, alignItems: 'flex-start', flexDirection: 'row', flexWrap: 'wrap' }}>
+                                        {values.productInformation.category.map((item, index) => (
+                                            <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.005, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
+                                                <Text style={{ color: 'white', fontWeight: '500' }}>
+                                                    {item.name}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        ))}
+                                    </View>
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => handleModalState('category', true)}
@@ -201,7 +234,7 @@ const AddProducts = () => {
                                             Add Category
                                         </Text>
                                         <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                            {IsModalValueTest.category}
+                                            {values.productInformation.category.length}/3
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
@@ -210,30 +243,33 @@ const AddProducts = () => {
                                         Days of Rent
                                     </Text>
                                 </View>
-                                <TouchableOpacity
-                                    onPress={() => handleModalState('days', true)}
-                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
-                                >
-                                    <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
-                                            Add Days
-                                        </Text>
-                                        <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                            {IsModalValueTest.days}
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <View style={{ width: '100%', flexDirection: 'row' }}>
+                                <View style={{ width: '100%', gap: height * 0.01 }}>
+                                    <TextInput
+                                        onChangeText={(value) => handleOnChangeText('days', value)}
+                                        style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Days are you willing rent this product?' />
+                                </View>
+                                <View style={{ width: '100%', flexDirection: 'column', gap: height * 0.005 }}>
                                     <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
                                         Variation
                                     </Text>
+                                    <View style={{ width: '100%', gap: width * 0.02, alignItems: 'flex-start', flexDirection: 'row', flexWrap: 'wrap' }}>
+                                        {values.productInformation.sizes.map((item, index) => (
+                                            <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.005, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
+                                                <Text style={{ color: 'white', fontWeight: '500' }}>
+                                                    {item.size}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        ))}
+
+                                    </View>
                                 </View>
 
                                 {Platform.OS === 'ios'
                                     ? (
                                         <>
+
                                             <TouchableOpacity
-                                                // onPress={() => handleModal('municipality', true)}
+                                                onPress={() => handleModalState('sizes', true)}
                                                 style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                             >
                                                 <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
@@ -255,7 +291,7 @@ const AddProducts = () => {
                                         //     <View style={{ width: '100%', paddingHorizontal: width * 0.03, gap: height * 0.01 }}>
                                         //         <View style={{ width: '100%', gap: height * 0.01 }}>
                                         //             <Picker
-                                        //                 selectedValue={values.pickupAddress.municipality}
+                                        //                 selectedValue={handleOnChangeProductInformationArray}
                                         //                 onValueChange={(value) => handleOnChangeAddress('municipality', value)}
                                         //                 mode='drop'
                                         //                 dropdownIconColor={'#000'}
@@ -280,13 +316,23 @@ const AddProducts = () => {
                                         // </>
                                     )
                                 }
-                                <View style={{ width: '100%', flexDirection: 'row' }}>
+                                <View style={{ width: '100%', flexDirection: 'column', gap: height * 0.005 }}>
                                     <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
                                         Shipping Availability
                                     </Text>
+                                    <View style={{ width: '100%', gap: width * 0.02, alignItems: 'flex-start', flexDirection: 'row', flexWrap: 'wrap' }}>
+                                        {values.productInformation.shippingAvailability.map((item, index) => (
+                                            <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.005, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
+                                                <Text style={{ color: 'white', fontWeight: '500' }}>
+                                                    {item.shippingName}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        ))}
+
+                                    </View>
                                 </View>
                                 <TouchableOpacity
-                                    // onPress={() => handleModal('municipality', true)}
+                                    onPress={() => handleModalState('shipping', true)}
                                     style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                 >
                                     <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
@@ -294,7 +340,7 @@ const AddProducts = () => {
                                             Add Shipping Option
                                         </Text>
                                         <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                            Required
+                                            {values.productInformation.shippingAvailability.length}/2
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
@@ -303,7 +349,7 @@ const AddProducts = () => {
                                         Price
                                     </Text>
                                     <TextInput
-                                        // onChangeText={(value) => handleOnChangeAddress('barangay', value)}
+                                        onChangeText={(value) => handleOnChangeText('price', value)}
                                         style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='How much is the price of the product?' />
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
@@ -311,14 +357,14 @@ const AddProducts = () => {
                                         Shipping Fee
                                     </Text>
                                     <TextInput
-                                        // onChangeText={(value) => handleOnChangeAddress('barangay', value)}
+                                        onChangeText={(value) => handleOnChangeText('shippingFee', value)}
                                         style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='How much is the shipping fee of the product?' />
                                 </View>
                             </View>
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
-                <BottomBar title='Publish' />
+                <BottomBar title='Publish' redirect={handlePublish} />
             </View>
         </>
     )
