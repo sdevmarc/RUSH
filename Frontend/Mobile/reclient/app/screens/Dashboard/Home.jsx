@@ -59,7 +59,6 @@ const Home = () => {
     const [stores, setStores] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
-    const [IsToken, setIstoken] = useState('')
 
     useEffect(() => {
         fetchStores()
@@ -74,6 +73,10 @@ const Home = () => {
             }
         })
         setStores(data.data.data)
+    }
+
+    const handleSelectStore = async (item) => {
+        navigation.navigate('SelectedStore', { id: item })
     }
 
     const headerHeight = scrollY.interpolate({
@@ -101,10 +104,6 @@ const Home = () => {
 
     if (!fontsLoaded) {
         return null;
-    }
-
-    const handleSelectStore = () => {
-        navigation.navigate('SelectedStore')
     }
 
     return (
@@ -204,10 +203,10 @@ const Home = () => {
                                 {stores.map((item) => (
                                     <TouchableOpacity
                                         key={item.userId}
-                                        onPress={handleSelectStore}
+                                        onPress={() => handleSelectStore(item._id)}
                                         style={{
                                             width: width * 0.452,
-                                            height: height * 0.25,
+                                            height: height * 0.3,
                                             borderRadius: height * 0.02,
                                             backgroundColor: '#4a4c59'
                                         }}
