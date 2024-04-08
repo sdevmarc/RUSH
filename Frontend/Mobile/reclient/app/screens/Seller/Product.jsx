@@ -14,7 +14,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 const { width, height } = Dimensions.get('window')
 
 const Product = () => {
-
     const navigation = useNavigation()
 
     const handleOnPressAddProduct = () => {
