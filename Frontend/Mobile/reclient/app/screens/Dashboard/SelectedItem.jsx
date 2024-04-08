@@ -6,18 +6,30 @@ import {
     Animated,
     TouchableOpacity,
     ScrollView,
-    Image,
-    Button
+    Image
 } from 'react-native'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/Navbar'
+import axios from 'axios'
+import address from '../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
-const SelectedItem = () => {
+const SelectedItem = ({ route }) => {
+    const [values, setValues] = useState([])
     const navigation = useNavigation()
+
+    useEffect(() => {
+        fetchProductItem()
+    }, [])
+
+    const fetchProductItem = async () => {
+        const { id } = route.params
+        const res = await axios.get(`http://${address}/api/selectproduct/${id}`)
+        setValues(res.data.data)
+    }
 
     const handleAddtoCart = () => {
         navigation.navigate('Cart')
@@ -41,20 +53,25 @@ const SelectedItem = () => {
 
                                 }}
                             >
-                                <Image
-                                    source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
-                                    resizeMode='cover'
-                                    style={{ width: '100%', height: '100%' }}
-                                />
+                                {values.productInformation && values.productInformation.gallery && (
+                                    <Image
+                                        source={{ uri: values.productInformation.gallery[0].uri }}
+                                        resizeMode='cover'
+                                        style={{ width: '100%', height: '100%' }}
+                                    />
+                                )}
                             </View>
                         </View>
 
                         <View style={{ width: '100%', height: height * 0.5, paddingHorizontal: width * 0.03, paddingBottom: height * 0.1, justifyContent: 'space-between' }}>
                             <View style={{ width: '100%', gap: height * 0.01 }}>
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Text style={{ width: width * 0.7, color: 'white', fontWeight: 'bold', fontSize: width * 0.07, flexWrap: 'wrap' }} >
-                                        Sando
-                                    </Text>
+                                    {values.productInformation && values.productInformation.productName && (
+                                        <Text style={{ width: width * 0.7, color: 'white', fontWeight: 'bold', fontSize: width * 0.07, flexWrap: 'wrap' }} >
+                                            {values.productInformation.productName}
+                                        </Text>
+                                    )}
+
                                     <TouchableOpacity
                                         style={{
                                             paddingHorizontal: width * 0.02,
@@ -74,42 +91,37 @@ const SelectedItem = () => {
                                         Shipping Availability
                                     </Text>
                                     <View style={{ flexDirection: 'row', gap: width * 0.03 }}>
-                                        <TouchableOpacity
-                                            style={{
-                                                paddingHorizontal: width * 0.05,
-                                                paddingVertical: height * 0.0065,
-                                                borderRadius: height * 0.01,
-                                                backgroundColor: '#d7a152',
-                                                justifyContent: 'center',
-                                                alignItems: 'center'
-                                            }}>
-                                            <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>
-                                                Delivery
-                                            </Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            style={{
-                                                paddingHorizontal: width * 0.05,
-                                                paddingVertical: height * 0.0065,
-                                                borderRadius: height * 0.01,
-                                                backgroundColor: '#d7a152',
-                                                justifyContent: 'center',
-                                                alignItems: 'center'
-                                            }}>
-                                            <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>
-                                                Pickup
-                                            </Text>
-                                        </TouchableOpacity>
+                                        {values.productInformation && values.productInformation.shippingAvailability && (
+                                            values.productInformation.shippingAvailability.map((item) => (
+                                                <TouchableOpacity
+                                                    key={item._id}
+                                                    style={{
+                                                        paddingHorizontal: width * 0.05,
+                                                        paddingVertical: height * 0.0065,
+                                                        borderRadius: height * 0.01,
+                                                        backgroundColor: '#d7a152',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center'
+                                                    }}>
+                                                    <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>
+                                                        {item.shippingName}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            ))
+                                        )}
+
                                     </View>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
                                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.04 }}>
                                         Description
                                     </Text>
-                                    <Text style={{ textAlign: 'justify', color: 'white', fontSize: width * 0.03 }}>
-                                        - Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta distinctio, unde possimus earum nobis architecto et nesciunt hic ex? Sit neque modi sequi autem temporibus culpa a odio dolorum facilis!
-                                        Modi laboriosam perferendis quaerat veniam cupiditate animi consequuntur similique, nobis numquam in placeat, soluta esse aperiam illo ipsam! Eum doloremque, quo aspernatur a commodi dolorem! Officia accusamus aut laudantium illum!
-                                    </Text>
+                                    {values.productInformation && values.productInformation.productDescription && (
+                                        <Text style={{ textAlign: 'justify', color: 'white', fontSize: width * 0.03 }}>
+                                            {values.productInformation.productDescription}
+                                        </Text>
+                                    )}
+
                                 </View>
 
                             </View>
@@ -140,9 +152,12 @@ const SelectedItem = () => {
                         <Text style={{ color: 'white', fontWeight: '500', fontSize: width * 0.04 }}>
                             Price
                         </Text>
-                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.05 }}>
-                            ₱ 105.00
-                        </Text>
+                        {values.productInformation && values.productInformation.productDescription && (
+                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.05 }}>
+                                ₱ {values.productInformation.price}.00
+                            </Text>
+                        )}
+
                     </View>
 
                     <TouchableOpacity
