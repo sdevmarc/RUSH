@@ -72,8 +72,10 @@ const AddProducts = () => {
 
     useEffect(() => {
         fetchData()
-        // console.log(values.productInformation.gallery)
-    }, [])
+        if (values.productInformation.gallery.length > 0) {
+            sendData();
+        }
+    }, [values.productInformation.gallery])
 
     const fetchData = async () => {
         const storeId = await AsyncStorage.getItem('storeId')
@@ -82,13 +84,31 @@ const AddProducts = () => {
             storeId: storeId
         }))
     }
+
+    const sendData = async () => {
+        try {
+            const res = await axios.post(`http://${address}/api/addproduct`, values);
+            if (res.data.success) {
+                console.log(values.productInformation.gallery);
+                Alert.alert(res.data.message);
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'DrawerRoutes' }]
+                })
+            } else {
+                Alert.alert(res.data.message);
+            }
+        } catch (error) {
+            console.log('Error', error);
+        }
+    }
+
     const handlePublish = async () => {
         try {
             const uploadPromises = selectedPicture.gallery.map(async (image) => {
                 return await handleUploadImage(image.uri);
             })
             const uploadedImages = await Promise.all(uploadPromises)
-            console.log('uploadedImages ', uploadedImages)
             setValues(prevState => ({
                 ...prevState,
                 productInformation: {
@@ -96,17 +116,7 @@ const AddProducts = () => {
                     gallery: uploadedImages
                 }
             }))
-            
-            const res = await axios.post(`http://${address}/api/addproduct`, values)
-            if(res.data.success) {
-                Alert.alert(res.data.message)
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'DrawerRoutes' }]
-                })
-            } else {
-                Alert.alert(res.data.message)
-            }
+
         } catch (error) {
             console.log('Error', error)
         }
@@ -162,13 +172,7 @@ const AddProducts = () => {
 
             if (res) {
                 console.log(`There is a res:`, res.data.url)
-                setValues(prevState => ({
-                    ...prevState,
-                    productInformation: {
-                        ...prevState.productInformation,
-                        gallery: [...prevState.productInformation.gallery, { uri: res.data.url }]
-                    }
-                }))
+
                 return { uri: res.data.url }
             } else {
                 console.log(`Error data`)
