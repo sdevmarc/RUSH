@@ -95,6 +95,7 @@ const AddProducts = () => {
                     index: 0,
                     routes: [{ name: 'DrawerRoutes' }]
                 })
+                await AsyncStorage.removeItem('storeId')
             } else {
                 Alert.alert(res.data.message);
             }
