@@ -87,17 +87,17 @@ const AddProducts = () => {
             const uploadPromises = selectedPicture.gallery.map(async (image) => {
                 return await handleUploadImage(image.uri);
             })
-            const uploadedImages = await Promise.all(uploadPromises);
+            const uploadedImages = await Promise.all(uploadPromises)
+            console.log('uploadedImages ', uploadedImages)
             setValues(prevState => ({
                 ...prevState,
                 productInformation: {
                     ...prevState.productInformation,
-                    gallery: uploadedImages.map(image => ({ uri: image.uri }))
+                    gallery: uploadedImages
                 }
             }))
-
+            
             const res = await axios.post(`http://${address}/api/addproduct`, values)
-
             if(res.data.success) {
                 Alert.alert(res.data.message)
                 navigation.reset({
@@ -107,7 +107,6 @@ const AddProducts = () => {
             } else {
                 Alert.alert(res.data.message)
             }
-            console.log(res.data)
         } catch (error) {
             console.log('Error', error)
         }
