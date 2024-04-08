@@ -8,8 +8,10 @@ const ProductSchema = new mongoose.Schema({
     productInformation: {
         productName: String,
         productDescription: String,
-        category: String,
         days: String,
+        category: [
+            { name: String }
+        ],
         gallery: [
             { uri: String }
         ],
