@@ -21,6 +21,7 @@ import Modal from '../../../components/Modal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../../../config/host'
+import { useNavigation } from '@react-navigation/native'
 
 const { width, height } = Dimensions.get('window')
 
@@ -45,6 +46,7 @@ const SampleShipping = [
 ]
 
 const AddProducts = () => {
+    const navigation = useNavigation()
     const [selectedPicture, setSelectedPicture] = useState({
         gallery: []
     })
@@ -95,6 +97,16 @@ const AddProducts = () => {
             }))
 
             const res = await axios.post(`http://${address}/api/addproduct`, values)
+
+            if(res.data.success) {
+                Alert.alert(res.data.message)
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'DrawerRoutes' }]
+                })
+            } else {
+                Alert.alert(res.data.message)
+            }
             console.log(res.data)
         } catch (error) {
             console.log('Error', error)
