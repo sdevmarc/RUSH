@@ -45,8 +45,6 @@ app.use('/api', LogoutRoute)
 
 app.use('/api', ProductRoute)
 
-
-
 // app.use(mainMiddleware.notFound);
 // app.use(mainMiddleware.errorHandler);
 
