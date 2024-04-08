@@ -45,7 +45,7 @@ const SampleShipping = [
 ]
 
 const AddProducts = () => {
-    const [selectedPicture, setSelectedPidture] = useState({
+    const [selectedPicture, setSelectedPicture] = useState({
         gallery: []
     })
     const [IsModalOpen, setIsModalOpen] = useState({
@@ -70,8 +70,8 @@ const AddProducts = () => {
 
     useEffect(() => {
         fetchData()
-        console.log(values)
-    }, [values.productInformation.gallery])
+        // console.log(values.productInformation.gallery)
+    }, [])
 
     const fetchData = async () => {
         const storeId = await AsyncStorage.getItem('storeId')
@@ -82,8 +82,20 @@ const AddProducts = () => {
     }
     const handlePublish = async () => {
         try {
+            const uploadPromises = selectedPicture.gallery.map(async (image) => {
+                return await handleUploadImage(image.uri);
+            })
+            const uploadedImages = await Promise.all(uploadPromises);
+            setValues(prevState => ({
+                ...prevState,
+                productInformation: {
+                    ...prevState.productInformation,
+                    gallery: uploadedImages.map(image => ({ uri: image.uri }))
+                }
+            }))
+
             const res = await axios.post(`http://${address}/api/addproduct`, values)
-            console.log(res.data.error)
+            console.log(res.data)
         } catch (error) {
             console.log('Error', error)
         }
@@ -91,7 +103,7 @@ const AddProducts = () => {
     }
 
     const pickImage = async () => {
-        if ([selectedPicture.gallery].length >= 8) {
+        if (selectedPicture.gallery.length >= 8) {
             Alert.alert('Maximum 8 images allowed');
             return;
         }
@@ -106,8 +118,8 @@ const AddProducts = () => {
         if (!result.canceled) {
             try {
                 const newGalleryItem = { uri: result.assets[0].uri }
-                handleUploadImage(newGalleryItem.uri)
-                setSelectedPidture((prevValue) => ({
+
+                setSelectedPicture((prevValue) => ({
                     ...prevValue,
                     gallery: [...prevValue.gallery, newGalleryItem]
                 }))
@@ -146,6 +158,7 @@ const AddProducts = () => {
                         gallery: [...prevState.productInformation.gallery, { uri: res.data.url }]
                     }
                 }))
+                return { uri: res.data.url }
             } else {
                 console.log(`Error data`)
             }
