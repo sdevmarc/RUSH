@@ -9,11 +9,13 @@ import {
     StatusBar,
     Platform
 } from 'react-native'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios'
+import address from '../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
@@ -27,9 +29,29 @@ const Products = [
     { id: 7, name: 'Pajama', status: { isAvailable: 'Rented', bgColor: '#e31243' } }
 ]
 
-const SelectedStore = () => {
+const SelectedStore = ({ route }) => {
+    const [values, setValues] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        fetchProducts()
+    }, [])
+
+    const fetchProducts = async () => {
+        const { id } = route.params
+
+        const res = await axios.get(`http://${address}/api/getproducts/${id}`)
+        setValues(res.data.data)
+    }
+
+    const handleSelectItem = async (item) => {
+        navigation.navigate('SelectedItem', { id: item })
+    }
+
+    const handleBack = async () => {
+        navigation.goBack()
+    }
 
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
@@ -48,10 +70,6 @@ const SelectedStore = () => {
         outputRange: [1, 0],
         extrapolate: 'clamp',
     });
-
-    const handleSelectItem = () => {
-        navigation.navigate('SelectedItem')
-    }
 
     return (
         <>
@@ -79,7 +97,7 @@ const SelectedStore = () => {
                                 alignItems: 'center',
                                 zIndex: 1
                             }}>
-                            <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <TouchableOpacity onPress={handleBack}>
                                 <Ionicons name="chevron-back-circle" size={width * 0.08} color="#dedede" />
                             </TouchableOpacity>
                             <Animated.View style={{ opacity: opacityTitle1 }}>
@@ -107,7 +125,6 @@ const SelectedStore = () => {
                                 </Text>
                                 <View style={{ gap: height * 0.01 }}>
                                     <TouchableOpacity
-
                                         style={{
                                             paddingHorizontal: width * 0.05,
                                             paddingVertical: height * 0.003,
@@ -154,28 +171,28 @@ const SelectedStore = () => {
                             </Text>
                         </View>
                         <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                            {Products.map((item) => (
+                            {values.map((item) => (
                                 <TouchableOpacity
-                                    key={item.id}
-                                    onPress={handleSelectItem}
+                                    key={item.storeId}
+                                    onPress={() => handleSelectItem(item._id)}
                                     style={{
                                         width: width * 0.452,
-                                        height: height * 0.25,
+                                        height: height * 0.3,
                                         borderRadius: height * 0.02,
                                         backgroundColor: '#4a4c59'
                                     }}
                                 >
-                                    <View style={{ width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'center', padding: width * 0.03 }}>
+                                    <View style={{ width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'flex-start', padding: width * 0.03 }}>
                                         <View style={{ overflow: 'hidden', width: '100%', height: '80%', backgroundColor: 'white', borderRadius: height * 0.01 }}>
                                             <Image
-                                                source={{ uri: 'https://source.unsplash.com/white-v-neck-shirt-on-brown-clothes-hanger-p8Drpg_duLw' }}
+                                                source={{ uri: item.productInformation.gallery[0].uri }}
                                                 resizeMode='cover'
                                                 style={{ width: '100%', height: '100%' }}
                                             />
                                         </View>
-                                        <View style={{ width: '100%', height: '20%', alignItems: 'flex-start' }}>
+                                        <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'flex-start' }}>
                                             <Text style={{ width: '100%', color: '#fff', fontSize: width * 0.04, fontFamily: 'Poppins-Regular', flexWrap: 'wrap' }} numberOfLines={1} ellipsizeMode='tail' >
-                                                {item.name}
+                                                {item.productInformation.productName}
                                             </Text>
                                             <Text
                                                 style={{
@@ -188,7 +205,7 @@ const SelectedStore = () => {
                                                     fontFamily: 'Poppins-Regular'
                                                 }}
                                             >
-                                                {item.status.isAvailable}
+                                                Available
                                             </Text>
                                         </View>
                                     </View>
