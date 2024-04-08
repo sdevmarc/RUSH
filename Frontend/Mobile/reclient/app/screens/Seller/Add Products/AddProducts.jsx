@@ -73,7 +73,7 @@ const AddProducts = () => {
     useEffect(() => {
         fetchData()
         if (values.productInformation.gallery.length > 0) {
-            sendData();
+            sendData()
         }
     }, [values.productInformation.gallery])
 
@@ -120,7 +120,6 @@ const AddProducts = () => {
         } catch (error) {
             console.log('Error', error)
         }
-
     }
 
     const pickImage = async () => {
@@ -147,7 +146,6 @@ const AddProducts = () => {
             } catch (error) {
                 console.log(`Error: ${error}`)
             }
-
         }
     }
 
@@ -172,7 +170,6 @@ const AddProducts = () => {
 
             if (res) {
                 console.log(`There is a res:`, res.data.url)
-
                 return { uri: res.data.url }
             } else {
                 console.log(`Error data`)
