@@ -1,5 +1,6 @@
 const Stores = require('../models/Stores')
 const Users = require('../models/Users')
+const jwt = require('jsonwebtoken')
 
 const StoreController = {
     CreateStore: async (req, res) => {
@@ -14,8 +15,10 @@ const StoreController = {
     },
     GetStore: async (req, res) => {
         try {
+           
             const { userId } = req.params
             const data = await Stores.find({ userId: userId })
+
             const { _id } = data[0]
             res.json({ success: true, message: 'get store successfully', data, _id })
         } catch (error) {
