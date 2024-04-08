@@ -18,7 +18,6 @@ const { width, height } = Dimensions.get('window')
 const Store = () => {
     const navigation = useNavigation()
 
-
     useEffect(() => {
         fetchData()
     }, [])
@@ -71,7 +70,7 @@ const Store = () => {
                         }}
                     >
                         <TouchableOpacity
-                            onPress={handleOpenDrawer}
+                            onPress={() => handleOpenDrawer()}
                         >
                             <MaterialCommunityIcons name="dots-grid" size={width * 0.08} color="white" />
                         </TouchableOpacity>
@@ -102,7 +101,7 @@ const Store = () => {
                                 <MaterialIcons name="arrow-forward-ios" size={width * 0.05} color="white" />
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={handleProduct}
+                                onPress={() => handleProduct()}
                                 style={{
                                     height: '10%',
                                     flexDirection: 'row',
