@@ -45,6 +45,9 @@ const SampleShipping = [
 ]
 
 const AddProducts = () => {
+    const [selectedPicture, setSelectedPidture] = useState({
+        gallery: []
+    })
     const [IsModalOpen, setIsModalOpen] = useState({
         category: false,
         sizes: false,
@@ -67,8 +70,8 @@ const AddProducts = () => {
 
     useEffect(() => {
         fetchData()
-        console.log(values.productInformation.gallery)
-    }, [])
+        console.log(values)
+    }, [values.productInformation.gallery])
 
     const fetchData = async () => {
         const storeId = await AsyncStorage.getItem('storeId')
@@ -76,16 +79,19 @@ const AddProducts = () => {
             ...prevValue,
             storeId: storeId
         }))
-
     }
-
     const handlePublish = async () => {
-        await axios.post(`http://${address}/api/addproduct`, values)
+        try {
+            const res = await axios.post(`http://${address}/api/addproduct`, values)
+            console.log(res.data.error)
+        } catch (error) {
+            console.log('Error', error)
+        }
 
     }
 
     const pickImage = async () => {
-        if (values.productInformation.gallery.length >= 8) {
+        if ([selectedPicture.gallery].length >= 8) {
             Alert.alert('Maximum 8 images allowed');
             return;
         }
@@ -98,14 +104,53 @@ const AddProducts = () => {
         })
 
         if (!result.canceled) {
-            const newGalleryItem = { uri: result.assets[0].uri };
-            setValues(prevState => ({
-                ...prevState,
-                productInformation: {
-                    ...prevState.productInformation,
-                    gallery: [...prevState.productInformation.gallery, newGalleryItem]
+            try {
+                const newGalleryItem = { uri: result.assets[0].uri }
+                handleUploadImage(newGalleryItem.uri)
+                setSelectedPidture((prevValue) => ({
+                    ...prevValue,
+                    gallery: [...prevValue.gallery, newGalleryItem]
+                }))
+            } catch (error) {
+                console.log(`Error: ${error}`)
+            }
+
+        }
+    }
+
+    const handleUploadImage = async (value) => {
+        try {
+            const data = new FormData();
+            data.append('file', {
+                uri: value,
+                name: `photo.${value.split('.').pop()}`,
+                type: `image/${value.split('.').pop()}`
+            })
+            data.append('upload_preset', '_products')
+            data.append('cloud_name', 'do1p9llzd')
+            data.append('folder', 'products_image')
+
+            const res = await axios.post(`https://api.cloudinary.com/v1_1/do1p9llzd/image/upload`, data, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data'
                 }
-            }))
+            })
+
+            if (res) {
+                console.log(`There is a res:`, res.data.url)
+                setValues(prevState => ({
+                    ...prevState,
+                    productInformation: {
+                        ...prevState.productInformation,
+                        gallery: [...prevState.productInformation.gallery, { uri: res.data.url }]
+                    }
+                }))
+            } else {
+                console.log(`Error data`)
+            }
+        } catch (error) {
+            console.log(`Error Handle Image Upload ${error}`)
         }
     }
 
@@ -159,11 +204,11 @@ const AddProducts = () => {
                                     </Text>
                                 </View>
                                 <View style={{ width: '100%', justifyContent: 'flex-start', flexDirection: 'row', gap: width * 0.02, flexWrap: 'wrap' }}>
-                                    {values.productInformation.gallery.length !== 0
+                                    {selectedPicture.gallery.length !== 0
                                         ? (
                                             <>
                                                 {
-                                                    values.productInformation.gallery.map((item, index) => (
+                                                    selectedPicture.gallery.map((item, index) => (
                                                         <View key={index} style={{ width: '22%', height: height * 0.1, overflow: 'hidden' }}>
                                                             <Image
                                                                 source={{ uri: `${item.uri}` }}
@@ -191,7 +236,7 @@ const AddProducts = () => {
                                             Add Photo
                                         </Text>
                                         <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                            {values.productInformation.gallery.length}/8
+                                            {selectedPicture.gallery.length}/8
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
