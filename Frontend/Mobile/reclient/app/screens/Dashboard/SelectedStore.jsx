@@ -16,6 +16,7 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios'
 import address from '../../../config/host'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width, height } = Dimensions.get('window')
 
@@ -30,6 +31,7 @@ const Products = [
 ]
 
 const SelectedStore = ({ route }) => {
+    const [shopName, setShopName] = useState('')
     const [values, setValues] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -39,10 +41,17 @@ const SelectedStore = ({ route }) => {
     }, [])
 
     const fetchProducts = async () => {
-        const { id } = route.params
+        const { userId, storeId } = route.params
 
-        const res = await axios.get(`http://${address}/api/getproducts/${id}`)
+        const token = await AsyncStorage.getItem('token')
+        const getStoreName = await axios.get(`http://${address}/api/getstore/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
         setValues(res.data.data)
+        setShopName(getStoreName.data.data.shopInformation.shopName)
     }
 
     const handleSelectItem = async (item) => {
@@ -101,9 +110,12 @@ const SelectedStore = ({ route }) => {
                                 <Ionicons name="chevron-back-circle" size={width * 0.08} color="#dedede" />
                             </TouchableOpacity>
                             <Animated.View style={{ opacity: opacityTitle1 }}>
-                                <Text style={{ fontSize: width * 0.04, color: '#fff', fontFamily: 'Poppins-Bold' }}>
-                                    BARASSI
-                                </Text>
+                                {shopName && (
+                                    <Text style={{ fontSize: width * 0.04, color: '#fff', fontFamily: 'Poppins-Bold' }}>
+                                        {shopName}
+                                    </Text>
+                                )}
+
                             </Animated.View>
                             <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
                                 <Ionicons name="search" size={24} color="white" />
@@ -120,9 +132,12 @@ const SelectedStore = ({ route }) => {
                                 paddingVertical: height * 0.02,
                             }}>
                             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <Text style={{ width: '60%', flexWrap: 'wrap', fontSize: width * 0.045, color: '#fff', fontWeight: '700', fontFamily: 'Poppins-Bold' }} numberOfLines={2} ellipsizeMode='tail' >
-                                    BARASSI
-                                </Text>
+                                {shopName && (
+                                    <Text style={{ width: '60%', flexWrap: 'wrap', fontSize: width * 0.045, color: '#fff', fontWeight: '700', fontFamily: 'Poppins-Bold' }} numberOfLines={2} ellipsizeMode='tail' >
+                                        {shopName}
+                                    </Text>
+
+                                )}
                                 <View style={{ gap: height * 0.01 }}>
                                     <TouchableOpacity
                                         style={{
