@@ -15,12 +15,9 @@ const StoreController = {
     },
     GetStore: async (req, res) => {
         try {
-           
             const { userId } = req.params
-            const data = await Stores.find({ userId: userId })
-
-            const { _id } = data[0]
-            res.json({ success: true, message: 'get store successfully', data, _id })
+            const data = await Stores.findOne({ userId: userId })
+            res.json({ success: true, message: 'get store successfully', data })
         } catch (error) {
             res.json({ success: false, message: `Error get store controller: ${error}` })
         }
