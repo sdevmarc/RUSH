@@ -15,6 +15,8 @@ import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../../config/host'
+import { LinearGradient } from 'expo-linear-gradient'
+import * as Colors from '../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
@@ -55,7 +57,7 @@ const Stores = [
     { id: 11, name: 'Toyota', category: 'Electronic' },
 ]
 
-const Home = () => {
+const Home = ({ route }) => {
     const [stores, setStores] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -66,7 +68,6 @@ const Home = () => {
 
     const fetchStores = async () => {
         const token = await AsyncStorage.getItem('token')
-
         const data = await axios.get(`http://${address}/api/getallstore`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -75,8 +76,8 @@ const Home = () => {
         setStores(data.data.data)
     }
 
-    const handleSelectStore = async (item) => {
-        navigation.navigate('SelectedStore', { id: item })
+    const handleSelectStore = async (item, id) => {
+        navigation.navigate('SelectedStore', { userId: item, storeId: id })
     }
 
     const headerHeight = scrollY.interpolate({
@@ -109,8 +110,12 @@ const Home = () => {
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-            <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <Animated.View style={{ width: '100%', height: headerHeight, backgroundColor: '#313d49' }}>
+            <LinearGradient
+                colors={[Colors.primaryColor, '#5b6063']}
+                style={{ position: 'absolute', width: width, height: height }}
+            />
+            <View style={{ width: width, height: height, backgroundColor: 'transparent' }}>
+                <Animated.View style={{ width: '100%', height: headerHeight}}>
                     <View
                         style={{
                             position: 'absolute',
@@ -126,11 +131,9 @@ const Home = () => {
                             onPress={() => navigation.openDrawer()}
                         >
                             <MaterialCommunityIcons name="dots-grid" size={width * 0.08} color="white" />
-                            {/* <Entypo name="grid" size={width * 0.08} color="white" /> */}
-                            {/* <Ionicons name="menu" size={width * 0.08} color="white" /> */}
                         </TouchableOpacity>
                         <Animated.View style={{ opacity: opacityTitle1 }}>
-                            <Text style={{ fontSize: width * 0.04, color: '#fff', fontFamily: 'Poppins-Bold' }}>
+                            <Text style={{ fontSize: width * 0.04, color: Colors.whiteColor, fontFamily: 'Poppins-Bold' }}>
                                 Home
                             </Text>
                         </Animated.View>
@@ -139,10 +142,10 @@ const Home = () => {
                         </TouchableOpacity>
                     </View>
                     <Animated.View style={{ opacity, position: 'absolute', top: height * 0.14, paddingHorizontal: width * 0.05, width: width }}>
-                        <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: '#fff', fontFamily: 'Poppins-Bold' }}>
+                        <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: Colors.whiteColor, fontFamily: 'Poppins-Bold' }}>
                             Discover
                         </Text>
-                        <Text style={{ fontSize: width * 0.07, color: '#fff', fontWeight: '700', fontFamily: 'Poppins-Bold' }}>
+                        <Text style={{ fontSize: width * 0.07, color: Colors.whiteColor, fontWeight: '700', fontFamily: 'Poppins-Bold' }}>
                             Our Rental Shops
                         </Text>
                     </Animated.View>
@@ -156,10 +159,10 @@ const Home = () => {
                         )}
                     scrollEventThrottle={16}
                 >
-                    <View style={{ width: width, gap: height * 0.022, backgroundColor: '#313d49' }}>
+                    <View style={{ width: width, gap: height * 0.022 }}>
                         <View style={{ width: '100%', gap: height * 0.02, paddingTop: height * 0.03 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03, paddingHorizontal: width * 0.03 }}>
-                                <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Regular' }}>
+                                <Text style={{ fontSize: width * 0.05, color: Colors.whiteColor, fontFamily: 'Poppins-Regular' }}>
                                     Categories
                                 </Text>
                             </View>
@@ -169,7 +172,7 @@ const Home = () => {
                                         paddingHorizontal: width * 0.05,
                                         paddingVertical: height * 0.0065,
                                         borderRadius: height * 0.01,
-                                        backgroundColor: '#d7a152',
+                                        backgroundColor: Colors.accent,
                                         justifyContent: 'center',
                                         alignItems: 'center'
                                     }}>
@@ -195,7 +198,7 @@ const Home = () => {
                         </View>
                         <View style={{ width: '100%', gap: height * 0.022, paddingHorizontal: width * 0.03 }}>
                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
-                                <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Regular' }}>
+                                <Text style={{ fontSize: width * 0.05, color: Colors.whiteColor, fontFamily: 'Poppins-Regular' }}>
                                     Rent Shops
                                 </Text>
                             </View>
@@ -203,7 +206,7 @@ const Home = () => {
                                 {stores.map((item) => (
                                     <TouchableOpacity
                                         key={item.userId}
-                                        onPress={() => handleSelectStore(item._id)}
+                                        onPress={() => handleSelectStore(item.userId, item._id)}
                                         style={{
                                             width: width * 0.452,
                                             height: height * 0.3,
@@ -219,14 +222,14 @@ const Home = () => {
                                                     style={{ width: '100%', height: '100%' }}
                                                 />
                                             </View>
-                                            <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'flex-start' }}>
-                                                <Text style={{ color: '#fff', fontSize: width * 0.03, fontFamily: 'Poppins-Regular' }} numberOfLines={1} ellipsizeMode='tail' >
+                                            <View style={{ width: '100%', height: '20%', justifyContent: 'space-evenly', alignItems: 'flex-start' }}>
+                                                <Text style={{ color: Colors.whiteColor, fontSize: width * 0.03, fontFamily: 'Poppins-Regular' }} numberOfLines={1} ellipsizeMode='tail' >
                                                     {item.shopInformation.shopName}
                                                 </Text>
                                                 <Text
                                                     style={{
-                                                        color: '#fff',
-                                                        backgroundColor: '#d7a152',
+                                                        color: Colors.whiteColor,
+                                                        backgroundColor: Colors.accent,
                                                         paddingHorizontal: width * 0.03,
                                                         paddingVertical: width * 0.005,
                                                         borderRadius: height * 0.005,
