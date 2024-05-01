@@ -79,6 +79,7 @@ const AddProducts = () => {
 
     const fetchData = async () => {
         const storeId = await AsyncStorage.getItem('storeId')
+        console.log('Add Products: (StoreID): ', storeId)
         setValues((prevValue) => ({
             ...prevValue,
             storeId: storeId
