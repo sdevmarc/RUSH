@@ -31,7 +31,8 @@ const Store = () => {
                 Authorization: `Bearer ${token}`
             }
         })
-        await AsyncStorage.setItem('storeId', res.data.data.userId)
+        console.log('From Store: ', res.data.data._id)
+        await AsyncStorage.setItem('storeId', res.data.data._id)
     }
 
     const handleProduct = () => {
