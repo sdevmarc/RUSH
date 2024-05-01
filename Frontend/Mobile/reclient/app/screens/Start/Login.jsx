@@ -11,7 +11,7 @@ import {
     KeyboardAvoidingView,
     ImageBackground
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Logo from '../../../assets/LogoDark.png'
 import axios from 'axios'
 import address from '../../../config/host'
@@ -28,6 +28,17 @@ const Login = () => {
         username: '',
         password: ''
     })
+
+    useEffect(() => {
+        removeItem()
+    },[])
+
+    const removeItem = async () => {
+       const data = await AsyncStorage.getAllKeys()
+       console.log(data)
+       await AsyncStorage.removeItem('storeId')
+       console.log('Removed storeId')
+    }
 
     const handleLogin = async () => {
         // navigation.replace('DrawerRoutes')
