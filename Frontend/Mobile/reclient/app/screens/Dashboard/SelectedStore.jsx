@@ -52,6 +52,8 @@ const SelectedStore = ({ route }) => {
         const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
         setValues(res.data.data)
         setShopName(getStoreName.data.data.shopInformation.shopName)
+
+        console.log('Selected store storeId: ', storeId)
     }
 
     const handleSelectItem = async (item) => {
@@ -188,7 +190,7 @@ const SelectedStore = ({ route }) => {
                         <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
                             {values.map((item) => (
                                 <TouchableOpacity
-                                    key={item.storeId}
+                                    key={item._id}
                                     onPress={() => handleSelectItem(item._id)}
                                     style={{
                                         width: width * 0.452,
