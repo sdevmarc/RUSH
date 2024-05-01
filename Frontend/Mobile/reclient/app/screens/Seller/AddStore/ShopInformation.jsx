@@ -8,7 +8,7 @@ import {
     Platform,
     TouchableOpacity
 } from 'react-native'
-import React, {  useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Navbar from '../../../components/Navbar'
 import { useNavigation } from '@react-navigation/native'
@@ -83,7 +83,8 @@ const ShopInformation = () => {
         // navigation.navigate('BusinessInformation')
         try {
             const dataShopInformation = JSON.stringify(values)
-            await AsyncStorage.setItem('shopInfo', dataShopInformation)
+            const data = await AsyncStorage.setItem('shopInfo', dataShopInformation)
+            console.log('From Shop Information shopInfo: ', data)
             navigation.navigate('BusinessInformation')
         } catch (error) {
             console.error(error)
