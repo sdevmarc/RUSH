@@ -7,7 +7,7 @@ const LoginAuth = async (req, res, next) => {
     try {
         const { username, password } = req.body
 
-//nag commit ako isang beses testing
+//nag commit ako isang beses testingllll
         const User = await Users.findOne({ username: username })
 
         if (User) {
