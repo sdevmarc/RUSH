@@ -18,7 +18,7 @@ const ProductController = {
     FetchProducts: async (req, res) => {
         try {
             const { storeId } = req.params
-            console.log(storeId)
+            // console.log(storeId)
             const data = await Product.find({ storeId: storeId })
             if (data) {
                 res.json({ success: true, message: 'Product successfully fetched', data })
