@@ -1,0 +1,12 @@
+.home {
+    width: 100%;
+    height: 100%;
+    background: url('../../../assets/Login.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.login-form {
+    box-shadow: inset 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
