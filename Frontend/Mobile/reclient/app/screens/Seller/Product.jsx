@@ -4,12 +4,14 @@ import {
     Dimensions,
     StatusBar,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    TextInput
 } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import Navbar from '../../components/Navbar'
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons'
+import * as Colors from '../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
@@ -22,42 +24,27 @@ const Product = () => {
 
     return (
         <>
-            <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-            <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <Navbar title='Products' backgroundColor='#323d48' />
+            <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+            <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                <Navbar title='Products' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.01 }}>
-                            <TouchableOpacity
-
-                                style={{
-                                    padding: width * 0.03,
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    paddingHorizontal: width * 0.03,
-                                    backgroundColor: '#4a4c59',
-                                    borderRadius: height * 0.01
-                                }}
-                            >
-                                <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-                                    View Products
-                                </Text>
-                                <MaterialIcons name="arrow-forward-ios" size={width * 0.05} color="white" />
-                            </TouchableOpacity>
+                            <TextInput style={{ width: '100%', height: height * 0.06, paddingHorizontal: width * 0.03, borderRadius: height * 0.02, backgroundColor: Colors.idleColor }} placeholder='Search products here...' />
                             <TouchableOpacity
                                 onPress={handleOnPressAddProduct}
                                 style={{
-                                    padding: width * 0.03,
+                                    width: '100%',
+                                    height: height * 0.06,
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
                                     paddingHorizontal: width * 0.03,
-                                    backgroundColor: '#4a4c59',
+                                    backgroundColor: Colors.orange,
                                     borderRadius: height * 0.01
                                 }}
                             >
-                                <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                                <Text style={{ color: Colors.whiteColor, fontWeight: 'bold' }}>
                                     Add Product
                                 </Text>
                                 <MaterialIcons name="arrow-forward-ios" size={width * 0.05} color="white" />
