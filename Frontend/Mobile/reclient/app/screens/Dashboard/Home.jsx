@@ -6,7 +6,8 @@ import {
     Dimensions,
     Animated,
     Image,
-    StatusBar
+    StatusBar,
+    TextInput
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { Ionicons, MaterialIcons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -15,7 +16,6 @@ import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../../config/host'
-import { LinearGradient } from 'expo-linear-gradient'
 import * as Colors from '../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
@@ -31,30 +31,6 @@ const Categories = [
     { id: 8, name: 'Sports' },
     { id: 9, name: 'Food' },
     { id: 10, name: 'Pets' }
-]
-
-const Trends = [
-    { id: 1, name: 'Clothes' },
-    { id: 2, name: 'Clothes' },
-    { id: 3, name: 'Clothes' },
-    { id: 4, name: 'Clothes' },
-    { id: 5, name: 'Clothes' },
-    { id: 6, name: 'Clothes' },
-    { id: 7, name: 'Clothes' }
-]
-
-const Stores = [
-    { id: 1, name: 'Barassi', category: 'Clothes' },
-    { id: 2, name: 'Bloom', category: 'Beauty' },
-    { id: 3, name: 'Gear', category: 'Accessories' },
-    { id: 4, name: 'Thrive', category: 'Clothes' },
-    { id: 5, name: 'Spark', category: 'Homegoods' },
-    { id: 6, name: 'Luxe', category: 'Sports' },
-    { id: 7, name: 'Swift', category: 'Clothes' },
-    { id: 8, name: 'Ford', category: 'Electronic' },
-    { id: 9, name: 'Suzuki', category: 'Electronic' },
-    { id: 10, name: 'Mitsubishi', category: 'Electronic' },
-    { id: 11, name: 'Toyota', category: 'Electronic' },
 ]
 
 const Home = ({ route }) => {
@@ -82,7 +58,7 @@ const Home = ({ route }) => {
 
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
-        outputRange: [height * 0.22, height * 0.14],
+        outputRange: [height * 0.29, height * 0.14],
         extrapolate: 'clamp',
     })
 
@@ -109,13 +85,9 @@ const Home = ({ route }) => {
 
     return (
         <>
-            <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-            <LinearGradient
-                colors={[Colors.primaryColor, '#5b6063']}
-                style={{ position: 'absolute', width: width, height: height }}
-            />
-            <View style={{ width: width, height: height, backgroundColor: 'transparent' }}>
-                <Animated.View style={{ width: '100%', height: headerHeight}}>
+            <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+            <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                <Animated.View style={{ width: '100%', height: headerHeight }}>
                     <View
                         style={{
                             position: 'absolute',
@@ -130,23 +102,28 @@ const Home = ({ route }) => {
                         <TouchableOpacity
                             onPress={() => navigation.openDrawer()}
                         >
-                            <MaterialCommunityIcons name="dots-grid" size={width * 0.08} color="white" />
+                            <MaterialCommunityIcons name="dots-grid" size={width * 0.08} color="black" />
                         </TouchableOpacity>
                         <Animated.View style={{ opacity: opacityTitle1 }}>
-                            <Text style={{ fontSize: width * 0.04, color: Colors.whiteColor, fontFamily: 'Poppins-Bold' }}>
+                            <Text style={{ fontSize: width * 0.04, color: Colors.fontColor, fontFamily: 'Poppins-Bold' }}>
                                 Home
                             </Text>
                         </Animated.View>
-                        <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
-                            <Ionicons name="search" size={width * 0.05} color="white" />
-                        </TouchableOpacity>
+                        <View style={{ gap: width * 0.03, flexDirection: 'row' }}>
+                            <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
+                                <Ionicons name="notifications" size={24} color="black" />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
+                                <Ionicons name="chatbubble-ellipses-sharp" size={24} color="black" />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <Animated.View style={{ opacity, position: 'absolute', top: height * 0.14, paddingHorizontal: width * 0.05, width: width }}>
-                        <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: Colors.whiteColor, fontFamily: 'Poppins-Bold' }}>
+                        <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: Colors.fontColor, fontFamily: 'Poppins-Bold' }}>
                             Discover
                         </Text>
-                        <Text style={{ fontSize: width * 0.07, color: Colors.whiteColor, fontWeight: '700', fontFamily: 'Poppins-Bold' }}>
-                            Our Rental Shops
+                        <Text style={{ fontSize: width * 0.07, color: Colors.fontColor, fontWeight: '700', fontFamily: 'Poppins-Bold' }}>
+                            The Best Rental Place in Nueva Vizcaya
                         </Text>
                     </Animated.View>
                 </Animated.View>
@@ -160,9 +137,12 @@ const Home = ({ route }) => {
                     scrollEventThrottle={16}
                 >
                     <View style={{ width: width, gap: height * 0.022 }}>
-                        <View style={{ width: '100%', gap: height * 0.02, paddingTop: height * 0.03 }}>
+                        <View style={{ width: '100%', gap: height * 0.02 }}>
+                            <View style={{ width: '100%', paddingHorizontal: width * 0.03 }}>
+                                <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Search for stores, items, categories...' />
+                            </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03, paddingHorizontal: width * 0.03 }}>
-                                <Text style={{ fontSize: width * 0.05, color: Colors.whiteColor, fontFamily: 'Poppins-Regular' }}>
+                                <Text style={{ fontSize: width * 0.05, color: Colors.fontColor, fontFamily: 'Poppins-Bold' }}>
                                     Categories
                                 </Text>
                             </View>
@@ -172,11 +152,11 @@ const Home = ({ route }) => {
                                         paddingHorizontal: width * 0.05,
                                         paddingVertical: height * 0.0065,
                                         borderRadius: height * 0.01,
-                                        backgroundColor: Colors.accent,
+                                        backgroundColor: Colors.orange,
                                         justifyContent: 'center',
                                         alignItems: 'center'
                                     }}>
-                                    <Text style={{ fontFamily: 'Poppins-Bold', color: 'white' }}>
+                                    <Text style={{ fontFamily: 'Poppins-Bold', color: Colors.whiteColor }}>
                                         All
                                     </Text>
                                 </TouchableOpacity>
@@ -187,18 +167,18 @@ const Home = ({ route }) => {
                                             paddingHorizontal: width * 0.05,
                                             paddingVertical: height * 0.0065,
                                             borderRadius: height * 0.01,
-                                            backgroundColor: '#4b4c59',
+                                            backgroundColor: Colors.idleColor,
                                             justifyContent: 'center',
                                             alignItems: 'center'
                                         }}>
-                                        <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>{item.name}</Text>
+                                        <Text style={{ fontFamily: 'Poppins-Regular', color: Colors.fontColor }}>{item.name}</Text>
                                     </TouchableOpacity>
                                 ))}
                             </ScrollView>
                         </View>
                         <View style={{ width: '100%', gap: height * 0.022, paddingHorizontal: width * 0.03 }}>
                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', gap: width * 0.03 }}>
-                                <Text style={{ fontSize: width * 0.05, color: Colors.whiteColor, fontFamily: 'Poppins-Regular' }}>
+                                <Text style={{ fontSize: width * 0.05, color: Colors.fontColor, fontFamily: 'Poppins-Bold' }}>
                                     Rent Shops
                                 </Text>
                             </View>
