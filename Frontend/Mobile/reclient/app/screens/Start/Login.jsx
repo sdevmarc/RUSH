@@ -1,5 +1,4 @@
 import {
-    Image,
     ScrollView,
     StatusBar,
     Text,
@@ -12,12 +11,10 @@ import {
     ImageBackground
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Logo from '../../../assets/LogoDark.png'
 import axios from 'axios'
 import address from '../../../config/host'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { LinearGradient } from 'expo-linear-gradient'
 import * as Colors from '../../../utils/colors'
 
 const { width, height } = Dimensions.get("window")
@@ -31,13 +28,13 @@ const Login = () => {
 
     useEffect(() => {
         removeItem()
-    },[])
+    }, [])
 
     const removeItem = async () => {
-       const data = await AsyncStorage.getAllKeys()
-       console.log(data)
-       await AsyncStorage.removeItem('storeId')
-       console.log('Removed storeId')
+        const data = await AsyncStorage.getAllKeys()
+        console.log(data)
+        await AsyncStorage.removeItem('storeId')
+        console.log('Removed storeId')
     }
 
     const handleLogin = async () => {
@@ -63,8 +60,8 @@ const Login = () => {
         }
     }
 
-    const handleSignUp = () => {
-        navigation.replace('Register')
+    const handleGoBack = () => {
+        navigation.replace('CreateOrLogin')
     }
 
     const handleOnchangeUsername = (value) => {
@@ -78,58 +75,62 @@ const Login = () => {
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
-            <LinearGradient
-                colors={[Colors.primaryColor, '#5b6063']}
-                style={{ position: 'absolute', width: width, height: height }}
-            />
-            <View style={{ width: width, backgroundColor: 'transparent', zIndex: 1 }}>
+            <View style={{ width: width, backgroundColor: Colors.backgroundColor, zIndex: 1 }}>
                 <KeyboardAvoidingView behavior="padding">
                     <ScrollView>
                         <View style={{
                             width: width,
-                            height: height,
-                            paddingHorizontal: width * 0.07,
+                            paddingHorizontal: width * 0.05,
+                            paddingVertical: height * 0.05,
                             justifyContent: 'center',
                             gap: height * 0.01
                         }}
                         >
-                            <View style={{ width: '100%', justifyContent: 'center' }}>
-                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold', fontSize: height * 0.05 }}>
-                                    Welcome!
-                                </Text>
-                                <Text style={{ color: Colors.fontColor, fontWeight: '500', fontSize: height * 0.015 }}>
-                                    Please login or sign up to continue our app
-                                </Text>
-                            </View>
+                            <View style={{ width: '100%', height: height * 0.45, overflow: 'hidden', borderRadius: width * 0.07, marginTop: height * 0.03, justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+                                <ImageBackground source={{ uri: 'https://source.unsplash.com/two-person-shaking-hands-near-white-painted-wall-9cd8qOgeNIY' }} style={{ width: '100%', height: '100%', }} resizeMode='cover'>
+                                    <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.05, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                        <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.045 }}>
+                                            Rent-up and share!
+                                        </Text>
+                                        <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.09 }}>
+                                            Login
+                                        </Text>
+                                    </View>
 
-                            <View style={{ paddingVertical: height * 0.02, gap: 10 }}>
+                                </ImageBackground>
+                            </View>
+                            <View style={{ paddingVertical: height * 0.01, gap: 10 }}>
                                 <View style={{ gap: 10 }}>
-                                    <Text style={{ fontSize: width * 0.035, fontWeight: 'bold', color: Colors.whiteColor }}>
-                                        Email / Username
+                                    <Text style={{ fontSize: width * 0.035, fontWeight: '500', color: Colors.fontColor }}>
+                                        Username
                                     </Text>
-                                    <TextInput onChangeText={handleOnchangeUsername} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Email or username' />
+                                    <TextInput onChangeText={handleOnchangeUsername} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Enter your username' />
                                 </View>
                                 <View style={{ gap: 10 }}>
-                                    <Text style={{ fontSize: width * 0.035, fontWeight: 'bold', color: Colors.whiteColor }}>
+                                    <Text style={{ fontSize: width * 0.035, fontWeight: '500', color: Colors.fontColor }}>
                                         Password
                                     </Text>
-                                    <TextInput onChangeText={handleOnchangePassword} secureTextEntry={true} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Password' />
+                                    <TextInput onChangeText={handleOnchangePassword} secureTextEntry={true} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Enter your password' />
                                 </View>
                                 <TouchableOpacity>
-                                    <Text style={{ fontSize: width * 0.03, fontWeight: 'bold', color: Colors.idleColor }}>
+                                    <Text style={{ fontSize: width * 0.03, fontWeight: '600', color: Colors.fontColor }}>
                                         Forgot Password?
                                     </Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ paddingVertical: height * 0.03, gap: height * 0.016 }}>
-                                <TouchableOpacity onPress={handleLogin} style={{ height: height * 0.06, borderRadius: height * 0.1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.accent }}>
-                                    <Text style={{ fontSize: width * 0.035, color: 'white', fontWeight: 'bold' }}>
+                            <View style={{ paddingVertical: height * 0.01, gap: height * 0.02 }}>
+                                <TouchableOpacity
+                                    onPress={handleLogin}
+                                    style={{ width: '100%', height: height * 0.07, backgroundColor: '#E1793C', paddingHorizontal: width * 0.03, borderRadius: height * 0.05, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ color: 'white', fontSize: width * 0.04 }}>
                                         Login
                                     </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={handleSignUp} style={{ height: height * 0.06, borderRadius: height * 0.1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
-                                    <Text style={{ fontSize: width * 0.03, fontWeight: 'bold' }}>
-                                        Create Account
+                                <TouchableOpacity
+                                    onPress={handleGoBack}
+                                    style={{ width: '100%', height: height * 0.07, backgroundColor: '#EFEFEF', paddingHorizontal: width * 0.03, borderRadius: height * 0.05, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ color: 'black', fontSize: width * 0.04 }}>
+                                       Go Back
                                     </Text>
                                 </TouchableOpacity>
                             </View>
