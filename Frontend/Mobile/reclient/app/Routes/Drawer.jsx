@@ -20,7 +20,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../config/host'
-import { Ionicons, MaterialIcons, Entypo, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, Entypo, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
+import * as Colors from '../../utils/colors'
 
 const Drawer = createDrawerNavigator()
 
@@ -57,11 +58,11 @@ const DrawerRoutes = () => {
         <Drawer.Navigator
             screenOptions={{
                 drawerStyle: {
-                    backgroundColor: '#d7a152'
+                    backgroundColor: Colors.backgroundColor
                 },
-                drawerActiveBackgroundColor: 'white',
-                drawerActiveTintColor: 'black',
-                drawerInactiveTintColor: 'white',
+                drawerActiveBackgroundColor: Colors.orange,
+                drawerActiveTintColor: Colors.whiteColor,
+                drawerInactiveTintColor: Colors.fontColor,
 
             }}
             drawerContent={
@@ -70,10 +71,10 @@ const DrawerRoutes = () => {
                         <>
                             <DrawerContentScrollView>
                                 <View style={{ width: '100%', height: height * 0.2, justifyContent: 'center', alignItems: 'flex-start', paddingHorizontal: width * 0.05 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.1 }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.1 }}>
                                         RUSh
                                     </Text>
-                                    <Text style={{ color: 'white', fontWeight: '500', fontSize: width * 0.05 }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: '500', fontSize: width * 0.05 }}>
                                         Rent-up and Share!
                                     </Text>
                                 </View>
@@ -93,26 +94,9 @@ const DrawerRoutes = () => {
                     headerTitleAlign: 'center',
                     headerShown: false,
                     drawerIcon: ({ focused }) => (
-                        <FontAwesome5 name="home" size={24} color={focused ? 'black' : 'white'} />
+                        <FontAwesome5 name="home" size={24} color={focused ? 'white' : 'black'} />
                     )
                 }} />
-
-            {isRenter
-                &&
-                <Drawer.Screen
-                    name="StoreDashboard"
-                    component={Store}
-                    options={{
-                        drawerLabel: 'Renters Dashboard',
-                        headerTitle: 'Account',
-                        headerTitleAlign: 'center',
-                        headerShown: false,
-                        drawerIcon: ({ focused }) => (
-                            <MaterialIcons name="sell" size={24} color={focused ? 'black' : 'white'} />
-                        )
-                    }}
-                />}
-
             <Drawer.Screen
                 name="Account"
                 component={Account}
@@ -122,7 +106,7 @@ const DrawerRoutes = () => {
                     headerTitleAlign: 'center',
                     headerShown: false,
                     drawerIcon: ({ focused }) => (
-                        <Ionicons name="person-sharp" size={24} color={focused ? 'black' : 'white'} />
+                        <Ionicons name="person-sharp" size={24} color={focused ? 'white' : 'black'} />
                     )
                 }}
             />
@@ -136,11 +120,25 @@ const DrawerRoutes = () => {
                     headerTitleAlign: 'center',
                     headerShown: false,
                     drawerIcon: ({ focused }) => (
-                        <MaterialIcons name="inventory" size={24} color={focused ? 'black' : 'white'} />
+                        <MaterialIcons name="inventory" size={24} color={focused ? 'white' : 'black'} />
                     )
                 }}
             />
-
+            {isRenter && (
+                <Drawer.Screen
+                    name="StoreDashboard"
+                    component={Store}
+                    options={{
+                        drawerLabel: 'Renters',
+                        headerTitle: 'Account',
+                        headerTitleAlign: 'center',
+                        headerShown: false,
+                        drawerIcon: ({ focused }) => (
+                            <MaterialIcons name="sell" size={24} color={focused ? 'white' : 'black'} />
+                        )
+                    }}
+                />
+            )}
             <Drawer.Screen
                 name="Settings"
                 component={Settings}
@@ -150,7 +148,7 @@ const DrawerRoutes = () => {
                     headerTitleAlign: 'center',
                     headerShown: false,
                     drawerIcon: ({ focused }) => (
-                        <Ionicons name="settings" size={24} color={focused ? 'black' : 'white'} />
+                        <Ionicons name="settings" size={24} color={focused ? 'white' : 'black'} />
                     )
                 }}
             />
