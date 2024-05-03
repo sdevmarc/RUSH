@@ -15,6 +15,7 @@ import Product from '../screens/Seller/Product';
 import ShopInformation from '../screens/Seller/AddStore/ShopInformation';
 import BusinessInformation from '../screens/Seller/AddStore/BusinessInformation';
 import AddProducts from '../screens/Seller/Add Products/AddProducts';
+import CreateOrLogin from '../screens/Start/CreateOrLogin';
 
 
 const Stack = createNativeStackNavigator()
@@ -24,6 +25,7 @@ function StackRoutes() {
         <NavigationContainer>
             <Stack.Navigator>
                 {/* START */}
+                <Stack.Screen name="CreateOrLogin" component={CreateOrLogin} options={{ headerTitle: 'CreateOrLogin', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="Login" component={Login} options={{ headerTitle: 'Login', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="Register" component={Register} options={{ headerTitle: 'Register', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="SuccessfulLogin" component={SuccessfulLogin} options={{ headerTitle: 'Successful', headerTitleAlign: 'center', headerShown: false }} />
