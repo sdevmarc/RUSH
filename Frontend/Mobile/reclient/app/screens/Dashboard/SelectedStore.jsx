@@ -17,6 +17,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios'
 import address from '../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Colors from '../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
