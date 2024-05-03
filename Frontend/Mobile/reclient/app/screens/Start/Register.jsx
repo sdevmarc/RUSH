@@ -11,12 +11,11 @@ import {
     Alert
 } from 'react-native'
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import Logo from '../../../assets/LogoDark.png'
 import { Checkbox } from 'expo-checkbox'
 import axios from 'axios'
 import address from '../../../config/host'
 import { useNavigation } from '@react-navigation/native'
+import * as Colors from '../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
@@ -62,6 +61,10 @@ const Register = () => {
         }
     }
 
+    const handleGoBack = () => {
+        navigation.replace('CreateOrLogin')
+    }
+
     const handleOnChangeName = (value) => {
         setValues({ ...values, name: value })
     }
@@ -85,47 +88,51 @@ const Register = () => {
     return (
         <>
             <StatusBar translucent backgroundColor="white" barStyle="dark-content" />
-
-            <SafeAreaView>
+            <View style={{ width: width, backgroundColor: Colors.backgroundColor }}>
                 <KeyboardAvoidingView behavior="padding">
-                    <ScrollView >
-                        <View style={{ height: height, justifyContent: 'center', alignItems: 'flex-start', gap: height * 0.03, marginHorizontal: width * 0.1 }}>
-                            <Image source={Logo} style={{ width: '100%' }} resizeMode='contain' />
-                            <View style={{ width: '100%' }}>
-                                <Text style={{ fontSize: width * 0.09, fontWeight: 'bold' }}>
-                                    Sign Up!
+                    <ScrollView>
+                        <View style={{
+                            width: width,
+                            paddingHorizontal: width * 0.05,
+                            paddingVertical: height * 0.05,
+                            justifyContent: 'center',
+                            gap: height * 0.05
+                        }}>
+                            <View style={{ width: '100%', paddingTop: height * 0.03 }}>
+                                <Text style={{ fontSize: width * 0.06, fontWeight: 'bold' }}>
+                                    Create an account
                                 </Text>
-                                <Text style={{ fontSize: width * 0.03, color: '#8a8a8a' }}>
-                                    Create a new account
+                                <Text style={{ fontSize: width * 0.03, color: Colors.idleColor }}>
+                                    Please fill out the fields.
                                 </Text>
                             </View>
-                            <View style={{ marginVertical: height * 0.005, gap: height * 0.01 }}>
+                            <View style={{ marginVertical: height * 0.005, gap: height * 0.02 }}>
                                 <View style={{ gap: height * 0.01 }}>
-                                    <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
+                                    <Text style={{ fontSize: width * 0.035, fontWeight: '600' }}>
                                         Username
                                     </Text>
                                     <TextInput onChangeText={handleOnChangeUsername} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Username' />
                                 </View>
                                 <View style={{ gap: height * 0.01 }}>
-                                    <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
+                                    <Text style={{ fontSize: width * 0.035, fontWeight: '600' }}>
                                         Display Name
                                     </Text>
                                     <TextInput onChangeText={handleOnChangeName} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Display Name' />
                                 </View>
                                 <View style={{ gap: height * 0.01 }}>
-                                    <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
+                                    <Text style={{ fontSize: width * 0.035, fontWeight: '600' }}>
                                         Mobile Number
                                     </Text>
                                     <TextInput onChangeText={handleOnChangeContactNo} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Mobile Number' />
                                 </View>
                                 <View style={{ gap: height * 0.01 }}>
-                                    <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
+                                    <Text style={{ fontSize: width * 0.035, fontWeight: '600' }}>
                                         Password
                                     </Text>
                                     <TextInput onChangeText={handleOnChangePassword} secureTextEntry={true} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Password' />
                                 </View>
                                 <View style={{ gap: height * 0.01 }}>
-                                    <Text style={{ fontSize: width * 0.035, fontWeight: 'bold' }}>
+                                    <Text style={{ fontSize: width * 0.035, fontWeight: '600' }}>
                                         Confirm Password
                                     </Text>
                                     <TextInput onChangeText={handleOnChangeConfirmPassword} secureTextEntry={true} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Confirm Password' />
@@ -136,18 +143,28 @@ const Register = () => {
                                         By creating an account you have to agree with our terms and conditions.
                                     </Text>
                                 </View>
-                                <TouchableOpacity onPress={handleSignUp} style={{ height: height * 0.06, borderRadius: 30, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', marginVertical: height * 0.01 }}>
-                                    <Text style={{ fontSize: width * 0.035, color: 'white', fontWeight: 'bold' }}>
-                                        Register
-                                    </Text>
-                                </TouchableOpacity>
+                                <View style={{ paddingVertical: height * 0.01, gap: height * 0.02 }}>
+                                    <TouchableOpacity
+                                        onPress={handleSignUp}
+                                        style={{ width: '100%', height: height * 0.07, backgroundColor: '#E1793C', paddingHorizontal: width * 0.03, borderRadius: height * 0.05, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ color: 'white', fontSize: width * 0.04 }}>
+                                            Create account
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={handleGoBack}
+                                        style={{ width: '100%', height: height * 0.07, backgroundColor: '#EFEFEF', paddingHorizontal: width * 0.03, borderRadius: height * 0.05, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ color: 'black', fontSize: width * 0.04 }}>
+                                            Go Back
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
-
                     </ScrollView>
                 </KeyboardAvoidingView>
 
-            </SafeAreaView>
+            </View >
         </>
 
     )
