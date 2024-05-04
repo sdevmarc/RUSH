@@ -5,6 +5,7 @@ import {
     Dimensions
 } from 'react-native'
 import React from 'react'
+import * as Colors from '../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
@@ -17,7 +18,7 @@ const BottomBar = (props) => {
                     position: 'absolute',
                     bottom: 0, width: '100%',
                     height: height * 0.13,
-                    backgroundColor: '#323d48',
+                    backgroundColor: Colors.backgroundColor,
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     paddingTop: height * 0.015,
@@ -32,10 +33,10 @@ const BottomBar = (props) => {
                         borderRadius: height * 0.015
                     }}
                 >
-                    <Text style={{ color: 'white', fontWeight: '500', fontSize: width * 0.04 }}>
+                    <Text style={{ color: Colors.fontColor, fontWeight: '500', fontSize: width * 0.04 }}>
                         {props.subtitle}
                     </Text>
-                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.05 }}>
+                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.05 }}>
                         {props.suboutput}
                     </Text>
                 </View>
@@ -51,7 +52,7 @@ const BottomBar = (props) => {
                         borderRadius: height * 0.02
                     }}
                 >
-                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.04 }}>
+                    <Text style={{ color: Colors.whiteColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
                         {props.title}
                     </Text>
                 </TouchableOpacity>
