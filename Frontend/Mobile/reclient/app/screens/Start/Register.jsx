@@ -23,7 +23,7 @@ const Register = () => {
     const navigation = useNavigation()
     const [isChecked, setChecked] = useState(false);
     const [values, setValues] = useState({
-        name: '',
+        displayName: '',
         contactno: '',
         username: '',
         password: '',
@@ -37,7 +37,7 @@ const Register = () => {
         // navigation.replace('SuccessfulLogin')
 
         try {
-            if (values.name === '' || values.username === '' || values.password === '' || confirmPassword === '' || values.contactno === '') {
+            if (values.displayName === '' || values.username === '' || values.password === '' || confirmPassword === '' || values.contactno === '') {
                 Alert.alert('Warning', 'Please fill-in the required fields')
             } else {
                 if (values.password === confirmPassword) {
@@ -66,7 +66,7 @@ const Register = () => {
     }
 
     const handleOnChangeName = (value) => {
-        setValues({ ...values, name: value })
+        setValues({ ...values, displayName: value })
     }
 
     const handleOnChangeContactNo = (value) => {
