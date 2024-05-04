@@ -18,8 +18,30 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     UserType: {
-        type: String
-    }
+        type: String,
+        required: true
+    },
+    personalDetails: {
+        lastname: {
+            type: String
+        },
+        firrstname: {
+            type: String
+        },
+        middlename: {
+            type: String
+        }
+    },
+    deliveryAddress: [
+        {
+            municipality: {
+                type: String
+            },
+            barangay: {
+                type: String
+            }
+        }
+    ]
 }, { timestamps: true })
 
 const UserModel = mongoose.model('Users', UserSchema)
