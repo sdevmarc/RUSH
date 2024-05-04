@@ -31,12 +31,16 @@ const AddressModal = ({ title, onSelectMunicipality }) => {
     }
 
     const handleValueChange = (itemValue) => {
-        onSelectMunicipality(itemValue)
         setIsMunicipality(itemValue)
     }
 
     const handlModal = (value) => {
-        setIsModalOpen(value)
+        if (value === true) {
+            onSelectMunicipality(IsMunicipality)
+            setIsModalOpen(false);
+        } else {
+            setIsModalOpen(false);
+        }
     }
 
     return (
@@ -71,7 +75,7 @@ const AddressModal = ({ title, onSelectMunicipality }) => {
                                         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: height * 0.02 }}>Cancel</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={() => handlModal(false)}
+                                        onPress={() => handlModal(true)}
                                         style={{ width: width * 0.4, height: height * 0.06, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}
                                     >
                                         <Text style={{ color: '#111', fontWeight: 'bold', fontSize: height * 0.02 }}>Yes</Text>
