@@ -29,8 +29,9 @@ const Account = () => {
         setValues(data.data.data)
     }
 
-    const handleAddress = () => {
-        navigation.navigate('Address')
+    const handleAddress = async () => {
+        const userId = await AsyncStorage.getItem('userId')
+        navigation.navigate('Address', { userId: userId })
     }
 
     const handleStartRenting = () => {
