@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     ScrollView,
     Image,
+    Alert,
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
@@ -13,6 +14,7 @@ import Navbar from '../../components/Navbar'
 import * as Colors from '../../../utils/colors'
 import BottomBar from '../../components/BottomBar'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const { width, height } = Dimensions.get('window')
@@ -20,10 +22,16 @@ const { width, height } = Dimensions.get('window')
 const Cart = ({ route }) => {
     const [shopName, setShopName] = useState('')
     const [values, setValues] = useState([])
+    const [details, setDetails] = useState({
+        personalDetails: '',
+        activeAddress: '',
+        contactno: ''
+    })
     const navigation = useNavigation()
 
     useEffect(() => {
         fetchProductItem()
+        fetchAddressDetails()
     }, [])
 
     const handleCheckout = () => {
@@ -41,8 +49,30 @@ const Cart = ({ route }) => {
         setShopName(shopName)
     }
 
+    const fetchAddressDetails = async () => {
+        try {
+            const userId = await AsyncStorage.getItem('userId')
+            const res = await axios.get(`http://${address}/api/getactiveaddress/${userId}`)
+
+            if (res?.data?.success) {
+                setDetails((prev) => ({
+                    ...prev,
+                    personalDetails: res?.data?.data?.personalDetails,
+                    activeAddress: res?.data?.data?.ActiveAddress,
+                    contactno: res?.data?.data?.contactno
+                }))
+            } else {
+                Alert.alert(res?.data?.message)
+            }
+        } catch (error) {
+            console.error("Error fetching address details:", error);
+            Alert.alert("Failed to fetch address details. Please try again later.");
+        }
+
+    }
+
     const handleAddress = () => {
-        navigation.navigate('Address')
+        navigation.replace('Address')
     }
 
     const handleShippingOption = () => {
@@ -75,13 +105,13 @@ const Cart = ({ route }) => {
                                 </View>
                                 <View style={{ width: '100%', paddingHorizontal: width * 0.03, gap: height * 0.007 }}>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                        MARC EDISON D. SUAREZ
+                                        {details?.personalDetails?.firstname} {details?.personalDetails?.middlename} {details?.personalDetails?.lastname}
                                     </Text>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }} numberOfLines={2} ellipsizeMode='tail'>
-                                        Address ni marc, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum perspiciatis aut maxime autem illum sed fugit? Doloribus harum voluptas vitae magni ad ab dicta! Nisi impedit voluptatibus expedita exercitationem similique.
+                                        {details?.activeAddress?.barangay}, {details?.activeAddress?.municipality}, Nueva Vizcaya
                                     </Text>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                        +63 933335555
+                                        {details?.contactno}
                                     </Text>
                                 </View>
                             </TouchableOpacity>
