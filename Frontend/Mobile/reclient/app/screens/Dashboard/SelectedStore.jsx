@@ -52,13 +52,13 @@ const SelectedStore = ({ route }) => {
         })
         const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
         setValues(res.data.data)
-        setShopName(getStoreName.data.data.shopInformation.shopName)
+        setShopName(getStoreName?.data?.data?.shopInformation?.shopName)
 
         console.log('Selected store storeId: ', storeId)
     }
 
     const handleSelectItem = async (item) => {
-        navigation.navigate('SelectedItem', { id: item })
+        navigation.navigate('SelectedItem', { id: item, shopName: shopName })
     }
 
     const handleBack = async () => {
@@ -86,7 +86,7 @@ const SelectedStore = ({ route }) => {
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-            <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
+            <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
                 <Animated.View style={{ position: 'absolute', width: '100%', height: headerHeight, overflow: 'hidden', zIndex: 1 }}>
                     <BlurView
                         intensity={50}
@@ -114,7 +114,7 @@ const SelectedStore = ({ route }) => {
                             </TouchableOpacity>
                             <Animated.View style={{ opacity: opacityTitle1 }}>
                                 {shopName && (
-                                    <Text style={{ fontSize: width * 0.04, color: '#fff', fontFamily: 'Poppins-Bold' }}>
+                                    <Text style={{ fontSize: width * 0.04, color: Colors.whiteColor, fontFamily: 'Poppins-Bold' }}>
                                         {shopName}
                                     </Text>
                                 )}
@@ -136,7 +136,7 @@ const SelectedStore = ({ route }) => {
                             }}>
                             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                 {shopName && (
-                                    <Text style={{ width: '60%', flexWrap: 'wrap', fontSize: width * 0.045, color: '#fff', fontWeight: '700', fontFamily: 'Poppins-Bold' }} numberOfLines={2} ellipsizeMode='tail' >
+                                    <Text style={{ width: '60%', flexWrap: 'wrap', fontSize: width * 0.045, color: Colors.whiteColor, fontWeight: '700', fontFamily: 'Poppins-Bold' }} numberOfLines={2} ellipsizeMode='tail' >
                                         {shopName}
                                     </Text>
 
@@ -184,7 +184,7 @@ const SelectedStore = ({ route }) => {
                 >
                     <View style={{ width: '100%', gap: height * 0.022, paddingHorizontal: width * 0.03, paddingTop: height * 0.24 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03, paddingHorizontal: width * 0.03 }}>
-                            <Text style={{ fontSize: width * 0.05, color: '#fff', fontFamily: 'Poppins-Regular' }}>
+                            <Text style={{ fontSize: width * 0.05, color: Colors.fontColor, fontFamily: 'Poppins-Regular' }}>
                                 Products
                             </Text>
                         </View>
@@ -209,12 +209,12 @@ const SelectedStore = ({ route }) => {
                                             />
                                         </View>
                                         <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'flex-start' }}>
-                                            <Text style={{ width: '100%', color: '#fff', fontSize: width * 0.04, fontFamily: 'Poppins-Regular', flexWrap: 'wrap' }} numberOfLines={1} ellipsizeMode='tail' >
+                                            <Text style={{ width: '100%', color: Colors.whiteColor, fontSize: width * 0.04, fontFamily: 'Poppins-Regular', flexWrap: 'wrap' }} numberOfLines={1} ellipsizeMode='tail' >
                                                 {item.productInformation.productName}
                                             </Text>
                                             <Text
                                                 style={{
-                                                    color: '#fff',
+                                                    color: Colors.whiteColor,
                                                     backgroundColor: '#d7a152',
                                                     paddingHorizontal: width * 0.03,
                                                     paddingVertical: width * 0.005,
