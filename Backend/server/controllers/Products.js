@@ -39,7 +39,7 @@ const ProductController = {
             } else {
                 res.json({ success: false, message: 'Product did not fetched' })
             }
-            
+
         } catch (error) {
             res.json({ success: false, message: `Error fetching the selected product controller: ${error}`, error: error })
         }
