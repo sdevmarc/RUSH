@@ -6,39 +6,63 @@ import {
     Dimensions,
     TextInput,
     Platform,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Colors from '../../../../utils/colors'
 import Navbar from '../../../components/Navbar'
-import Modal from '../../../components/Modal'
 import AddressModal from '../../../components/AddressModal'
 import Context from '../../../components/Context'
 import { Picker } from '@react-native-picker/picker'
 import address from '../../../../config/host'
 import BottomBar from '../../../components/BottomBar'
+import axios from 'axios'
+import { useNavigation } from '@react-navigation/native'
 
 const { width, height } = Dimensions.get('window')
 
-const AddAddress = () => {
+const AddAddress = ({ route }) => {
+    const navigation = useNavigation()
     const [IsModalOpen, setIsModalOpen] = useState(false)
     const [values, setValues] = useState({
+        userId: '',
         personalDetails: {
             lastname: '',
-            firrstname: '',
+            firstname: '',
             middlename: ''
         },
-        deliveryAddress: [
-            {
-                municipality: '',
-                barangay: ''
-            }
-        ]
+        deliveryAddress: []
     })
 
-    const handleSubmit = async() => {
-        // const res = await axios.post(`http:${address}`)
-        console.log('tite')
+    useEffect(() => {
+        fetchUserId()
+    }, [])
+
+    const fetchUserId = async () => {
+        const { userId } = route.params
+        setValues((prevValue) => ({
+            ...prevValue,
+            userId: userId
+        }))
+        setValues((prev) => ({
+            ...prev,
+            deliveryAddress: {
+                ...prev?.deliveryAddress,
+                isActive: 'inactive'
+            }
+        }))
+    }
+
+    const handleSubmit = async () => {
+        const res = await axios.post(`http://${address}/api/addaddress`, values)
+       
+        if (res.data.success) {
+            Alert.alert(res.data.message)
+            navigation.replace('Address')
+        } else {
+            Alert.alert(res.data.message)
+        }
     }
 
     const handleModalState = (value) => {
