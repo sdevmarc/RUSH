@@ -4,20 +4,46 @@ import {
     StatusBar,
     Dimensions,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    Alert
 } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import Navbar from '../../components/Navbar'
 import * as Colors from '../../../utils/colors'
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width, height } = Dimensions.get('window')
 
-const DeliveryAddress = () => {
+const DeliveryAddress = ({ route }) => {
     const navigation = useNavigation()
+    const [values, setValues] = useState([])
 
-    const handleAddAddress = () => {
-        navigation.navigate('AddAddress')
+    useEffect(() => {
+        fetchAddress()
+    }, [])
+
+    const fetchAddress = async () => {
+        const userId = await AsyncStorage.getItem('userId')
+        const res = await axios.get(`http://${address}/api/getaddress/${userId}`)
+        setValues(res?.data?.data?.deliveryAddress)
+    }
+
+    const handleSetActiveAddress = async (index) => {
+        const userId = await AsyncStorage.getItem('userId')
+        const res = await axios.post(`http://${address}/api/activeaddress`, { index, userId })
+        if (res?.data?.success) {
+            Alert.alert(res?.data?.message)
+        } else {
+            Alert.alert(res?.data?.message)
+        }
+    }
+
+    const handleAddAddress = async () => {
+        const userId = await AsyncStorage.getItem('userId')
+        console.log(userId)
+        navigation.navigate('AddAddress', { userId: userId })
     }
 
     return (
@@ -28,38 +54,62 @@ const DeliveryAddress = () => {
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.02 }}>
-                            <TouchableOpacity style={{ width: '100%', gap: height * 0.007, backgroundColor: Colors.idleColor, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}>
-                                <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                    MARC EDISON D. SUAREZ
-                                </Text>
-                                <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                    Address ni marc, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum perspiciatis aut maxime autem illum sed fugit? Doloribus harum voluptas vitae magni ad ab dicta! Nisi impedit voluptatibus expedita exercitationem similique.
-                                </Text>
-                                <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                    +63 9333355555
-                                </Text>
-                                <View style={{ width: '100%', height: height * 0.04, borderRadius: height * 0.01, backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ color: Colors.whiteColor, fontWeight: 'bold' }}>
-                                        Edit
-                                    </Text>
+                            {values?.map((item) => (
+                                <View
+                                    key={item?._id}
+                                    style={{ width: '100%', gap: height * 0.03, backgroundColor: Colors.idleColor, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}>
+                                    <View
+                                        style={{ width: '100%', gap: height * 0.01 }}
+                                    >
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Text
+                                                style={{ color: Colors.fontColor, fontSize: width * 0.035, fontWeight: '600' }}
+                                            >
+                                                Province
+                                            </Text>
+                                            <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
+                                                Nueva Vizcaya
+                                            </Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Text
+                                                style={{ color: Colors.fontColor, fontSize: width * 0.035, fontWeight: '600' }}
+                                            >
+                                                Municipality
+                                            </Text>
+                                            <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
+                                                {item?.municipality}
+                                            </Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Text
+                                                style={{ color: Colors.fontColor, fontSize: width * 0.035, fontWeight: '600' }}
+                                            >
+                                                Barangay
+                                            </Text>
+                                            <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
+                                                {item?.barangay}
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: width * 0.03 }}>
+                                        <TouchableOpacity style={{ width: '45%', height: height * 0.04, borderRadius: height * 0.01, backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center' }}>
+                                            <Text style={{ color: Colors.whiteColor, fontWeight: 'bold' }}>
+                                                Edit
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => handleSetActiveAddress(item?._id)}
+                                            style={{ width: '45%', height: height * 0.04, borderRadius: height * 0.01, backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center' }}>
+                                            <Text style={{ color: Colors.whiteColor, fontWeight: 'bold' }}>
+                                                Set as default
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+
                                 </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: '100%', gap: height * 0.007, backgroundColor: Colors.idleColor, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}>
-                                <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                    MARC EDISON D. SUAREZ
-                                </Text>
-                                <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                    Address ni marc, Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum perspiciatis aut maxime autem illum sed fugit? Doloribus harum voluptas vitae magni ad ab dicta! Nisi impedit voluptatibus expedita exercitationem similique.
-                                </Text>
-                                <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                    +63 9333355555
-                                </Text>
-                                <View style={{ width: '100%', height: height * 0.04, borderRadius: height * 0.01, backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ color: Colors.whiteColor, fontWeight: 'bold' }}>
-                                        Edit
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
+                            ))}
 
                             <TouchableOpacity
                                 onPress={handleAddAddress}
