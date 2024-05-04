@@ -17,7 +17,7 @@ import { Picker } from '@react-native-picker/picker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import AddressModal from '../../../components/AddressModal'
 import Context from '../../../components/Context'
-
+import * as Colors from '../../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
@@ -99,8 +99,8 @@ const ShopInformation = () => {
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-            <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <Navbar title='Shop Information' backgroundColor='#323d48' remove={() => removeData()} />
+            <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                <Navbar title='Shop Information' backgroundColor={Colors.backgroundColor} remove={() => removeData()} />
                 <Context.Provider value={[IsModalOpen, setIsModalOpen]}>
                     <AddressModal onSelectMunicipality={(value) => handleOnChangeAddress('municipality', value)} />
                 </Context.Provider>
@@ -108,16 +108,16 @@ const ShopInformation = () => {
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.01 }}>
                             <View style={{ width: '100%', gap: height * 0.01 }}>
-                                <Text style={{ color: 'white', fontWeight: 'bold' }}>Shop Name</Text>
+                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>Shop Name</Text>
                                 <TextInput
                                     onChangeText={(value) => handleOnChangeNames('shopName', value)}
-                                    style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }}
+                                    style={{ height: height * 0.06, backgroundColor: Colors.idleColor, borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }}
                                     placeholder='What is your shop name?'
                                 />
                             </View>
 
                             <View style={{ width: '100%', flexDirection: 'row' }}>
-                                <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
+                                <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold' }}>
                                     Pickup Address
                                 </Text>
                             </View>
@@ -126,13 +126,13 @@ const ShopInformation = () => {
                                     <>
                                         <TouchableOpacity
                                             onPress={() => handleModal('municipality', true)}
-                                            style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                            style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.idleColor, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                         >
                                             <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
-                                                <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                                <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                                     Municipality
                                                 </Text>
-                                                <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                                <Text style={{ width: '50%', color: Colors.fontColor, textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
                                                     {values.pickupAddress.municipality}
                                                 </Text>
                                             </View>
@@ -145,7 +145,7 @@ const ShopInformation = () => {
                                     <>
                                         <View style={{ width: '100%', gap: height * 0.01 }}>
                                             <View style={{ width: '100%', gap: height * 0.01 }}>
-                                                <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                                <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                                     Municipality
                                                 </Text>
                                                 <Picker
@@ -175,28 +175,28 @@ const ShopInformation = () => {
                                 )
                             }
                             <TouchableOpacity style={{ width: '100%', gap: height * 0.01 }}>
-                                <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                     Barangay
                                 </Text>
                                 <TextInput
                                     onChangeText={(value) => handleOnChangeAddress('barangay', value)}
-                                    style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Where is your shop located?' />
+                                    style={{ height: height * 0.06, backgroundColor: Colors.idleColor, borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Where is your shop located?' />
                             </TouchableOpacity>
                             <View style={{ width: '100%', gap: height * 0.01 }}>
-                                <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                     Email
                                 </Text>
                                 <TextInput
                                     onChangeText={(value) => handleOnChangeNames('email', value)}
-                                    style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='What is your email?' />
+                                    style={{ height: height * 0.06, backgroundColor: Colors.idleColor, borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='What is your email?' />
                             </View>
                             <View style={{ width: '100%', gap: height * 0.01 }}>
-                                <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                     Mobile Number
                                 </Text>
                                 <TextInput
                                     onChangeText={(value) => handleOnChangeNames('mobileNumber', value)}
-                                    style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='What is your mobile number?' />
+                                    style={{ height: height * 0.06, backgroundColor: Colors.idleColor, borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='What is your mobile number?' />
                             </View>
                         </View>
                     </View>
