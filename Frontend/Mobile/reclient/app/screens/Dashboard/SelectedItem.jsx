@@ -10,10 +10,10 @@ import {
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { Ionicons } from '@expo/vector-icons';
 import Navbar from '../../components/Navbar'
 import axios from 'axios'
 import address from '../../../config/host'
+import * as Colors from '../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
@@ -26,22 +26,25 @@ const SelectedItem = ({ route }) => {
     }, [])
 
     const fetchProductItem = async () => {
-        const { id } = route.params
+        const { id, shopName } = route.params
+        console.log(shopName)
         const res = await axios.get(`http://${address}/api/selectproduct/${id}`)
         setValues(res.data.data)
     }
 
     const handleAddtoCart = () => {
-        navigation.navigate('Cart')
+        const { id, shopName } = route.params
+        console.log(shopName)
+        navigation.navigate('Cart', { id: id, shopName })
     }
 
     return (
         <>
-            <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-            <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <Navbar backgroundColor='none' />
+            <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+            <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                <Navbar backgroundColor='none' tintColor={Colors.black} />
                 <ScrollView>
-                    <View style={{ width: width, backgroundColor: '#323d48', paddingTop: height * 0.09 }}>
+                    <View style={{ width: width, paddingTop: height * 0.09 }}>
                         <View style={{ width: '100%', height: height * 0.5, padding: height * 0.015, paddingTop: height * 0.04 }}>
                             <View
                                 style={{
@@ -67,7 +70,7 @@ const SelectedItem = ({ route }) => {
                             <View style={{ width: '100%', gap: height * 0.01 }}>
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                     {values.productInformation && values.productInformation.productName && (
-                                        <Text style={{ width: width * 0.7, color: 'white', fontWeight: 'bold', fontSize: width * 0.07, flexWrap: 'wrap' }} >
+                                        <Text style={{ width: width * 0.7, color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.07, flexWrap: 'wrap' }} >
                                             {values.productInformation.productName}
                                         </Text>
                                     )}
@@ -81,13 +84,13 @@ const SelectedItem = ({ route }) => {
                                             justifyContent: 'center',
                                             alignItems: 'center'
                                         }}>
-                                        <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>
+                                        <Text style={{ fontFamily: 'Poppins-Regular', color: Colors.whiteColor }}>
                                             Available
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.04 }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
                                         Shipping Availability
                                     </Text>
                                     <View style={{ flexDirection: 'row', gap: width * 0.03 }}>
@@ -113,19 +116,16 @@ const SelectedItem = ({ route }) => {
                                     </View>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.04 }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
                                         Description
                                     </Text>
                                     {values.productInformation && values.productInformation.productDescription && (
-                                        <Text style={{ textAlign: 'justify', color: 'white', fontSize: width * 0.03 }}>
+                                        <Text style={{ textAlign: 'justify', color: Colors.fontColor, fontSize: width * 0.03 }}>
                                             {values.productInformation.productDescription}
                                         </Text>
                                     )}
-
                                 </View>
-
                             </View>
-
                         </View>
                     </View>
                 </ScrollView >
@@ -134,7 +134,7 @@ const SelectedItem = ({ route }) => {
                         position: 'absolute',
                         bottom: 0, width: '100%',
                         height: height * 0.13,
-                        backgroundColor: '#323d48',
+                        backgroundColor: Colors.backgroundColor,
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         paddingTop: height * 0.015,
@@ -149,11 +149,11 @@ const SelectedItem = ({ route }) => {
                             borderRadius: height * 0.015
                         }}
                     >
-                        <Text style={{ color: 'white', fontWeight: '500', fontSize: width * 0.04 }}>
+                        <Text style={{ color: Colors.fontColor, fontWeight: '500', fontSize: width * 0.04 }}>
                             Price
                         </Text>
                         {values.productInformation && values.productInformation.productDescription && (
-                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.05 }}>
+                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.05 }}>
                                 ₱ {values.productInformation.price}.00
                             </Text>
                         )}
