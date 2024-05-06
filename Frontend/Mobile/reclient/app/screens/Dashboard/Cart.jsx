@@ -15,17 +15,51 @@ import * as Colors from '../../../utils/colors'
 import BottomBar from '../../components/BottomBar'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Context from '../../components/Context'
+import Modal from '../../components/Modal'
 
+const ShippingOption = [
+    { id: 1, name: 'Pickup' },
+    { id: 2, name: 'Cash-on-delivery' }
+]
+
+const paymentOptions = [
+    { id: 1, name: 'Gcash' },
+    { id: 2, name: 'Debit Card' }
+]
 
 const { width, height } = Dimensions.get('window')
 
 const Cart = ({ route }) => {
+    const [IsModalOpen, setIsModalOpen] = useState({
+        shippingOption: false,
+        paymentMethod: false
+    })
     const [shopName, setShopName] = useState('')
     const [values, setValues] = useState([])
     const [details, setDetails] = useState({
         personalDetails: '',
         activeAddress: '',
         contactno: ''
+    })
+    const [IsCheckout, setCheckout] = useState({
+        userId: '',
+        sellerId: '',
+        productId: '',
+        checkout: {
+            deliveryAddress: {
+                municipality: '',
+                barangay: ''
+            },
+            shippingOption: '',
+            paymentMethod: '',
+            paymentDetails: {
+                merchandiseSubTotal: '',
+                shippingSubTotal: '',
+                totalPayment: ''
+            },
+            status: 'Unreturned'
+        }
     })
     const navigation = useNavigation()
 
@@ -34,19 +68,43 @@ const Cart = ({ route }) => {
         fetchAddressDetails()
     }, [])
 
-    const handleCheckout = () => {
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'SuccessfulCheckout' }]
-        })
+    const handleCheckout = async () => {
+        const res = await axios.post(`http://${address}/api/createtransaction`, IsCheckout)
+        if (res?.data?.success) {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'SuccessfulCheckout' }]
+            })
+        } else {
+            Alert.alert(res?.data?.message)
+        }
+
         // navigation.replace('SuccessfulCheckout')
     }
 
     const fetchProductItem = async () => {
         const { id, shopName } = route.params
         const res = await axios.get(`http://${address}/api/selectproduct/${id}`)
-        setValues(res.data.data)
+        setValues(res?.data?.data)
         setShopName(shopName)
+
+        const merchandiseSubTotal = parseFloat(res?.data?.data?.productInformation?.price)
+        const shippingSubTotal = parseFloat(res?.data?.data?.productInformation?.shippingFee)
+        const totalPayment = merchandiseSubTotal + shippingSubTotal
+        setCheckout((prev) => ({
+            ...prev,
+            sellerId: res?.data?.data?.storeId,
+            productId: res?.data?.data?._id,
+            checkout: {
+                ...prev?.checkout,
+                paymentDetails: {
+                    ...prev?.checkout?.paymentDetails,
+                    merchandiseSubTotal: merchandiseSubTotal,
+                    shippingSubTotal: shippingSubTotal,
+                    totalPayment: totalPayment
+                }
+            }
+        }))
     }
 
     const fetchAddressDetails = async () => {
@@ -58,8 +116,19 @@ const Cart = ({ route }) => {
                 setDetails((prev) => ({
                     ...prev,
                     personalDetails: res?.data?.data?.personalDetails,
-                    activeAddress: res?.data?.data?.ActiveAddress,
                     contactno: res?.data?.data?.contactno
+                }))
+                setCheckout((prev) => ({
+                    ...prev,
+                    userId: userId,
+                    checkout: {
+                        ...prev?.checkout,
+                        deliveryAddress: {
+                            ...prev?.checkout?.deliveryAddress,
+                            municipality: res?.data?.data?.ActiveAddress?.municipality,
+                            barangay: res?.data?.data?.ActiveAddress?.barangay
+                        }
+                    }
                 }))
             } else {
                 Alert.alert(res?.data?.message)
@@ -68,7 +137,6 @@ const Cart = ({ route }) => {
             console.error("Error fetching address details:", error);
             Alert.alert("Failed to fetch address details. Please try again later.");
         }
-
     }
 
     const handleAddress = () => {
@@ -76,17 +144,42 @@ const Cart = ({ route }) => {
     }
 
     const handleShippingOption = () => {
-        navigation.navigate('ShippingOption')
+        setIsModalOpen({
+            shippingOption: true
+        })
+        // navigation.navigate('ShippingOption')
     }
 
     const handlePaymentOption = () => {
-        navigation.navigate('PaymentOption')
+        setIsModalOpen({
+            paymentMethod: true
+        })
+        // navigation.navigate('PaymentOption')
+    }
+
+    const handleOnChangeArrayOption = (e, value) => {
+        try {
+            console.log(value)
+            setCheckout((prev) => ({
+                ...prev,
+                checkout: {
+                    ...prev.checkout,
+                    [e]: value
+                }
+            }))
+        } catch (error) {
+            console.log('Error handle onchange error: ', error)
+        }
     }
 
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                <Context.Provider value={{ IsModalOpen, setIsModalOpen }}>
+                    <Modal title={`Shipping Option`} onSelectedValue={(item) => handleOnChangeArrayOption('shippingOption', item)} fetchedData={ShippingOption} modalId={`shippingOption`} />
+                    <Modal title={`Payment Method`} onSelectedValue={(item) => handleOnChangeArrayOption('paymentMethod', item)} fetchedData={paymentOptions} modalId={`paymentMethod`} />
+                </Context.Provider>
                 <Navbar title='Checkout' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
@@ -103,12 +196,22 @@ const Cart = ({ route }) => {
                                         Edit
                                     </Text>
                                 </View>
+
                                 <View style={{ width: '100%', paddingHorizontal: width * 0.03, gap: height * 0.007 }}>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
                                         {details?.personalDetails?.firstname} {details?.personalDetails?.middlename} {details?.personalDetails?.lastname}
                                     </Text>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }} numberOfLines={2} ellipsizeMode='tail'>
-                                        {details?.activeAddress?.barangay}, {details?.activeAddress?.municipality}, Nueva Vizcaya
+                                        {IsCheckout?.checkout?.deliveryAddress
+                                            ?
+                                            (
+                                                <>
+                                                    {IsCheckout?.checkout?.deliveryAddress?.barangay}, {IsCheckout?.checkout?.deliveryAddress?.municipality}, Nueva Vizcaya
+                                                </>
+                                            )
+                                            :
+                                            ' Please set an active address.'
+                                        }
                                     </Text>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
                                         {details?.contactno}
@@ -175,7 +278,10 @@ const Cart = ({ route }) => {
                                 </View>
                                 <View style={{ width: '100%', paddingHorizontal: width * 0.03, gap: height * 0.007 }}>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
-                                        Delivery
+                                        {IsCheckout?.checkout?.shippingOption
+                                            ? IsCheckout?.checkout?.shippingOption
+                                            : 'Please choose a shipping option.'
+                                        }
                                     </Text>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontSize: width * 0.03 }}>
                                         Make sure your delivery address is set to your correct location.
@@ -190,7 +296,10 @@ const Cart = ({ route }) => {
                                     Payment Method
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                    Choose payment method
+                                    {IsCheckout?.checkout?.paymentMethod
+                                        ? IsCheckout?.checkout?.paymentMethod
+                                        : 'Choose payment method'
+                                    }
                                 </Text>
 
                             </TouchableOpacity>
@@ -204,7 +313,7 @@ const Cart = ({ route }) => {
                                             Merchandise Subtotal
                                         </Text>
                                         <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                            P18.00
+                                            P {IsCheckout?.checkout?.paymentDetails?.merchandiseSubTotal}.00
                                         </Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -212,7 +321,7 @@ const Cart = ({ route }) => {
                                             Shipping Subtotal
                                         </Text>
                                         <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                            P58.00
+                                            P {IsCheckout?.checkout?.paymentDetails?.shippingSubTotal}.00
                                         </Text>
                                     </View>
                                 </View>
@@ -220,7 +329,7 @@ const Cart = ({ route }) => {
                         </View>
                     </View >
                 </ScrollView >
-                <BottomBar subtitle={`Total Payment`} suboutput={`₱ 94.00`} redirect={handleCheckout} title={`Checkout`} />
+                <BottomBar subtitle={`Total Payment`} suboutput={`P ${IsCheckout?.checkout?.paymentDetails?.totalPayment}.00`} redirect={handleCheckout} title={`Checkout`} />
             </View >
         </>
     )
