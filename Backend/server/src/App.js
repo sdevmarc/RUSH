@@ -16,6 +16,7 @@ const LogoutRoute = require('../routes/Logout')
 const StoreRoute = require('../routes/Store')
 const UserRoute = require('../routes/Users')
 const ProductRoute = require('../routes/Product')
+const TransactionRoute = require('../routes/Transactions')
 
 
 app.use(cors({
@@ -44,6 +45,8 @@ app.use('/api', UserRoute)
 app.use('/api', LogoutRoute)
 
 app.use('/api', ProductRoute)
+
+app.use('/api', TransactionRoute)
 
 // app.use(mainMiddleware.notFound);
 // app.use(mainMiddleware.errorHandler);
