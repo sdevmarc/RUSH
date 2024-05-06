@@ -1,23 +1,21 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Login from '../screens/Start/Login';
-import Register from '../screens/Start/Register';
-import SuccessfulLogin from '../screens/Start/Successful';
-import DrawerRoutes from './Drawer';
-import SelectedStore from '../screens/Dashboard/SelectedStore';
-import SelectedItem from '../screens/Dashboard/SelectedItem';
-import Cart from '../screens/Dashboard/Cart';
-import SuccessfulCheckout from '../screens/Dashboard/Successful';
-import DeliveryAddress from '../screens/Settings/DeliveryAddress';
-import ShippingOption from '../screens/Dashboard/ShippingOption';
-import PaymentOption from '../screens/Dashboard/PaymentOption';
-import Product from '../screens/Seller/Product';
-import ShopInformation from '../screens/Seller/AddStore/ShopInformation';
-import BusinessInformation from '../screens/Seller/AddStore/BusinessInformation';
-import AddProducts from '../screens/Seller/Add Products/AddProducts';
-import CreateOrLogin from '../screens/Start/CreateOrLogin';
-import AddAddress from '../screens/Settings/Address/AddAddress';
-
+import Login from '../screens/Start/Login'
+import Register from '../screens/Start/Register'
+import SuccessfulLogin from '../screens/Start/Successful'
+import DrawerRoutes from './Drawer'
+import SelectedStore from '../screens/Dashboard/SelectedStore'
+import SelectedItem from '../screens/Dashboard/SelectedItem'
+import Cart from '../screens/Dashboard/Cart'
+import SuccessfulCheckout from '../screens/Dashboard/Successful'
+import DeliveryAddress from '../screens/Settings/DeliveryAddress'
+import PaymentOption from '../screens/Dashboard/PaymentOption'
+import Product from '../screens/Seller/Product'
+import ShopInformation from '../screens/Seller/AddStore/ShopInformation'
+import BusinessInformation from '../screens/Seller/AddStore/BusinessInformation'
+import AddProducts from '../screens/Seller/Add Products/AddProducts'
+import CreateOrLogin from '../screens/Start/CreateOrLogin'
+import AddAddress from '../screens/Settings/Address/AddAddress'
 
 const Stack = createNativeStackNavigator()
 
@@ -35,7 +33,6 @@ function StackRoutes() {
                 <Stack.Screen name="SelectedStore" component={SelectedStore} options={{ headerTitle: 'Store', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="SelectedItem" component={SelectedItem} options={{ headerTitle: 'Item', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="Cart" component={Cart} options={{ headerTitle: 'Cart', headerTitleAlign: 'center', headerShown: false }} />
-                <Stack.Screen name="ShippingOption" component={ShippingOption} options={{ headerTitle: 'ShippingOption', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="PaymentOption" component={PaymentOption} options={{ headerTitle: 'ShippingOption', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="SuccessfulCheckout" component={SuccessfulCheckout} options={{ headerTitle: 'SuccessfulCheckout', headerTitleAlign: 'center', headerShown: false }} />
                 {/* ACCOUNT */}
@@ -48,7 +45,7 @@ function StackRoutes() {
                 <Stack.Screen name="AddProduct" component={AddProducts} options={{ headerTitle: 'AddProducts', headerTitleAlign: 'center', headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
-    );
+    )
 }
 
 export default StackRoutes
