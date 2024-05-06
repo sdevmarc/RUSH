@@ -100,7 +100,7 @@ const ShopInformation = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-                <Navbar title='Shop Information' backgroundColor={Colors.backgroundColor} remove={() => removeData()} />
+                <Navbar title='Shop Information' backgroundColor={Colors.backgroundColor} remove={() => removeData()} tintColor={Colors.fontColor} />
                 <Context.Provider value={[IsModalOpen, setIsModalOpen]}>
                     <AddressModal onSelectMunicipality={(value) => handleOnChangeAddress('municipality', value)} />
                 </Context.Provider>
