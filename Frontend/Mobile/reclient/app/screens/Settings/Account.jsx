@@ -26,7 +26,7 @@ const Account = () => {
     const fetchData = async () => {
         const userId = await AsyncStorage.getItem('userId')
         const data = await axios.get(`http:${address}/api/getuser/${userId}`)
-        setValues(data.data.data)
+        setValues(data?.data?.data)
     }
 
     const handleAddress = async () => {
@@ -36,6 +36,7 @@ const Account = () => {
 
     const handleStartRenting = () => {
         navigation.navigate('ShopInformation')
+        
     }
 
     return (
@@ -103,7 +104,7 @@ const Account = () => {
                                         Display Name
                                     </Text>
                                     <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                        {values.name}
+                                        {values.displayName}
                                     </Text>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
