@@ -10,7 +10,7 @@ import React from 'react'
 
 const { width, height } = Dimensions.get('window')
 
-const Navbar = (props) => {
+const Navbar = ({ backgroundColor, remove, tintColor, title }) => {
     const navigation = useNavigation()
 
     return (
@@ -21,7 +21,7 @@ const Navbar = (props) => {
                 height: height * 0.12,
                 overflow: 'hidden',
                 zIndex: 1,
-                backgroundColor: `${props.backgroundColor}`,
+                backgroundColor: `${backgroundColor}`,
                 paddingVertical: height * 0.009
             }}
         >
@@ -38,15 +38,15 @@ const Navbar = (props) => {
                 }}
             >
                 <TouchableOpacity onPress={() => {
-                    {props.remove}
+                    { remove }
                     navigation.goBack()
                 }} >
-                    <Ionicons name="chevron-back-circle" size={width * 0.08} color={props.tintColor} />
+                    <Ionicons name="chevron-back-circle" size={width * 0.08} color={tintColor} />
                 </TouchableOpacity>
             </View>
             <View style={{ width: '100%', height: '100%', position: 'absolute', justifyContent: 'flex-end', alignItems: 'center' }}>
-                <Text style={{ fontSize: width * 0.05, fontWeight: 'bold', color: `${props.tintColor}` }}>
-                    {props.title}
+                <Text style={{ fontSize: width * 0.05, fontWeight: 'bold', color: `${tintColor}` }}>
+                    {title}
                 </Text>
             </View>
         </View>
