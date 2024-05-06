@@ -16,8 +16,8 @@ const UserController = {
             const { userId } = req.params
 
             const data = await Users.findOne({ _id: userId })
-            const { name, username, contactno, UserType } = data
-            res.json({ success: true, message: 'Fetching user successful', data: { username, name, contactno, UserType } })
+            const { displayName, username, contactno, UserType } = data
+            res.json({ success: true, message: 'Fetching user successful', data: { username, displayName, contactno, UserType } })
         } catch (error) {
             res.json({ success: false, message: `Error getting user controller: ${error}` })
         }
