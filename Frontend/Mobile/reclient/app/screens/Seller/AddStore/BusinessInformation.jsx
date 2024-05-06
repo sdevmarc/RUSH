@@ -18,6 +18,7 @@ import { Checkbox } from 'expo-checkbox'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import address from '../../../../config/host'
 import axios from 'axios'
+import * as Colors from '../../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
@@ -186,14 +187,14 @@ console.log(userId)
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-            <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <Navbar title='Business Information' backgroundColor='#323d48' />
+            <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                <Navbar title='Business Information' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <KeyboardAvoidingView behavior="padding">
                     <ScrollView>
                         <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                             <View style={{ width: '100%', paddingTop: height * 0.1, paddingBottom: height * 0.2, gap: height * 0.03 }}>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                         Seller Type
                                     </Text>
                                     <Picker
@@ -220,11 +221,11 @@ console.log(userId)
                                     </Picker>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                         REGISTERED NAME
                                     </Text>
                                     <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                             Last Name
                                         </Text>
                                         <TextInput
@@ -240,7 +241,7 @@ console.log(userId)
                                         />
                                     </View>
                                     <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                             First Name
                                         </Text>
                                         <TextInput
@@ -256,7 +257,7 @@ console.log(userId)
                                         />
                                     </View>
                                     <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                             Middle Name
                                         </Text>
                                         <TextInput
@@ -273,11 +274,11 @@ console.log(userId)
                                     </View>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                         REGISTERED ADDRESS
                                     </Text>
                                     <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                             Municipality
                                         </Text>
                                         <TextInput
@@ -293,7 +294,7 @@ console.log(userId)
                                         />
                                     </View>
                                     <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                             Barangay
                                         </Text>
                                         <TextInput
@@ -310,11 +311,11 @@ console.log(userId)
                                     </View>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                         TAXPAYER IDENTIFICATION NUMBER (TIN)
                                     </Text>
                                     <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                             Do you have a Taxpayer Identifation Number?
                                         </Text>
                                         <Picker
@@ -334,7 +335,7 @@ console.log(userId)
                                 {IsTin === 'Yes'
                                     ? <View style={{ width: '100%', gap: height * 0.01 }}>
                                         <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                            <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                            <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                                 Input 9 digit Taxpayer Identification Number (TIN)
                                             </Text>
                                             <TextInput
@@ -350,7 +351,7 @@ console.log(userId)
                                             />
                                         </View>
                                         <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                            <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                            <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                                 Upload Image Certification of Registration
                                             </Text>
                                             <TextInput
@@ -366,7 +367,7 @@ console.log(userId)
                                             />
                                         </View>
                                         <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.03 }}>
-                                            <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                            <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                                 Business Name/ Style
                                             </Text>
                                             <TextInput
@@ -385,11 +386,11 @@ console.log(userId)
                                     : null}
 
                                 <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.02, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.03 }}>
-                                    <Checkbox style={{ margin: 0, backgroundColor: 'white' }} value={IsAgree} onValueChange={(value) => {
+                                    <Checkbox style={{ margin: 0, backgroundColor: Colors.whiteColor }} value={IsAgree} onValueChange={(value) => {
                                         setIsAgree(value)
                                         handleTermsAndConditions(value)
                                     }} />
-                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                    <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
                                         AGREE TO TERMS AND CONDITIONS.
                                     </Text>
                                 </View>
