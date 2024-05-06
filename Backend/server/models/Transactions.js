@@ -14,6 +14,14 @@ const TransactionSchema = new mongoose.Schema({
         required: true
     },
     checkout: {
+        deliveryAddress: {
+            municipality: {
+                type: String,
+            },
+            barangay: {
+                type: String
+            }
+        },
         shippingOption: {
             type: String,
             required: true
