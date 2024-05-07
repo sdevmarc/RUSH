@@ -37,6 +37,10 @@ const Store = () => {
         await AsyncStorage.setItem('storeId', res.data.data._id)
     }
 
+    const handleToShip = () => {
+        navigation.navigate('ToShip')
+    }
+
     const handleProduct = () => {
         navigation.navigate('Products')
     }
@@ -107,7 +111,9 @@ const Store = () => {
                             <Text style={{ fontWeight: '600', fontSize: height * 0.02 }}>
                                 Order Status
                             </Text>
-                            <TouchableOpacity style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
+                            <TouchableOpacity
+                                onPress={handleToShip}
+                                style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     To Ship
                                 </Text>
