@@ -59,7 +59,7 @@ const AddAddress = ({ route }) => {
        
         if (res.data.success) {
             Alert.alert(res.data.message)
-            navigation.replace('Address')
+            navigation.goBack()
         } else {
             Alert.alert(res.data.message)
         }
