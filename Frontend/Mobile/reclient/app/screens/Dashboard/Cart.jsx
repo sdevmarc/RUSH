@@ -58,7 +58,7 @@ const Cart = ({ route }) => {
                 shippingSubTotal: '',
                 totalPayment: ''
             },
-            status: 'Unreturned'
+            status: 'PENDING'
         }
     })
     const navigation = useNavigation()
