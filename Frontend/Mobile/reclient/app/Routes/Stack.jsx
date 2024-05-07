@@ -17,6 +17,10 @@ import AddProducts from '../screens/Seller/Add Products/AddProducts'
 import CreateOrLogin from '../screens/Start/CreateOrLogin'
 import AddAddress from '../screens/Settings/Address/AddAddress'
 import ToShip from '../screens/Seller/OrderStatus/ToShip'
+import Summary from '../screens/Seller/Summary'
+import Cancelled from '../screens/Seller/OrderStatus/Cancelled'
+import Unreturned from '../screens/Seller/OrderStatus/Unreturned'
+import Reviews from '../screens/Seller/OrderStatus/Reviews'
 
 const Stack = createNativeStackNavigator()
 
@@ -45,6 +49,10 @@ function StackRoutes() {
                 <Stack.Screen name="Products" component={Product} options={{ headerTitle: 'Products', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="AddProduct" component={AddProducts} options={{ headerTitle: 'AddProducts', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="ToShip" component={ToShip} options={{ headerTitle: 'ToShip', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="Summary" component={Summary} options={{ headerTitle: 'Summary', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="Cancelled" component={Cancelled} options={{ headerTitle: 'Cancelled', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="Unreturned" component={Unreturned} options={{ headerTitle: 'Unreturned', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="Reviews" component={Reviews} options={{ headerTitle: 'Reviews', headerTitleAlign: 'center', headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     )
