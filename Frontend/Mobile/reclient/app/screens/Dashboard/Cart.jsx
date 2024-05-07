@@ -8,8 +8,8 @@ import {
     Image,
     Alert,
 } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useState, useCallback } from 'react'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import Navbar from '../../components/Navbar'
 import * as Colors from '../../../utils/colors'
 import BottomBar from '../../components/BottomBar'
@@ -63,10 +63,11 @@ const Cart = ({ route }) => {
     })
     const navigation = useNavigation()
 
-    useEffect(() => {
-        fetchProductItem()
-        fetchAddressDetails()
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchProductItem()
+            fetchAddressDetails()
+        }, []))
 
     const handleCheckout = async () => {
         const res = await axios.post(`http://${address}/api/createtransaction`, IsCheckout)
@@ -140,7 +141,7 @@ const Cart = ({ route }) => {
     }
 
     const handleAddress = () => {
-        navigation.replace('Address')
+        navigation.navigate('Address')
     }
 
     const handleShippingOption = () => {
@@ -202,7 +203,7 @@ const Cart = ({ route }) => {
                                         {details?.personalDetails?.firstname} {details?.personalDetails?.middlename} {details?.personalDetails?.lastname}
                                     </Text>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }} numberOfLines={2} ellipsizeMode='tail'>
-                                        {IsCheckout?.checkout?.deliveryAddress
+                                        {IsCheckout?.checkout?.deliveryAddress?.municipality
                                             ?
                                             (
                                                 <>
@@ -238,27 +239,27 @@ const Cart = ({ route }) => {
                                     />
                                 </View>
                                 <View style={{ width: '60%', height: '100%', padding: height * 0.01, justifyContent: 'center', gap: height * 0.01 }}>
-                                    <View>
-                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold' }}>
+                                    <View style={{ width: '100%' }}>
+                                        <Text style={{ width: '100%', color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold', fontSize: height * 0.013 }}>
                                             Product Name
                                         </Text>
-                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01 }} numberOfLines={1} ellipsizeMode='tail'>
+                                        <Text style={{ width: '100%', color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01, fontSize: height * 0.015 }} numberOfLines={1} ellipsizeMode='tail'>
                                             {values?.productInformation?.productName}
                                         </Text>
                                     </View>
-                                    <View>
-                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold' }}>
+                                    <View style={{ width: '100%' }}>
+                                        <Text style={{ width: '100%', color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold', fontSize: height * 0.013 }}>
                                             Store Name
                                         </Text>
-                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01 }} numberOfLines={1} ellipsizeMode='tail'>
+                                        <Text style={{ width: '100%', color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01, fontSize: height * 0.015 }} numberOfLines={1} ellipsizeMode='tail'>
                                             {shopName}
                                         </Text>
                                     </View>
-                                    <View>
-                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold' }}>
+                                    <View style={{ width: '100%' }}>
+                                        <Text style={{ width: '100%', color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold', fontSize: height * 0.013 }}>
                                             Price
                                         </Text>
-                                        <Text style={{ color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01 }} numberOfLines={1} ellipsizeMode='tail'>
+                                        <Text style={{ width: '100%', color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01, fontSize: height * 0.015 }} numberOfLines={1} ellipsizeMode='tail'>
                                             ₱ {values?.productInformation?.price}.00
                                         </Text>
                                     </View>
