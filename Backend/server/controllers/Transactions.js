@@ -1,4 +1,6 @@
 const Transactions = require('../models/Transactions')
+const Stores = require('../models/Stores')
+const Products = require('../models/Products')
 
 const TransactionController = {
     CreateTransaction: async (req, res) => {
@@ -19,16 +21,26 @@ const TransactionController = {
     },
     ViewTransactions: async (req, res) => {
         try {
-            const data = await Transactions.find()
-            console.log(data)
+            const transactions = await Transactions.find();
 
-            if (data) {
-                res.json({ success: true, message: `Transactions retrieved successfully!`, data })
+            if (transactions.length > 0) {
+                const data = [];
+                for (const transaction of transactions) {
+                    const product = await Products.findById(transaction.productId);
+                    const store = await Stores.findById(transaction.sellerId);
+                    data.push({
+                        transaction: transaction,
+                        product: product,
+                        store: store
+                    });
+                }
+
+                res.json({ success: true, message: `Transactions retrieved successfully!`, data });
             } else {
-                res.json({ success: false, message: `There are no transactions made.` })
+                res.json({ success: false, message: `There are no transactions made.` });
             }
         } catch (error) {
-            res.json({ success: false, message: `Error viewing status Transaction controller: ${error}` })
+            res.json({ success: false, message: `Error viewing status Transaction controller: ${error}` });
         }
     },
     UpdateStatusTransaction: async (req, res) => {
