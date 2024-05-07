@@ -21,10 +21,12 @@ const TransactionController = {
     },
     ViewTransactions: async (req, res) => {
         try {
-            const transactions = await Transactions.find();
+            const { sellerId } = req.params;
+            let pending = 0, cancelled = 0, unreturned = 0, completed = 0
+            const transactions = await Transactions.find({ sellerId: sellerId });
 
             if (transactions.length > 0) {
-                const data = [];
+                const data = []
                 for (const transaction of transactions) {
                     const product = await Products.findById(transaction.productId);
                     const store = await Stores.findById(transaction.sellerId);
@@ -32,12 +34,28 @@ const TransactionController = {
                         transaction: transaction,
                         product: product,
                         store: store
-                    });
+                    })
+
+                    if (transaction.checkout.status === "PENDING") {
+                        pending++;
+                    }
+
+                    if (transaction.checkout.status === "CANCELLED") {
+                        cancelled++;
+                    }
+
+                    if (transaction.checkout.status === "UNRETURNED") {
+                        unreturned++;
+                    }
+
+                    if (transaction.checkout.status === "COMPLETED") {
+                        completed++;
+                    }
                 }
 
-                res.json({ success: true, message: `Transactions retrieved successfully!`, data });
+                res.json({ success: true, message: `Transactions retrieved successfully!`, data, statusCount: { pending, cancelled, unreturned, completed } });
             } else {
-                res.json({ success: false, message: `There are no transactions made.` });
+                res.json({ success: false, message: `There are no transactions made for the specified seller.` });
             }
         } catch (error) {
             res.json({ success: false, message: `Error viewing status Transaction controller: ${error}` });
