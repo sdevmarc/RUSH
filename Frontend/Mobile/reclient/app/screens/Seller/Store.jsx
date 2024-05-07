@@ -41,6 +41,18 @@ const Store = () => {
         navigation.navigate('ToShip')
     }
 
+    const handleCancelled = () => {
+        navigation.navigate('Cancelled')
+    }
+
+    const handleUnreturned = () => {
+        navigation.navigate('Unreturned')
+    }
+
+    const handleReviews= () => {
+        navigation.navigate('Reviews')
+    }
+
     const handleProduct = () => {
         navigation.navigate('Products')
     }
@@ -121,7 +133,9 @@ const Store = () => {
                                     21
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
+                            <TouchableOpacity
+                                onPress={handleCancelled}
+                                style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     Cancelled
                                 </Text>
@@ -129,7 +143,9 @@ const Store = () => {
                                     4
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
+                            <TouchableOpacity
+                                onPress={handleUnreturned}
+                                style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     Unreturned
                                 </Text>
@@ -137,7 +153,9 @@ const Store = () => {
                                     14
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
+                            <TouchableOpacity 
+                            onPress={handleReviews}
+                            style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     Reviews
                                 </Text>
