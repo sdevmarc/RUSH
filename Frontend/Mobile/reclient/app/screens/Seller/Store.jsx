@@ -5,9 +5,10 @@ import {
     StatusBar,
     TouchableOpacity,
     ScrollView,
-    ImageBackground
+    ImageBackground,
+    Alert
 } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons, MaterialIcons, Foundation, Feather, Entypo, Ionicons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -19,9 +20,17 @@ const { width, height } = Dimensions.get('window')
 
 const Store = () => {
     const navigation = useNavigation()
+    const [values, setValues] = useState([])
+    const [status, setStatus] = useState({
+        pending: '',
+        cancelled: '',
+        unreturned: '',
+        completed: ''
+    })
 
     useEffect(() => {
         fetchData()
+        fetchTransactionStatus()
     }, [])
 
     const fetchData = async () => {
@@ -33,8 +42,28 @@ const Store = () => {
                 Authorization: `Bearer ${token}`
             }
         })
-        console.log('From Store: ', res.data.data._id)
-        await AsyncStorage.setItem('storeId', res.data.data._id)
+        if (res?.data?.success) {
+            await AsyncStorage.setItem('storeId', res.data.data._id)
+            setValues(res?.data?.data)
+        } else {
+            Alert.alert(res?.data?.message)
+        }
+    }
+
+    const fetchTransactionStatus = async () => {
+        const sellerId = await AsyncStorage.getItem('storeId')
+        const res = await axios.get(`http://${address}/api/viewtransactions/${sellerId}`)
+        if (res?.data?.success) {
+            setStatus((prev) => ({
+                ...prev,
+                pending: res?.data?.statusCount?.pending,
+                cancelled: res?.data?.statusCount?.cancelled,
+                unreturned: res?.data?.statusCount?.unreturned,
+                completed: res?.data?.statusCount?.completed
+            }))
+        } else {
+            Alert.alert(res?.data?.message)
+        }
     }
 
     const handleToShip = () => {
@@ -49,7 +78,7 @@ const Store = () => {
         navigation.navigate('Unreturned')
     }
 
-    const handleReviews= () => {
+    const handleReviews = () => {
         navigation.navigate('Reviews')
     }
 
@@ -69,7 +98,7 @@ const Store = () => {
                     <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.05, backgroundColor: 'rgba(0,0,0,0.2)' }}>
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.05 }}>
-                                Ekopineds
+                                {values?.shopInformation?.shopName}
                             </Text>
                             <TouchableOpacity style={{ paddingHorizontal: width * 0.03, paddingVertical: height * 0.008, backgroundColor: Colors.orange }}>
                                 <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
@@ -130,7 +159,7 @@ const Store = () => {
                                     To Ship
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    21
+                                    {status.pending}
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -140,7 +169,7 @@ const Store = () => {
                                     Cancelled
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    4
+                                    {status.cancelled}
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -150,17 +179,17 @@ const Store = () => {
                                     Unreturned
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    14
+                                    {status.unreturned}
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity 
-                            onPress={handleReviews}
-                            style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
+                            <TouchableOpacity
+                                onPress={handleReviews}
+                                style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     Reviews
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    5
+                                    {status.completed}
                                 </Text>
                             </TouchableOpacity>
 
