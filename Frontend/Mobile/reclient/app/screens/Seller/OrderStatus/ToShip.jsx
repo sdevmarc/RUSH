@@ -14,6 +14,7 @@ import * as Colors from '../../../../utils/colors'
 import Navbar from '../../../components/Navbar'
 import axios from 'axios'
 import address from '../../../../config/host'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width, height } = Dimensions.get('window')
 
@@ -26,7 +27,8 @@ export default function ToShip() {
     }, [])
 
     const fetchPending = async () => {
-        const res = await axios.get(`http:${address}/api/viewtransactions`)
+        const sellerId = await AsyncStorage.getItem('storeId')
+        const res = await axios.get(`http:${address}/api/viewtransactions/${sellerId}`)
         if (res?.data?.success) {
             setValues(res?.data?.data)
         } else {
@@ -76,7 +78,7 @@ export default function ToShip() {
                                                         Store Name
                                                     </Text>
                                                     <Text style={{ width: '100%', color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01 }} numberOfLines={1} ellipsizeMode='tail'>
-                                                    {item?.store?.shopInformation?.shopName}
+                                                        {item?.store?.shopInformation?.shopName}
                                                     </Text>
                                                 </View>
                                                 <View style={{ width: '100%' }}>
