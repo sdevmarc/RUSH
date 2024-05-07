@@ -9,7 +9,7 @@ import {
     Alert
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { MaterialCommunityIcons, MaterialIcons, Foundation, Feather, Entypo, Ionicons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
@@ -28,10 +28,12 @@ const Store = () => {
         completed: ''
     })
 
-    useEffect(() => {
-        fetchData()
-        fetchTransactionStatus()
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchData()
+            fetchTransactionStatus();
+        }, [])
+    )
 
     const fetchData = async () => {
         const userId = await AsyncStorage.getItem('userId')
@@ -159,7 +161,11 @@ const Store = () => {
                                     To Ship
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    {status.pending}
+                                    {
+                                        status?.pending
+                                            ? status?.pending
+                                            : '0'
+                                    }
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -169,7 +175,11 @@ const Store = () => {
                                     Cancelled
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    {status.cancelled}
+                                    {
+                                        status?.cancelled
+                                            ? status?.cancelled
+                                            : '0'
+                                    }
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -179,7 +189,11 @@ const Store = () => {
                                     Unreturned
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    {status.unreturned}
+                                    {
+                                        status?.unreturned
+                                            ? status?.unreturned
+                                            : '0'
+                                    }
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -189,7 +203,11 @@ const Store = () => {
                                     Reviews
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    {status.completed}
+                                    {
+                                        status?.completed
+                                            ? status?.completed
+                                            : '0'
+                                    }
                                 </Text>
                             </TouchableOpacity>
 
