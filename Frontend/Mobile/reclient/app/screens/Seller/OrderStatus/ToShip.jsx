@@ -8,8 +8,8 @@ import {
     Image,
     Alert
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useCallback, useState } from 'react'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import * as Colors from '../../../../utils/colors'
 import Navbar from '../../../components/Navbar'
 import axios from 'axios'
@@ -22,13 +22,15 @@ export default function ToShip() {
     const navigation = useNavigation()
     const [values, setValues] = useState([])
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         fetchPending()
-    }, [])
+    }, []))
+
 
     const fetchPending = async () => {
         const sellerId = await AsyncStorage.getItem('storeId')
-        const res = await axios.get(`http:${address}/api/viewtransactions/${sellerId}`)
+        const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/PENDING`)
+
         if (res?.data?.success) {
             setValues(res?.data?.data)
         } else {
@@ -36,8 +38,8 @@ export default function ToShip() {
         }
     }
 
-    const handleViewOrder = () => {
-        navigation.navigate('Summary')
+    const handleViewOrder = (value) => {
+        navigation.navigate('Summary', { transactionId: value })
     }
 
     return (
@@ -101,7 +103,7 @@ export default function ToShip() {
                                                 </Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity
-                                                onPress={handleViewOrder}
+                                                onPress={() => handleViewOrder(item?.transaction?._id)}
                                                 style={{ width: '47%', height: '100%', backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
