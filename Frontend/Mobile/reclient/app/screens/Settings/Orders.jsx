@@ -87,7 +87,7 @@ const Orders = () => {
 
                                 style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    Unreturned
+                                    To Return
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     0
@@ -97,7 +97,7 @@ const Orders = () => {
 
                                 style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    Reviews
+                                    To Review
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     0
