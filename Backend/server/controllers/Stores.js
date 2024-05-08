@@ -17,7 +17,7 @@ const StoreController = {
         try {
             const { userId } = req.params
             const data = await Stores.findOne({ userId: userId })
-            console.log(data)
+
             if(data) {
                 res.json({ success: true, message: 'Get store successfully', data })
             } else {
