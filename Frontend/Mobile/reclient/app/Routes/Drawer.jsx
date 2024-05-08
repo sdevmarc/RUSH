@@ -20,8 +20,9 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../config/host'
-import { Ionicons, MaterialIcons, Entypo, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
+import { Ionicons, MaterialIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import * as Colors from '../../utils/colors'
+import CustomerService from '../screens/Settings/CustomerService'
 
 const Drawer = createDrawerNavigator()
 
@@ -139,6 +140,19 @@ const DrawerRoutes = () => {
                     }}
                 />
             )}
+             <Drawer.Screen
+                name="CustomerService"
+                component={CustomerService}
+                options={{
+                    drawerLabel: 'Customer Service',
+                    headerTitle: 'CustomerService',
+                    headerTitleAlign: 'center',
+                    headerShown: false,
+                    drawerIcon: ({ focused }) => (
+                        <AntDesign name="customerservice" size={24} color={focused ? 'white' : 'black'} />
+                    )
+                }}
+            />
             <Drawer.Screen
                 name="Settings"
                 component={Settings}
