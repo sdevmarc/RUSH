@@ -27,6 +27,7 @@ const Store = () => {
         unreturned: '',
         completed: ''
     })
+    const [loading, setLoading] = useState(true)
 
     useFocusEffect(
         React.useCallback(() => {
@@ -55,6 +56,7 @@ const Store = () => {
     const fetchTransactionStatus = async () => {
         const sellerId = await AsyncStorage.getItem('storeId')
         const res = await axios.get(`http://${address}/api/viewtransactions/${sellerId}`)
+
         if (res?.data?.success) {
             setStatus((prev) => ({
                 ...prev,
@@ -65,6 +67,13 @@ const Store = () => {
             }))
         } else {
             Alert.alert(res?.data?.message)
+            setStatus((prev) => ({
+                ...prev,
+                pending: '0',
+                cancelled: '0',
+                unreturned: '0',
+                completed: '0'
+            }))
         }
     }
 
@@ -162,9 +171,7 @@ const Store = () => {
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     {
-                                        status?.pending
-                                            ? status?.pending
-                                            : '0'
+                                        status?.pending && status?.pending
                                     }
                                 </Text>
                             </TouchableOpacity>
@@ -176,9 +183,7 @@ const Store = () => {
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     {
-                                        status?.cancelled
-                                            ? status?.cancelled
-                                            : '0'
+                                        status?.cancelled && status?.cancelled
                                     }
                                 </Text>
                             </TouchableOpacity>
@@ -190,9 +195,7 @@ const Store = () => {
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     {
-                                        status?.unreturned
-                                            ? status?.unreturned
-                                            : '0'
+                                        status?.unreturned && status?.unreturned
                                     }
                                 </Text>
                             </TouchableOpacity>
@@ -204,9 +207,7 @@ const Store = () => {
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     {
-                                        status?.completed
-                                            ? status?.completed
-                                            : '0'
+                                        status?.completed && status?.completed
                                     }
                                 </Text>
                             </TouchableOpacity>
