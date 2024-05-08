@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
-import { MaterialCommunityIcons, MaterialIcons, Foundation, Feather, Entypo, Ionicons } from '@expo/vector-icons'
+import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../../config/host'
@@ -66,7 +66,6 @@ const Store = () => {
                 completed: res?.data?.statusCount?.completed
             }))
         } else {
-            Alert.alert(res?.data?.message)
             setStatus((prev) => ({
                 ...prev,
                 pending: '0',
