@@ -10,7 +10,7 @@ import {
     KeyboardAvoidingView,
     ImageBackground
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import address from '../../../config/host'
 import { useNavigation } from '@react-navigation/native'
@@ -21,6 +21,7 @@ const { width, height } = Dimensions.get("window")
 
 const Login = () => {
     const navigation = useNavigation()
+    const passwordInputRef = useRef(null)
     const [values, setValues] = useState({
         username: '',
         password: ''
@@ -104,13 +105,26 @@ const Login = () => {
                                     <Text style={{ fontSize: width * 0.035, fontWeight: '500', color: Colors.fontColor }}>
                                         Username
                                     </Text>
-                                    <TextInput onChangeText={handleOnchangeUsername} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Enter your username' />
+                                    <TextInput
+                                        onChangeText={handleOnchangeUsername}
+                                        style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }}
+                                        placeholder='Enter your username'
+                                        returnKeyType='next'
+                                        onSubmitEditing={() => {
+                                            passwordInputRef.current.focus()
+                                        }} />
                                 </View>
                                 <View style={{ gap: 10 }}>
                                     <Text style={{ fontSize: width * 0.035, fontWeight: '500', color: Colors.fontColor }}>
                                         Password
                                     </Text>
-                                    <TextInput onChangeText={handleOnchangePassword} secureTextEntry={true} style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Enter your password' />
+                                    <TextInput
+                                        onChangeText={handleOnchangePassword} secureTextEntry={true}
+                                        style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }}
+                                        placeholder='Enter your password'
+                                        returnKeyType='go'
+                                        onSubmitEditing={handleLogin} // Submit login when 'go' button is pressed
+                                        ref={passwordInputRef} />
                                 </View>
                                 <TouchableOpacity>
                                     <Text style={{ fontSize: width * 0.03, fontWeight: '600', color: Colors.fontColor }}>
@@ -130,7 +144,7 @@ const Login = () => {
                                     onPress={handleGoBack}
                                     style={{ width: '100%', height: height * 0.07, backgroundColor: '#EFEFEF', paddingHorizontal: width * 0.03, borderRadius: height * 0.05, justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={{ color: 'black', fontSize: width * 0.04 }}>
-                                       Go Back
+                                        Go Back
                                     </Text>
                                 </TouchableOpacity>
                             </View>
