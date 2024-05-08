@@ -8,22 +8,74 @@ import {
     Image,
     Alert,
 } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Colors from '../../../utils/colors'
 import Navbar from '../../components/Navbar'
 import BottomBar from '../../components/BottomBar'
+import address from '../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
-export default function Summary() {
+export default function Summary({ route }) {
     const navigation = useNavigation()
+    const [values, setValues] = useState({
+        transaction: {
+            user: '',
+            address: '',
+            shippingOption: '',
+            paymentMethod: '',
+            paymentDetails: ''
+        },
+        product: '',
+        store: ''
+    })
+    const [isAccept, setAccept] = useState({
+        transactionId: '',
+        status: 'UNRETURNED'
+    })
 
-    const handleAccept = () => {
-        Alert.alert('You have accepted the order successfully!')
-        navigation.navigate('StoreDashboard')
+    useFocusEffect(useCallback(() => {
+        fetchData()
+    }, []))
+
+    const fetchData = async () => {
+        const { transactionId } = route.params
+        const res = await axios.get(`http://${address}/api/viewselectedtransaction/${transactionId}`)
+
+        if (res?.data?.data?.transaction) {
+            setValues((prev) => ({
+                ...prev,
+                transaction: {
+                    user: res?.data?.data?.user,
+                    address: res?.data?.data?.transaction?.checkout?.deliveryAddress,
+                    shippingOption: res?.data?.data?.transaction?.checkout?.shippingOption,
+                    paymentMethod: res?.data?.data?.transaction?.checkout?.paymentMethod,
+                    paymentDetails: res?.data?.data?.transaction?.checkout?.paymentDetails
+                },
+                product: res?.data?.data?.product,
+                store: res?.data?.data?.store?.shopInformation
+            }))
+            setAccept((prev) => ({
+                ...prev,
+                transactionId: transactionId
+            }))
+        } else {
+            Alert.alert(res?.data?.message)
+        }
+    }
+
+    const handleAccept = async () => {
+        const res = await axios.post(`http://${address}/api/updatetransactionstatus`, isAccept)
+
+        if(res?.data?.success) {
+            Alert.alert('You have accepted the order successfully!')
+            navigation.navigate('StoreDashboard')
+        } else {
+            Alert.alert(res?.data?.message)
+        }
     }
     return (
         <>
@@ -47,13 +99,13 @@ export default function Summary() {
 
                                 <View style={{ width: '100%', paddingHorizontal: width * 0.03, gap: height * 0.007 }}>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                        Sample Lastname, Sample FirstName, Sample Middle Name
+                                        {values?.transaction?.user?.personalDetails?.lastname}, {values?.transaction?.user?.personalDetails?.firstname}, {values?.transaction?.user?.personalDetails?.middlename}
                                     </Text>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }} numberOfLines={2} ellipsizeMode='tail'>
-                                        Sample Barangay, Sample Municipality, Nueva Vizcaya
+                                        {values?.transaction?.address?.barangay}, {values?.transaction?.address?.municipality}, Nueva Vizcaya
                                     </Text>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                        Sample Contact no
+                                        {values?.transaction?.user?.contactno}
                                     </Text>
                                 </View>
                             </View>
@@ -71,7 +123,7 @@ export default function Summary() {
                             >
                                 <View style={{ overflow: 'hidden', width: '40%', height: '100%', backgroundColor: Colors.fontColor, borderRadius: height * 0.01 }}>
                                     <Image
-                                        source={{ uri: 'http://source.unsplash.com/woman-standing-on-railing-w6Lb5Px8a6g' }}
+                                        source={{ uri: values?.product?.productInformation?.gallery[0].uri }}
                                         resizeMode='cover'
                                         style={{ width: '100%', height: '100%' }}
                                     />
@@ -82,7 +134,7 @@ export default function Summary() {
                                             Product Name
                                         </Text>
                                         <Text style={{ color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01 }} numberOfLines={1} ellipsizeMode='tail'>
-                                            Sample P Name
+                                            {values?.product?.productInformation?.productName}
                                         </Text>
                                     </View>
                                     <View>
@@ -90,7 +142,7 @@ export default function Summary() {
                                             Store Name
                                         </Text>
                                         <Text style={{ color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01 }} numberOfLines={1} ellipsizeMode='tail'>
-                                            Sample S Name
+                                            {values?.store?.shopName}
                                         </Text>
                                     </View>
                                     <View>
@@ -98,7 +150,7 @@ export default function Summary() {
                                             Price
                                         </Text>
                                         <Text style={{ color: Colors.fontColor, textAlign: 'justify', paddingHorizontal: width * 0.01 }} numberOfLines={1} ellipsizeMode='tail'>
-                                            ₱ Sample.00
+                                            ₱ {values?.product?.productInformation?.price}.00
                                         </Text>
                                     </View>
                                 </View>
@@ -116,7 +168,7 @@ export default function Summary() {
                                 </View>
                                 <View style={{ width: '100%', paddingHorizontal: width * 0.03, gap: height * 0.007 }}>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '600' }}>
-                                        Sample Shipping Option
+                                        {values?.transaction?.shippingOption}
                                     </Text>
                                     <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontSize: width * 0.03 }}>
                                         Make sure your delivery address is set to your correct location.
@@ -130,7 +182,7 @@ export default function Summary() {
                                     Payment Method
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                    Sample Delivery
+                                    {values?.transaction?.paymentMethod}
                                 </Text>
 
                             </View>
@@ -144,7 +196,7 @@ export default function Summary() {
                                             Merchandise Subtotal
                                         </Text>
                                         <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                            P Sample.00
+                                            P {values?.transaction?.paymentDetails?.merchandiseSubTotal}.00
                                         </Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -152,7 +204,7 @@ export default function Summary() {
                                             Shipping Subtotal
                                         </Text>
                                         <Text style={{ color: Colors.fontColor, textAlign: 'justify' }}>
-                                            P Sample.00
+                                            P {values?.transaction?.paymentDetails?.shippingSubTotal}.00
                                         </Text>
                                     </View>
                                 </View>
@@ -160,7 +212,7 @@ export default function Summary() {
                         </View>
                     </View >
                 </ScrollView >
-                <BottomBar subtitle={`Total Payment`} suboutput={`P Sample.00`} redirect={handleAccept} title={`Accept`} />
+                <BottomBar subtitle={`Total Payment`} suboutput={`P ${values?.transaction?.paymentDetails?.totalPayment}.00`} redirect={handleAccept} title={`Accept`} />
             </View >
         </>
     )
