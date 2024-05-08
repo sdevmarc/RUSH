@@ -212,7 +212,11 @@ const Store = () => {
                             </TouchableOpacity>
 
                         </View>
-                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: width * 0.03 }}>
+                        <View style={{ width: '100%', gap: height * 0.01 }}>
+                            <Text style={{ fontWeight: '600', fontSize: height * 0.02 }}>
+                                Others
+                            </Text>
+                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: width * 0.03 }}>
                             <TouchableOpacity
                                 onPress={() => handleProduct()}
                                 style={{
@@ -262,6 +266,7 @@ const Store = () => {
                                     Help Center
                                 </Text>
                             </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </ScrollView>
