@@ -29,7 +29,7 @@ export default function ToShip() {
 
     const fetchPending = async () => {
         const sellerId = await AsyncStorage.getItem('storeId')
-        const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/PENDING`)
+        const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/PENDING`)
 
         if (res?.data?.success) {
             setValues(res?.data?.data)
@@ -50,9 +50,6 @@ export default function ToShip() {
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.01 }}>
-                            <Text style={{ fontWeight: '600', fontSize: height * 0.017 }}>
-                                Pending Orders
-                            </Text>
                             {values?.map((item) => (
                                 <View
                                     key={item?.transaction?._id}
