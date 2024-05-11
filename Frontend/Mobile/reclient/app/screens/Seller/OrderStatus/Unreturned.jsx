@@ -5,7 +5,8 @@ import {
     Dimensions,
     ScrollView,
     Image,
-    Alert
+    Alert,
+    TouchableOpacity
 } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
@@ -26,7 +27,7 @@ export default function Unreturned() {
 
     const fetchUnreturned = async () => {
         const sellerId = await AsyncStorage.getItem('storeId')
-        const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/UNRETURNED`)
+        const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/UNRETURNED`)
 
         if (res?.data?.success) {
             setValues(res?.data?.data)
@@ -43,9 +44,6 @@ export default function Unreturned() {
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.01 }}>
-                            <Text style={{ fontWeight: '600', fontSize: height * 0.017 }}>
-                                Unreturned Orders
-                            </Text>
                             {values?.map((item) => (
                                 <View
                                     key={item?.transaction?._id}
@@ -88,14 +86,13 @@ export default function Unreturned() {
                                         </View>
 
                                         <View style={{ width: '100%', height: '30%', padding: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <View style={{ width: '100%', height: '100%', backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
+                                            <TouchableOpacity style={{ width: '100%', height: '100%', backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
-                                                    Unreturned
+                                                    Returned
                                                 </Text>
-                                            </View>
-                                            
+                                            </TouchableOpacity>
                                         </View>
                                     </View>
                                 </View>
