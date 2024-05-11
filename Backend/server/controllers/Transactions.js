@@ -20,8 +20,16 @@ const TransactionController = {
     },
     ViewStatusTransactions: async (req, res) => {
         try {
-            const { sellerId, status } = req.params
-            const transactions = await Transactions.find({ sellerId: sellerId, "checkout.status": status })
+            const { Id, name, status } = req.params
+
+            let transactions;
+            if (name === 'seller') {
+                transactions = await Transactions.find({ sellerId: Id, "checkout.status": status })
+            }
+
+            if (name === 'user') {
+                transactions = await Transactions.find({ userId: Id, "checkout.status": status })
+            }
 
             if (transactions.length > 0) {
                 const data = []
@@ -36,20 +44,29 @@ const TransactionController = {
                 }
                 res.json({ success: true, message: `${status} transactions retrieved successfully!`, data })
             } else {
-                res.json({ success: false, message: `There are no ${status} transactions for the specified seller.` })
+                res.json({ success: false, message: `There are no ${status} transactions.` })
             }
         } catch (error) {
-            res.json({ success: false, message: `Error viewing ${status} transactions: ${error}` })
+            res.json({ success: false, message: `Error viewing status transactions: ${error}` })
         }
     },
-
     ViewTransactions: async (req, res) => {
         try {
-            const { sellerId } = req.params
-            let pending = 0, cancelled = 0, unreturned = 0, completed = 0
-            const transactions = await Transactions.find({ sellerId: sellerId })
+            const { Id, name } = req.params
 
-            if (transactions.length > 0) {
+            let pending = 0, cancelled = 0, unreturned = 0, completed = 0, review = 0
+
+            let transactions
+
+            if (name === 'sellerId') {
+                transactions = await Transactions.find({ sellerId: Id })
+            }
+
+            if (name === 'userId') {
+                transactions = await Transactions.find({ userId: Id })
+            }
+
+            if (transactions && transactions.length > 0) {
                 const data = []
                 for (const transaction of transactions) {
                     const product = await Products.findById(transaction.productId)
@@ -72,12 +89,16 @@ const TransactionController = {
                         unreturned++
                     }
 
+                    if (transaction.checkout.status === "REVIEW") {
+                        review++
+                    }
+
                     if (transaction.checkout.status === "COMPLETED") {
                         completed++
                     }
                 }
 
-                res.json({ success: true, message: `Transactions retrieved successfully!`, data, statusCount: { pending, cancelled, unreturned, completed } })
+                res.json({ success: true, message: `Transactions retrieved successfully!`, data, statusCount: { pending, cancelled, unreturned, review, completed } })
             } else {
                 res.json({ success: false, message: `There are no transactions made for the specified seller.` })
             }
