@@ -27,7 +27,6 @@ const Store = () => {
         unreturned: '',
         completed: ''
     })
-    const [loading, setLoading] = useState(true)
 
     useFocusEffect(
         React.useCallback(() => {
@@ -55,7 +54,7 @@ const Store = () => {
 
     const fetchTransactionStatus = async () => {
         const sellerId = await AsyncStorage.getItem('storeId')
-        const res = await axios.get(`http://${address}/api/viewtransactions/${sellerId}`)
+        const res = await axios.get(`http://${address}/api/viewtransactions/${sellerId}/sellerId`)
 
         if (res?.data?.success) {
             setStatus((prev) => ({
