@@ -6,18 +6,71 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import React from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useCallback, useState } from 'react'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons'
 import * as Colors from '../../../utils/colors'
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width, height } = Dimensions.get('window')
 
 const Orders = () => {
     const navigation = useNavigation()
+    const [status, setStatus] = useState({
+        pending: '',
+        cancelled: '',
+        unreturned: '',
+        review: '',
+        completed: ''
+    })
+
+    useFocusEffect(useCallback(() => {
+        fetchOrderTransactions()
+    }, []))
+
+    const fetchOrderTransactions = async () => {
+        const userId = await AsyncStorage.getItem('userId')
+        const res = await axios.get(`http://${address}/api/viewtransactions/${userId}/userId`)
+
+        if (res?.data?.success) {
+            setStatus((prev) => ({
+                ...prev,
+                pending: res?.data?.statusCount?.pending,
+                cancelled: res?.data?.statusCount?.cancelled,
+                unreturned: res?.data?.statusCount?.unreturned,
+                review:  res?.data?.statusCount?.review,
+                completed: res?.data?.statusCount?.completed
+            }))
+        } else {
+            setStatus((prev) => ({
+                ...prev,
+                pending: '0',
+                cancelled: '0',
+                unreturned: '0',
+                completed: '0'
+            }))
+        }
+    }
 
     const handleOpenDrawer = () => {
         navigation.openDrawer()
+    }
+
+    const handleToShip = () => {
+        navigation.navigate('UserToShip')
+    }
+
+    const handleCancelled = () => {
+        navigation.navigate('UserCancelled')
+    }
+
+    const handleToReturn = () => {
+        navigation.navigate('UserToReturn')
+    }
+
+    const handleToReview = () => {
+        navigation.navigate('UserToReview')
     }
 
     return (
@@ -64,42 +117,43 @@ const Orders = () => {
                                 Purchases
                             </Text>
                             <TouchableOpacity
-
+                                onPress={handleToShip}
                                 style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     To Ship
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    0
+                                    {status?.pending}
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-
+                                onPress={handleCancelled}
                                 style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     Cancelled
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    0
+                                    {status?.cancelled}
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
+                                onPress={handleToReturn}
                                 style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     To Return
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    0
+                                    {status?.unreturned}
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-
+                                onPress={handleToReview}
                                 style={{ width: '100%', height: height * 0.09, backgroundColor: Colors.idleColor, borderRadius: height * 0.02, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     To Review
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    0
+                                    {status?.review}
                                 </Text>
                             </TouchableOpacity>
                         </View>
