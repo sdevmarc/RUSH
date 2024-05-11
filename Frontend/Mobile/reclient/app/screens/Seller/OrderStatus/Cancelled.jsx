@@ -26,7 +26,7 @@ export default function Cancelled() {
 
     const fetchCancelled = async () => {
         const sellerId = await AsyncStorage.getItem('storeId')
-        const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/CANCELLED`)
+        const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/CANCELLED`)
 
         if (res?.data?.success) {
             setValues(res?.data?.data)
@@ -43,9 +43,6 @@ export default function Cancelled() {
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.01 }}>
-                            <Text style={{ fontWeight: '600', fontSize: height * 0.017 }}>
-                                Cancelled Orders
-                            </Text>
                             {values?.map((item) => (
                                 <View
                                     key={item?.transaction?._id}
