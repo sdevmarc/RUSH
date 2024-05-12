@@ -44,6 +44,7 @@ const Home = ({ route }) => {
 
     const fetchStores = async () => {
         const token = await AsyncStorage.getItem('token')
+
         const data = await axios.get(`http://${address}/api/getallstore`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -83,6 +84,10 @@ const Home = ({ route }) => {
         return null;
     }
 
+    const handleChat = () => {
+        navigation.navigate('Chat')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
@@ -113,7 +118,9 @@ const Home = ({ route }) => {
                             <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
                                 <Ionicons name="notifications" size={24} color="black" />
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
+                            <TouchableOpacity
+                            onPress={handleChat}
+                            style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
                                 <Ionicons name="chatbubble-ellipses-sharp" size={24} color="black" />
                             </TouchableOpacity>
                         </View>
