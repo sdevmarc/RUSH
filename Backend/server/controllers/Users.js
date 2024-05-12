@@ -5,7 +5,7 @@ const UserController = {
         try {
             const values = req.body
 
-            await Users.create(values)
+           await Users.create(values)
             res.json({ success: true, message: 'User added successfully!' })
         } catch (error) {
             res.json({ success: false, message: `Error adding user controller: ${error}` })
