@@ -21,49 +21,11 @@ import * as Colors from '../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
-const Products = [
-    { id: 1, name: 'Sando', status: { isAvailable: 'Available', bgColor: '#008048' } },
-    { id: 2, name: 'Skirt', status: { isAvailable: 'Available', bgColor: '#008048' } },
-    { id: 3, name: 'Shorts', status: { isAvailable: 'Rented', bgColor: '#e31243' } },
-    { id: 4, name: 'Shirt', status: { isAvailable: 'Available', bgColor: '#008048' } },
-    { id: 5, name: 'Underwear', status: { isAvailable: 'Rented', bgColor: '#e31243' } },
-    { id: 6, name: 'Polo', status: { isAvailable: 'Rented', bgColor: '#e31243' } },
-    { id: 7, name: 'Pajama', status: { isAvailable: 'Rented', bgColor: '#e31243' } }
-]
-
 const SelectedStore = ({ route }) => {
     const [shopName, setShopName] = useState('')
     const [values, setValues] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        fetchProducts()
-    }, [])
-
-    const fetchProducts = async () => {
-        const { userId, storeId } = route.params
-
-        const token = await AsyncStorage.getItem('token')
-        const getStoreName = await axios.get(`http://${address}/api/getstore/${userId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
-        setValues(res.data.data)
-        setShopName(getStoreName?.data?.data?.shopInformation?.shopName)
-
-        console.log('Selected store storeId: ', storeId)
-    }
-
-    const handleSelectItem = async (item) => {
-        navigation.navigate('SelectedItem', { id: item, shopName: shopName })
-    }
-
-    const handleBack = async () => {
-        navigation.goBack()
-    }
 
     const headerHeight = scrollY.interpolate({
         inputRange: [0, height * 0.2],
@@ -81,7 +43,38 @@ const SelectedStore = ({ route }) => {
         inputRange: [0, height * 0.15 - height * 0.05],
         outputRange: [1, 0],
         extrapolate: 'clamp',
-    });
+    })
+
+    useEffect(() => {
+        fetchProducts()
+    }, [])
+
+    const fetchProducts = async () => {
+        const { userId, storeId } = route.params
+        const token = await AsyncStorage.getItem('token')
+
+        const getStoreName = await axios.get(`http://${address}/api/getstore/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
+        setValues(res.data.data)
+        setShopName(getStoreName?.data?.data?.shopInformation?.shopName)
+    }
+
+    const handleSelectItem = async (item) => {
+        navigation.navigate('SelectedItem', { id: item, shopName: shopName })
+    }
+
+    const handleBack = async () => {
+        navigation.goBack()
+    }
+
+    const handleMessage = () => {
+        const { userId } = route.params
+        navigation.navigate('ChatPerson', { authorId: userId, storeName: shopName })
+    }
 
     return (
         <>
@@ -156,7 +149,7 @@ const SelectedStore = ({ route }) => {
                                         </Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-
+                                        onPress={handleMessage}
                                         style={{
                                             paddingHorizontal: width * 0.05,
                                             paddingVertical: height * 0.003,
