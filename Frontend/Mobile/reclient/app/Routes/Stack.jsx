@@ -25,6 +25,8 @@ import UserToShip from '../screens/Settings/OrderStatus/UserToShip'
 import UserCancelled from '../screens/Settings/OrderStatus/UserCancelled'
 import UserToReturn from '../screens/Settings/OrderStatus/UserToReturn'
 import UserToReview from '../screens/Settings/OrderStatus/UserToReview'
+import Chat from '../screens/Dashboard/Chat'
+import ChatPerson from '../screens/Dashboard/ChatPerson'
 
 const Stack = createNativeStackNavigator()
 
@@ -44,6 +46,8 @@ function StackRoutes() {
                 <Stack.Screen name="Cart" component={Cart} options={{ headerTitle: 'Cart', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="PaymentOption" component={PaymentOption} options={{ headerTitle: 'ShippingOption', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="SuccessfulCheckout" component={SuccessfulCheckout} options={{ headerTitle: 'SuccessfulCheckout', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="Chat" component={Chat} options={{ headerTitle: 'Chat', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="ChatPerson" component={ChatPerson} options={{ headerTitle: 'ChatPerson', headerTitleAlign: 'center', headerShown: false }} />
                 {/* ACCOUNT */}
                 <Stack.Screen name="Address" component={DeliveryAddress} options={{ headerTitle: 'Address', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="ShopInformation" component={ShopInformation} options={{ headerTitle: 'ShopInformation', headerTitleAlign: 'center', headerShown: false }} />
