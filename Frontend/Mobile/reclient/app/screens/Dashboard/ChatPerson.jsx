@@ -24,13 +24,12 @@ const { width, height } = Dimensions.get('window')
 
 export default function ChatPerson({ route }) {
     const [shopName, setShopName] = useState()
+    const [IsMessageId, setMessageId] = useState()
     const [details, setDetails] = useState([])
     const [values, setValues] = useState({
-        user1: '',
-        user2: '',
-        name: '',
-        body: '',
-        timestamp: new Date()
+        messageId: null,
+        userId: [],
+        body: ''
     })
     const scrollViewRef = useRef(null)
 
@@ -49,30 +48,21 @@ export default function ChatPerson({ route }) {
 
     const fetchMessages = async () => {
         const userId = await AsyncStorage.getItem('userId')
-        const { authorId, storeName } = route.params
-
-        console.log('The Author Id: ', authorId)
-        console.log('The user Id: ', userId)
-
-        const res = await axios.get(`http://${address}/api/receivemessage/${userId}/${authorId}`)
-        // console.log(res?.data?.checkUsers?.messages)
-        setShopName(storeName)
+   
+        const { messageId, storeUserId } = route.params
+        const res = await axios.get(`http://${address}/api/receivemessage/${messageId}/${userId}/${storeUserId}`)
+        console.log(res?.data?.data?._id)
+        setDetails(res?.data?.data?.messages)
         setValues((prev) => ({
             ...prev,
-            user1: userId,
-            user2: authorId,
-            name: storeName
+            messageId: res?.data?.data?._id,
+            userId: userId
         }))
-        if (res?.data?.success) {
-            setDetails(res?.data?.checkUsers?.messages)
-        } else {
-            console.log(res?.data?.message)
-        }
-
     }
 
     const sendMessage = async () => {
-        await axios.post(`http://${address}/api/sendmessage`, values)
+        const {storeUserId } = route.params
+        await axios.post(`http://${address}/api/sendmessage`, {values, storeUserId})
         fetchMessages()
         setValues((prev) => ({
             ...prev,
@@ -110,14 +100,14 @@ export default function ChatPerson({ route }) {
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
                 <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-                    <Navbar title={shopName} backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
+                    <Navbar title={'shopName'} backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                     <ScrollView ref={scrollViewRef} contentContainerStyle={{ flexGrow: 1 }} onContentSizeChange={handleContentSizeChange}>
                         <View style={{ width: width, paddingVertical: height * 0.03 }}>
                             <View style={{ width: '100%', paddingTop: height * 0.1, paddingHorizontal: width * 0.03, gap: height * 0.01 }}>
                                 {details.map((item) => (
                                     <TouchableOpacity
                                         key={item._id}
-                                        style={[item?.authorId === values?.user1
+                                        style={[item?.authorId === values?.userId
                                             ? {
                                                 maxWidth: "70%",
                                                 minWidth: '30%',
