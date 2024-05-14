@@ -23,6 +23,7 @@ const { width, height } = Dimensions.get('window')
 
 const SelectedStore = ({ route }) => {
     const [shopName, setShopName] = useState('')
+    const [IsMessageId, setMessageId] = useState('')
     const [values, setValues] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -67,13 +68,13 @@ const SelectedStore = ({ route }) => {
         navigation.navigate('SelectedItem', { id: item, shopName: shopName })
     }
 
-    const handleBack = async () => {
+    const handleBack = () => {
         navigation.goBack()
     }
 
     const handleMessage = () => {
         const { userId } = route.params
-        navigation.navigate('ChatPerson', { authorId: userId, storeName: shopName })
+        navigation.navigate('ChatPerson', { messageId: null, storeUserId: userId })
     }
 
     return (
