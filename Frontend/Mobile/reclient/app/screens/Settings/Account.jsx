@@ -154,7 +154,7 @@ const Account = () => {
                             <Text style={{ fontWeight: '600', fontSize: height * 0.02 }}>
                                 Others
                             </Text>
-                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: width * 0.03 }}>
+                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-start', gap: width * 0.03 }}>
                                 <TouchableOpacity
                                     onPress={handleAddress}
                                     style={{
