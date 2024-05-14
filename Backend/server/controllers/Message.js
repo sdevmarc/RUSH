@@ -4,89 +4,76 @@ const Stores = require('../models/Stores')
 const MessageController = {
     SendMessage: async (req, res) => {
         try {
-            const { user1, user2, body, name } = req.body
+            const { messageId, name, userId, body } = req.body
 
-            const checkUsers = await Messages.findOne(
-                {
-                    userId: user1,
-                    $or: [
-                        { $and: [{ "members.user1": user1 }, { "members.user2": user2 }] },
-                        { $and: [{ "members.user1": user2 }, { "members.user2": user1 }] }
-                    ]
-                })
+            const UserExists = await Messages.findById(messageId)
+            const { shopInformation } = await Stores.findOne({ userId: userId })
 
-            if (!checkUsers) {
-                const conversation = await Messages.findOneAndUpdate(
+            let data;
+
+            if (UserExists) {
+                data = await Messages.findByIdAndUpdate(
+                    messageId,
                     {
-                        $and: [{ "userId": user1 }, { "members.user1": user1 }, { "members.user2": user2 }]
-                    },
-                    {
-                        name: name,
-                        $push:
-                        {
-                            messages: { authorId: user1, body: body }
+                        name: shopInformation,
+                        $push: {
+                            messages: { authorId: userId, body: body }
                         }
                     },
                     {
-                        upsert: true,
                         new: true
                     }
                 )
-                res.json({ success: true, message: 'Message sent successfully', conversation })
+
+                if (!UserExists.participants.some(participant => participant.user.toString() === userId)) {
+                    data = await Messages.findByIdAndUpdate(
+                        messageId,
+                        {
+                            $push: {
+                                participants: { user: userId }
+                            }
+                        },
+                        {
+                            new: true
+                        }
+                    )
+                }
+
+                res.json({ success: true, message: 'Message sent update successfully', data })
             } else {
-                const conversation = await Messages.findOneAndUpdate(
-                    {
-                        userId: user1,
-                        $or: [
-                            { $and: [{ "members.user1": user1 }, { "members.user2": user2 }] },
-                            { $and: [{ "members.user1": user2 }, { "members.user2": user1 }] }
-                        ]
-                    },
-                    {
-                        name: name,
-                        $push:
-                        {
-                            messages: { authorId: user1, body: body }
-                        }
-                    },
-                    {
-                        upsert: true,
-                        new: true
-                    }
-                )
-                res.json({ message: 'Message sent successfully', conversation })
+                const data = await Messages.create({
+                    name: shopInformation,
+                    participants: [{ user: userId }],
+                    messages: [{ authorId: userId, body: body }]
+                })
+                res.json({ success: true, message: 'Message sent successfully', data })
             }
-
         } catch (error) {
             res.json({ success: false, message: `Error Sending Message controller: ${error}`, error: error })
         }
     },
     ReceiveMessage: async (req, res) => {
         try {
-            const { user1, user2 } = req.params;
+            const { messageId } = req.params
 
-            const checkUsers = await Messages.findOne(
-                {
-                    $or: [
-                        { $and: [{ "members.user1": user1 }, { "members.user2": user2 }] },
-                        { $and: [{ "members.user1": user2 }, { "members.user2": user1 }] }
-                    ]
-                })
+            const checkMessageId = await Messages.findById(messageId)
 
-            if (!checkUsers) {
-                return res.json({ success: false, message: 'Conversation not found' });
+            if (checkMessageId) {
+
+                res.json({ success: true, message: 'Conversation fetched', data: checkMessageId });
+            } else {
+                res.json({ success: false, message: 'Conversation not found' });
             }
-
-            res.json({ success: true, message: 'Message fetched successfully', checkUsers });
         } catch (error) {
             res.json({ success: false, message: `Error Recieve Message controller: ${error}`, error: error })
         }
     },
     GetAllMessages: async (req, res) => {
         try {
-            const { user1 } = req.params
-            const messages = await Messages.find({ userId: user1 })
-            res.json({ success: true, message: 'Shop fetched successfully!', messages })
+            const { userId } = req.params
+            const CheckMessages = await Messages.find({ "participants.user": userId })
+            console.log(CheckMessages)
+            res.json({ success: true, message: 'Fetched all messages successfully', data: CheckMessages })
         } catch (error) {
             res.json({ success: false, message: `Error Get all Message controller: ${error}`, error: error })
         }

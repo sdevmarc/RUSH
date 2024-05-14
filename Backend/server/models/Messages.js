@@ -1,23 +1,16 @@
 const mongoose = require('mongoose')
 
 const MessagesSchema = new mongoose.Schema({
-    userId: {
-        type: String,
+    name: {
+        type: Object,
         required: true
     },
-    members: {
-        user1: {
-            type: String,
-            required: true
-        },
-        user2: {
+    participants: [{
+        user: {
             type: String,
             required: true
         }
-    },
-    name: {
-        type: String
-    },
+    }],
     messages: [{
         authorId: {
             type: String,
