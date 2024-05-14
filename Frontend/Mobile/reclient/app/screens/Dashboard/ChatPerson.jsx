@@ -39,7 +39,7 @@ export default function ChatPerson({ route }) {
     }, []))
 
     useEffect(() => {
-        refresh()
+        // refresh()
     }, [])
 
     const refresh = () => {
@@ -50,6 +50,9 @@ export default function ChatPerson({ route }) {
     const fetchMessages = async () => {
         const userId = await AsyncStorage.getItem('userId')
         const { authorId, storeName } = route.params
+
+        console.log('The Author Id: ', authorId)
+        console.log('The user Id: ', userId)
 
         const res = await axios.get(`http://${address}/api/receivemessage/${userId}/${authorId}`)
         // console.log(res?.data?.checkUsers?.messages)

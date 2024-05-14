@@ -30,16 +30,17 @@ export default function Chat() {
         const userId = await AsyncStorage.getItem('userId')
 
         const res = await axios.get(`http://${address}/api/getallmessages/${userId}`)
-        // console.log(res?.data?.messages[0]?.messages[0]?.body)
+        // console.log(res?.data?.checkUsers)
 
         if (res?.data?.success) {
-            setValues(res?.data?.messages)
+            setValues(res?.data?.checkUsers)
         } else {
             console.log(res?.data?.message)
         }
     }
 
     const handleChatPerson = (value) => {
+        console.log('From Chat, authorId: ', value?.members?.user2)
         navigation.navigate('ChatPerson', { authorId: value?.members?.user2, storeName: value?.name })
     }
     return (
