@@ -30,18 +30,18 @@ export default function Chat() {
         const userId = await AsyncStorage.getItem('userId')
 
         const res = await axios.get(`http://${address}/api/getallmessages/${userId}`)
-        // console.log(res?.data?.checkUsers)
+        console.log(res?.data?.data[0]?.name?._id)
 
         if (res?.data?.success) {
-            setValues(res?.data?.checkUsers)
+            setValues(res?.data?.data)
         } else {
             console.log(res?.data?.message)
         }
     }
 
     const handleChatPerson = (value) => {
-        console.log('From Chat, authorId: ', value?.members?.user2)
-        navigation.navigate('ChatPerson', { authorId: value?.members?.user2, storeName: value?.name })
+        // console.log('From Chat, authorId: ', value?._id)
+        navigation.navigate('ChatPerson', { messageId: value?._id, storeUserId: value?.name?._id })
     }
     return (
         <>
@@ -60,7 +60,7 @@ export default function Chat() {
                                         <Text
                                             style={{ width: '100%', color: Colors.fontColor, fontWeight: '600' }}
                                         >
-                                            {item?.name}
+                                            {item?.name?.shopInformation?.shopName}
                                         </Text>
                                     </View>
                                     <View style={{ width: '100%', justifyContent: 'space-between', flexDirection: 'row', }}>

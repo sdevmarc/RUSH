@@ -8,14 +8,14 @@ const MessageController = {
             console.log('User Exitsasdasd:', values)
 
             const UserExists = await Messages.findById(values.messageId)
-            const { shopInformation } = await Stores.findOne({ userId: storeUserId })
+            const shopDetails = await Stores.findOne({ userId: storeUserId })
             let data;
            
             if (UserExists) {
                 data = await Messages.findByIdAndUpdate(
                     values.messageId,
                     {
-                        name: shopInformation,
+                        name: shopDetails,
                         $push: {
                             messages: { authorId: values.userId, body: values.body }
                         }
@@ -42,7 +42,7 @@ const MessageController = {
                 res.json({ success: true, message: 'Message sent update successfully', data })
             } else {
                 const data = await Messages.create({
-                    name: shopInformation,
+                    name: shopDetails,
                     participants: [{ user: values.userId }],
                     messages: [{ authorId: values.userId, body: values.body }]
                 })
@@ -57,7 +57,7 @@ const MessageController = {
         try {
             const { messageId, userId, storeUserId } = req.params
 
-            const { shopInformation } = await Stores.findOne({ userId: storeUserId })
+            const shopDetails = await Stores.findOne({ userId: storeUserId })
             let data
 
         
@@ -71,7 +71,7 @@ const MessageController = {
 
                 if (!checkMessages) {
                     data = await Messages.create({
-                        name: shopInformation,
+                        name: shopDetails,
                         participants: [{ user: userId }, { user: storeUserId }],
                         messages: []
                     })

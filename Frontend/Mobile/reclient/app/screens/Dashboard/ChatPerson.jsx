@@ -48,11 +48,12 @@ export default function ChatPerson({ route }) {
 
     const fetchMessages = async () => {
         const userId = await AsyncStorage.getItem('userId')
-   
-        const { messageId, storeUserId } = route.params
-        const res = await axios.get(`http://${address}/api/receivemessage/${messageId}/${userId}/${storeUserId}`)
+        const routevar = route.params
+
+        console.log(routevar.messageId)
+        const res = await axios.get(`http://${address}/api/receivemessage/${routevar.messageId}/${userId}/${routevar.storeUserId}`)
         console.log(res?.data?.data?._id)
-        setDetails(res?.data?.data?.messages)
+        // setDetails(res?.data?.data?.messages)
         setValues((prev) => ({
             ...prev,
             messageId: res?.data?.data?._id,
@@ -61,8 +62,8 @@ export default function ChatPerson({ route }) {
     }
 
     const sendMessage = async () => {
-        const {storeUserId } = route.params
-        await axios.post(`http://${address}/api/sendmessage`, {values, storeUserId})
+        const routevar = route.params
+        await axios.post(`http://${address}/api/sendmessage`, { values, storeUserId: routevar.storeUserId })
         fetchMessages()
         setValues((prev) => ({
             ...prev,
@@ -104,7 +105,7 @@ export default function ChatPerson({ route }) {
                     <ScrollView ref={scrollViewRef} contentContainerStyle={{ flexGrow: 1 }} onContentSizeChange={handleContentSizeChange}>
                         <View style={{ width: width, paddingVertical: height * 0.03 }}>
                             <View style={{ width: '100%', paddingTop: height * 0.1, paddingHorizontal: width * 0.03, gap: height * 0.01 }}>
-                                {details.map((item) => (
+                                {/* {details.map((item) => (
                                     <TouchableOpacity
                                         key={item._id}
                                         style={[item?.authorId === values?.userId
@@ -140,7 +141,7 @@ export default function ChatPerson({ route }) {
                                             {formatTime(item?.timestamp)}
                                         </Text>
                                     </TouchableOpacity>
-                                ))}
+                                ))} */}
                             </View>
                         </View>
                     </ScrollView>
