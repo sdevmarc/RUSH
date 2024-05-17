@@ -43,6 +43,20 @@ const ProductController = {
         } catch (error) {
             res.json({ success: false, message: `Error fetching the selected product controller: ${error}`, error: error })
         }
+    },
+    SearchProduct: async (req, res) => {
+        try {
+            const { storeId, searchId } = req.params
+
+            const checkProducts = await Product.find({
+                storeId: storeId,
+                "productInformation.productName": { $regex: new RegExp(searchId, 'i') }
+            })
+
+            res.json({ success: true, message: 'Search product successfully!', data: checkProducts })
+        } catch (error) {
+            res.json({ success: false, message: `Error searching a product controller: ${error}` })
+        }
     }
 }
 
