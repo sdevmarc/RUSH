@@ -24,7 +24,8 @@ const Orders = () => {
         cancelled: '',
         unreturned: '',
         review: '',
-        completed: ''
+        completed: '',
+        rating: ''
     })
 
     useFocusEffect(useCallback(() => {
@@ -44,7 +45,8 @@ const Orders = () => {
                     cancelled: res?.data?.statusCount?.cancelled,
                     unreturned: res?.data?.statusCount?.unreturned,
                     review: res?.data?.statusCount?.review,
-                    completed: res?.data?.statusCount?.completed
+                    completed: res?.data?.statusCount?.completed,
+                    rating: res?.data?.statusCount?.rating
                 }))
             } else {
                 setStatus((prev) => ({
@@ -164,7 +166,7 @@ const Orders = () => {
                                     To Review
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
-                                    {status?.review}
+                                    {status?.rating}
                                 </Text>
                             </TouchableOpacity>
                         </View>
