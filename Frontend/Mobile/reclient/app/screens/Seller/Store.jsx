@@ -8,18 +8,20 @@ import {
     ImageBackground,
     Alert
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../../config/host'
 import * as Colors from '../../../utils/colors'
+import Loading from '../../components/Loading'
 
 const { width, height } = Dimensions.get('window')
 
 const Store = () => {
     const navigation = useNavigation()
+    const [isLoading, setIsLoading] = useState(false)
     const [values, setValues] = useState([])
     const [status, setStatus] = useState({
         pending: '',
@@ -29,51 +31,83 @@ const Store = () => {
     })
 
     useFocusEffect(
-        React.useCallback(() => {
+        useCallback(() => {
             fetchData()
-            fetchTransactionStatus();
         }, [])
     )
 
     const fetchData = async () => {
-        const userId = await AsyncStorage.getItem('userId')
-        const token = await AsyncStorage.getItem('token')
+        try {
+            setIsLoading(true)
+            const sellerId = await AsyncStorage.getItem('storeId')
+            const userId = await AsyncStorage.getItem('userId')
+            const token = await AsyncStorage.getItem('token')
 
-        const res = await axios.get(`http://${address}/api/getstore/${userId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
+            const getStore = await axios.get(`http://${address}/api/getstore/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            if (getStore?.data?.success) {
+                await AsyncStorage.setItem('storeId', getStore.data.data._id)
+                setValues(getStore?.data?.data)
+
+                const getTransactions = await axios.get(`http://${address}/api/viewtransactions/${sellerId}/sellerId`)
+
+                if (getTransactions?.data?.success) {
+                    setStatus((prev) => ({
+                        ...prev,
+                        pending: getTransactions?.data?.statusCount?.pending,
+                        cancelled: getTransactions?.data?.statusCount?.cancelled,
+                        unreturned: getTransactions?.data?.statusCount?.unreturned,
+                        completed: getTransactions?.data?.statusCount?.completed
+                    }))
+                } else {
+                    setStatus((prev) => ({
+                        ...prev,
+                        pending: '0',
+                        cancelled: '0',
+                        unreturned: '0',
+                        completed: '0'
+                    }))
+                }
             }
-        })
-        if (res?.data?.success) {
-            await AsyncStorage.setItem('storeId', res.data.data._id)
-            setValues(res?.data?.data)
-        } else {
-            Alert.alert(res?.data?.message)
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
-    const fetchTransactionStatus = async () => {
-        const sellerId = await AsyncStorage.getItem('storeId')
-        const res = await axios.get(`http://${address}/api/viewtransactions/${sellerId}/sellerId`)
+    // const fetchTransactionStatus = async () => {
+    //     try {
+    //         setIsLoading(true)
+    //         const sellerId = await AsyncStorage.getItem('storeId')
+    //         const getTransactions = await axios.get(`http://${address}/api/viewtransactions/${sellerId}/sellerId`)
 
-        if (res?.data?.success) {
-            setStatus((prev) => ({
-                ...prev,
-                pending: res?.data?.statusCount?.pending,
-                cancelled: res?.data?.statusCount?.cancelled,
-                unreturned: res?.data?.statusCount?.unreturned,
-                completed: res?.data?.statusCount?.completed
-            }))
-        } else {
-            setStatus((prev) => ({
-                ...prev,
-                pending: '0',
-                cancelled: '0',
-                unreturned: '0',
-                completed: '0'
-            }))
-        }
-    }
+    //         if (getTransactions?.data?.success) {
+    //             setStatus((prev) => ({
+    //                 ...prev,
+    //                 pending: getTransactions?.data?.statusCount?.pending,
+    //                 cancelled: getTransactions?.data?.statusCount?.cancelled,
+    //                 unreturned: getTransactions?.data?.statusCount?.unreturned,
+    //                 completed: getTransactions?.data?.statusCount?.completed
+    //             }))
+    //         } else {
+    //             setStatus((prev) => ({
+    //                 ...prev,
+    //                 pending: '0',
+    //                 cancelled: '0',
+    //                 unreturned: '0',
+    //                 completed: '0'
+    //             }))
+    //         }
+    //     } catch (error) {
+    //         console.log('Error fetch transaction status: ', error)
+    //     } finally {
+    //         setIsLoading(false)
+    //     }
+    // }
 
     const handleToShip = () => {
         navigation.navigate('ToShip')
@@ -103,10 +137,11 @@ const Store = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, backgroundColor: Colors.backgroundColor }}>
+                {isLoading && <Loading title={`Loading`} />}
                 <ImageBackground source={{ uri: 'https://source.unsplash.com/photo-of-woman-holding-white-and-black-paper-bags-_3Q3tsJ01nc' }} style={{ width: '100%', height: height * 0.25, }} resizeMode='cover'>
                     <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.05, backgroundColor: 'rgba(0,0,0,0.2)' }}>
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.05 }}>
+                            <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.05 }} numberOfLines={2} ellipsizeMode='tail'>
                                 {values?.shopInformation?.shopName}
                             </Text>
                             <TouchableOpacity style={{ paddingHorizontal: width * 0.03, paddingVertical: height * 0.008, backgroundColor: Colors.orange }}>
@@ -156,7 +191,7 @@ const Store = () => {
                     </View>
                 </ImageBackground>
                 <ScrollView>
-                    <View style={{ width: width, height: height, paddingHorizontal: width * 0.03, paddingTop: height * 0.02, gap: height * 0.01 }}>
+                    <View style={{ width: width, paddingHorizontal: width * 0.03, paddingTop: height * 0.02, gap: height * 0.01, paddingBottom: height * 0.5 }}>
                         <View style={{ width: '100%', gap: height * 0.01 }}>
                             <Text style={{ fontWeight: '600', fontSize: height * 0.02 }}>
                                 Order Status
@@ -215,56 +250,72 @@ const Store = () => {
                             <Text style={{ fontWeight: '600', fontSize: height * 0.02 }}>
                                 Others
                             </Text>
-                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: width * 0.03 }}>
-                            <TouchableOpacity
-                                onPress={() => handleProduct()}
-                                style={{
-                                    width: width * 0.29,
-                                    height: height * 0.13,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    backgroundColor: Colors.idleColor,
-                                    borderRadius: height * 0.02,
-                                    gap: height * 0.01
-                                }}
-                            >
-                                <Feather name="shopping-bag" size={24} color="black" />
-                                <Text style={{ color: Colors.fontColor, fontWeight: '600' }}>
-                                    Products
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={{
-                                    width: width * 0.29,
-                                    height: height * 0.13,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    backgroundColor: Colors.idleColor,
-                                    borderRadius: height * 0.02,
-                                    gap: height * 0.01
-                                }}
-                            >
-                                <Ionicons name="analytics" size={24} color="black" />
-                                <Text style={{ color: Colors.fontColor, fontWeight: '600' }}>
-                                    Performance
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={{
-                                    width: width * 0.29,
-                                    height: height * 0.13,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    backgroundColor: Colors.idleColor,
-                                    borderRadius: height * 0.02,
-                                    gap: height * 0.01
-                                }}
-                            >
-                                <Feather name="help-circle" size={24} color="black" />
-                                <Text style={{ color: Colors.fontColor, fontWeight: '600' }}>
-                                    Help Center
-                                </Text>
-                            </TouchableOpacity>
+                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: width * 0.03, flexWrap: 'wrap' }}>
+                                <TouchableOpacity
+                                    onPress={() => handleProduct()}
+                                    style={{
+                                        width: width * 0.29,
+                                        height: height * 0.13,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: Colors.idleColor,
+                                        borderRadius: height * 0.02,
+                                        gap: height * 0.01
+                                    }}
+                                >
+                                    <Feather name="shopping-bag" size={24} color="black" />
+                                    <Text style={{ color: Colors.fontColor, fontWeight: '600' }}>
+                                        Products
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{
+                                        width: width * 0.29,
+                                        height: height * 0.13,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: Colors.idleColor,
+                                        borderRadius: height * 0.02,
+                                        gap: height * 0.01
+                                    }}
+                                >
+                                    <Ionicons name="analytics" size={24} color="black" />
+                                    <Text style={{ color: Colors.fontColor, fontWeight: '600', textAlign: 'center' }}>
+                                        Completed Orders
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{
+                                        width: width * 0.29,
+                                        height: height * 0.13,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: Colors.idleColor,
+                                        borderRadius: height * 0.02,
+                                        gap: height * 0.01
+                                    }}
+                                >
+                                    <Ionicons name="analytics" size={24} color="black" />
+                                    <Text style={{ color: Colors.fontColor, fontWeight: '600' }}>
+                                        Performance
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={{
+                                        width: width * 0.29,
+                                        height: height * 0.13,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: Colors.idleColor,
+                                        borderRadius: height * 0.02,
+                                        gap: height * 0.01
+                                    }}
+                                >
+                                    <Feather name="help-circle" size={24} color="black" />
+                                    <Text style={{ color: Colors.fontColor, fontWeight: '600' }}>
+                                        Help Center
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
