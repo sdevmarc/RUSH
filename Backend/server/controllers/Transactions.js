@@ -7,7 +7,9 @@ const TransactionController = {
     CreateTransaction: async (req, res) => {
         try {
             const values = req.body
+
             const data = await Transactions.create(values)
+
             if (data) {
                 res.json({ success: true, message: `Transaction added successfully!` })
             } else {
@@ -54,7 +56,7 @@ const TransactionController = {
         try {
             const { Id, name } = req.params
 
-            let pending = 0, cancelled = 0, unreturned = 0, completed = 0, review = 0
+            let pending = 0, cancelled = 0, unreturned = 0, completed = 0, review = 0, rating = 0
 
             let transactions
 
@@ -93,12 +95,16 @@ const TransactionController = {
                         review++
                     }
 
+                    if (transaction.checkout.status === "RATING") {
+                        rating++
+                    }
+
                     if (transaction.checkout.status === "COMPLETED") {
                         completed++
                     }
                 }
 
-                res.json({ success: true, message: `Transactions retrieved successfully!`, data, statusCount: { pending, cancelled, unreturned, review, completed } })
+                res.json({ success: true, message: `Transactions retrieved successfully!`, data, statusCount: { pending, cancelled, unreturned, review, completed, rating } })
             } else {
                 res.json({ success: false, message: `There are no transactions made for the specified seller.` })
             }
@@ -134,18 +140,51 @@ const TransactionController = {
     },
     UpdateStatusTransaction: async (req, res) => {
         try {
-            const { transactionId, status } = req.body
+            const { transactionId, status } = req.body;
 
-            const data = await Transactions.findByIdAndUpdate(transactionId, { "checkout.status": `${status}` }, { new: true })
-            if (data) {
-                res.json({ success: true, message: `Transactions updated to ${status} successfully!`, data })
-            } else {
-                res.json({ success: false, message: `Transactions did not updated to ${status}.` })
+            const transaction = await Transactions.findByIdAndUpdate(
+                transactionId,
+                { "checkout.status": status },
+                { new: true }
+            );
+
+            if (!transaction) {
+                return res.json({ success: false, message: "Transaction not found" });
             }
+
+            const { productId } = transaction;
+            let updateProductStatus;
+            let message;
+
+            if (status === 'UNRETURNED') {
+                updateProductStatus = await Products.findByIdAndUpdate(
+                    productId,
+                    { "productInformation.isAvailable": "Not Available" },
+                    { new: true }
+                );
+                message = `Transaction updated to ${status} and product set to Not Available successfully!`;
+            } else if (status === 'RATING') {
+                updateProductStatus = await Products.findByIdAndUpdate(
+                    productId,
+                    { "productInformation.isAvailable": "Available" },
+                    { new: true }
+                );
+                message = `Transaction updated to ${status} and product set to Available successfully!`;
+            } else {
+                message = `Transaction updated to ${status} successfully!`;
+            }
+
+            if (updateProductStatus || status !== 'UNRETURNED' && status !== 'RATING') {
+                return res.json({ success: true, message, data: transaction });
+            }
+
+            res.json({ success: false, message: "Failed to update product status" });
+
         } catch (error) {
-            res.json({ success: false, message: `Error Updating status to ${status} Transaction controller: ${error}` })
+            res.json({ success: false, message: `Error updating status in Transaction controller: ${error.message}` });
         }
     }
+
 }
 
 module.exports = TransactionController
