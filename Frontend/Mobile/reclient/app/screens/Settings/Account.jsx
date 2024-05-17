@@ -14,11 +14,13 @@ import axios from 'axios'
 import address from '../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Colors from '../../../utils/colors'
+import Loading from '../../components/Loading'
 
 const { width, height } = Dimensions.get('window')
 
 const Account = () => {
     const navigation = useNavigation()
+    const [isLoading, setIsLoading] = useState(false)
     const [values, setValues] = useState([])
 
     useEffect(() => {
@@ -26,9 +28,17 @@ const Account = () => {
     }, [])
 
     const fetchData = async () => {
-        const userId = await AsyncStorage.getItem('userId')
-        const data = await axios.get(`http:${address}/api/getuser/${userId}`)
-        setValues(data?.data?.data)
+        try {
+            setIsLoading(true)
+            const userId = await AsyncStorage.getItem('userId')
+            const data = await axios.get(`http:${address}/api/getuser/${userId}`)
+            setValues(data?.data?.data)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsLoading(false)
+        }
+
     }
 
     const handleOpenDrawer = () => {
@@ -49,6 +59,7 @@ const Account = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, backgroundColor: Colors.backgroundColor }}>
+                {isLoading && <Loading title={`Loading`} />}
                 <ImageBackground source={{ uri: 'https://source.unsplash.com/man-wearing-black-notched-lapel-suit-jacket-in-focus-photography-WMD64tMfc4k' }} style={{ width: '100%', height: height * 0.25, }} resizeMode='cover'>
                     <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.05, backgroundColor: 'rgba(0,0,0,0.2)' }}>
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
