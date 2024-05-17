@@ -7,7 +7,9 @@ import {
     TouchableOpacity,
     Image,
     StatusBar,
-    Platform
+    Platform,
+    Linking,
+    Alert
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
@@ -23,7 +25,7 @@ const { width, height } = Dimensions.get('window')
 
 const SelectedStore = ({ route }) => {
     const [shopName, setShopName] = useState('')
-    const [IsMessageId, setMessageId] = useState('')
+    const [mobileNumber, setMobileNumber] = useState('')
     const [values, setValues] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -59,7 +61,11 @@ const SelectedStore = ({ route }) => {
                 Authorization: `Bearer ${token}`
             }
         })
+
+        setMobileNumber(getStoreName?.data?.data?.shopInformation?.mobileNumber)
+
         const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
+     
         setValues(res.data.data)
         setShopName(getStoreName?.data?.data?.shopInformation?.shopName)
     }
@@ -72,9 +78,18 @@ const SelectedStore = ({ route }) => {
         navigation.goBack()
     }
 
-    const handleMessage = () => {
-        const { userId } = route.params
-        navigation.navigate('ChatPerson', { messageId: null, storeUserId: userId })
+    const handleMessage = async () => {
+        const message = `Hi ${shopName}, I'd like to chat with you.`
+        const phoneNumber = mobileNumber
+
+        const url = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+
+        const openMessage = await Linking.canOpenURL(url)
+        if (openMessage) {
+            return Linking.openURL(url)
+        } else {
+            Alert.alert('Error', 'Unable to open the messaging app.')
+        }
     }
 
     return (
