@@ -9,7 +9,7 @@ import {
     TouchableOpacity
 } from 'react-native'
 import React, { useCallback, useState } from 'react'
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import * as Colors from '../../../../utils/colors'
 import Navbar from '../../../components/Navbar'
 import axios from 'axios'
@@ -20,6 +20,7 @@ import Loading from '../../../components/Loading'
 const { width, height } = Dimensions.get('window')
 
 export default function Unreturned() {
+    const navigation = useNavigation()
     const [values, setValues] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
@@ -45,11 +46,27 @@ export default function Unreturned() {
         }
     }
 
+    const handleUpdateToReturned = async (value) => {
+        try {
+            setIsLoading(true)
+
+            const updateTransaction = await axios.post(`http://${address}/api/updatetransactionstatus`, {status: 'RATING', transactionId: value})
+            if(updateTransaction?.data?.success) {
+                Alert.alert('Success!', 'The product has been returned!')
+                navigation.navigate('StoreDashboard')
+            } 
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-            {isLoading && <Loading title={`Loading`} />}
+                {isLoading && <Loading title={`Loading`} />}
                 <Navbar title='Uneturned' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
@@ -96,7 +113,9 @@ export default function Unreturned() {
                                         </View>
 
                                         <View style={{ width: '100%', height: '30%', padding: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <TouchableOpacity style={{ width: '100%', height: '100%', backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
+                                            <TouchableOpacity
+                                                onPress={() => handleUpdateToReturned(item?.transaction?._id)}
+                                                style={{ width: '100%', height: '100%', backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
