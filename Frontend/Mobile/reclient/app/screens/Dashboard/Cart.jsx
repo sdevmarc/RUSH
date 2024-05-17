@@ -73,15 +73,49 @@ const Cart = ({ route }) => {
         }, []))
 
     const handleCheckout = async () => {
-        const res = await axios.post(`http://${address}/api/createtransaction`, IsCheckout)
-        if (res?.data?.success) {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'SuccessfulCheckout' }]
-            })
-        } else {
-            Alert.alert(res?.data?.message)
+        try {
+            const { userId, sellerId, productId } = IsCheckout
+            const { deliveryAddress, shippingOption, paymentMethod, paymentDetails } = IsCheckout.checkout
+
+            if (!userId || !sellerId || !productId) {
+                console.log('Error', 'No userId, sellerId, nor productId provided.')
+                return
+            }
+
+            if (!deliveryAddress.municipality || !deliveryAddress.barangay) {
+                Alert.alert('Error', 'Please set a valid delivery address.')
+                return
+            }
+            if (!shippingOption) {
+                Alert.alert('Error', 'Please choose a shipping option.')
+                return
+            }
+            if (!paymentMethod) {
+                Alert.alert('Error', 'Please select a payment method.')
+                return
+            }
+            if (!paymentDetails.merchandiseSubTotal || !paymentDetails.shippingSubTotal || !paymentDetails.totalPayment) {
+                Alert.alert('Error', 'Invalid payment details.')
+                return
+            }
+
+            setIsLoading(true)
+            const res = await axios.post(`http://${address}/api/createtransaction`, IsCheckout)
+            if (res?.data?.success) {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'SuccessfulCheckout' }]
+                })
+            } else {
+                Alert.alert(res?.data?.message)
+            }
+
+        } catch (error) {
+            console.error(`Error Checkout: ${error}`)
+        } finally {
+            setIsLoading(false)
         }
+
     }
 
     const fetchProductItem = async () => {
@@ -147,7 +181,7 @@ const Cart = ({ route }) => {
         } catch (error) {
             console.error("Error fetching address details:", error)
         } finally {
-setIsLoading(false)
+            setIsLoading(false)
         }
     }
 
@@ -169,7 +203,6 @@ setIsLoading(false)
 
     const handleOnChangeArrayOption = (e, value) => {
         try {
-            console.log(value)
             setCheckout((prev) => ({
                 ...prev,
                 checkout: {
@@ -186,10 +219,10 @@ setIsLoading(false)
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-            { (isLoading || imageLoading) && <Loading title={`Loading`} /> }
+                {(isLoading || imageLoading) && <Loading title={`Loading`} />}
                 <Context.Provider value={{ IsModalOpen, setIsModalOpen }}>
-                    <Modal title={`Shipping Option`} onSelectedValue={(item) => handleOnChangeArrayOption('shippingOption', item)} fetchedData={ShippingOption} modalId={`shippingOption`} />
-                    <Modal title={`Payment Method`} onSelectedValue={(item) => handleOnChangeArrayOption('paymentMethod', item)} fetchedData={paymentOptions} modalId={`paymentMethod`} />
+                    <Modal onSelectedValue={(item) => handleOnChangeArrayOption('shippingOption', item)} fetchedData={ShippingOption} modalId={`shippingOption`} />
+                    <Modal onSelectedValue={(item) => handleOnChangeArrayOption('paymentMethod', item)} fetchedData={paymentOptions} modalId={`paymentMethod`} />
                 </Context.Provider>
                 <Navbar title='Checkout' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
