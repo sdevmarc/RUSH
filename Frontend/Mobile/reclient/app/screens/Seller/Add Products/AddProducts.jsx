@@ -122,8 +122,30 @@ const AddProducts = () => {
                 shippingFee
             } = productInformation
 
-            if (!storeId || !productName || !productDescription || !days || !isAvailable || category.length === 0 || gallery.length === 0 || !price || !shippingFee) {
+            if (selectedPicture.length <= 0) {
+                Alert.alert('Error', 'Please select an image of yor product!')
+                return;
+            }
+
+            if (!Number.isInteger(Number(days))) {
+                Alert.alert('Error', 'The "Days of Rent" field must be an integer.');
+                return;
+            }
+
+            if (!Number.isInteger(Number(price))) {
+                Alert.alert('Error', 'The "Price" field must be an integer.');
+                return;
+            }
+
+            if (!Number.isInteger(Number(shippingFee))) {
+                Alert.alert('Error', 'The "Shipping Fee" field must be an integer.');
+                return;
+            }
+
+
+            if (!storeId || !productName || !productDescription || !days || !isAvailable || category.length === 0 || !price || !shippingFee) {
                 Alert.alert('Please fill-up the required fields!')
+                console.log(values)
                 return
             }
 
@@ -131,6 +153,7 @@ const AddProducts = () => {
             const uploadPromises = selectedPicture.gallery.map(async (image) => {
                 return await handleUploadImage(image.uri);
             })
+
             const uploadedImages = await Promise.all(uploadPromises)
             setValues(prevState => ({
                 ...prevState,
@@ -139,7 +162,6 @@ const AddProducts = () => {
                     gallery: uploadedImages
                 }
             }))
-
 
         } catch (error) {
             console.log('Error', error)
@@ -242,9 +264,9 @@ const AddProducts = () => {
                 {isLoading && <Loading title={`Publishing`} />}
                 <Navbar title='Add Product' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <Context.Provider value={{ IsModalOpen, setIsModalOpen }}>
-                    <Modal title='Category' onSelectedValue={(item) => handleOnChangeProductInformationArray('category', 'name', item, 3)} fetchedData={SampleCategory} modalId='category' />
-                    <Modal title='sizes' onSelectedValue={(item) => handleOnChangeProductInformationArray('sizes', 'size', item, 6)} fetchedData={SampleSizes} modalId='sizes' />
-                    <Modal title='Shipping Availability' onSelectedValue={(item) => handleOnChangeProductInformationArray('shippingAvailability', 'shippingName', item, 2)} fetchedData={SampleShipping} modalId='shipping' />
+                    <Modal onSelectedValue={(item) => handleOnChangeProductInformationArray('category', 'name', item, 3)} fetchedData={SampleCategory} modalId='category' />
+                    <Modal onSelectedValue={(item) => handleOnChangeProductInformationArray('sizes', 'size', item, 6)} fetchedData={SampleSizes} modalId='sizes' />
+                    <Modal onSelectedValue={(item) => handleOnChangeProductInformationArray('shippingAvailability', 'shippingName', item, 2)} fetchedData={SampleShipping} modalId='shipping' />
                 </Context.Provider>
                 <KeyboardAvoidingView behavior="padding">
                     <ScrollView>
@@ -281,7 +303,7 @@ const AddProducts = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={pickImage}
-                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.orange, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.black, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                 >
                                     <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
                                         <Text style={{ color: Colors.whiteColor, textAlign: 'justify', fontWeight: '600' }}>
@@ -324,7 +346,7 @@ const AddProducts = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => handleModalState('category', true)}
-                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.orange, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.black, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                 >
                                     <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
                                         <Text style={{ color: Colors.whiteColor, textAlign: 'justify', fontWeight: '600' }}>
@@ -367,7 +389,7 @@ const AddProducts = () => {
 
                                             <TouchableOpacity
                                                 onPress={() => handleModalState('sizes', true)}
-                                                style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.orange, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                                style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.black, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                             >
                                                 <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
                                                     <Text style={{ color: Colors.whiteColor, textAlign: 'justify', fontWeight: '600' }}>
@@ -430,7 +452,7 @@ const AddProducts = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => handleModalState('shipping', true)}
-                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.orange, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.black, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                 >
                                     <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
                                         <Text style={{ color: Colors.whiteColor, textAlign: 'justify', fontWeight: '600' }}>
