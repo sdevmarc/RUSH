@@ -90,7 +90,7 @@ const Product = () => {
                                             overflow: 'hidden',
                                             width: width * 0.452,
                                             height: height * 0.3,
-                                            borderRadius: height * 0.02,
+                                            borderRadius: height * 0.01,
                                             backgroundColor: '#4a4c59'
                                         }}
                                     >
