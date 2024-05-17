@@ -9,6 +9,7 @@ import {
 import React, { useState, useContext, useEffect } from 'react'
 import Context from './Context'
 import { Picker } from '@react-native-picker/picker'
+import * as Colors from '../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
@@ -18,10 +19,17 @@ const Modal = ({ title, onSelectedValue, fetchedData, modalId }) => {
 
     const handleModalState = (IsTrue) => {
         if (IsTrue) {
-            setIsModalOpen(false);
-        } else {
-            onSelectedValue(IsSelect)
-            setIsModalOpen(false);
+            setIsModalOpen(false)
+            return
+        }
+
+        if (!IsTrue) {
+            if(IsSelect === '') {
+                setIsModalOpen(false)
+            } else {
+                onSelectedValue(IsSelect)
+                setIsModalOpen(false)
+            }
         }
     }
 
@@ -59,7 +67,7 @@ const Modal = ({ title, onSelectedValue, fetchedData, modalId }) => {
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center', gap: width * 0.05 }}>
                                     <TouchableOpacity
                                         onPress={() => handleModalState(true)}
-                                        style={{ width: width * 0.4, height: height * 0.06, backgroundColor: '#cf2935', justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}
+                                        style={{ width: width * 0.4, height: height * 0.06, backgroundColor: Colors.black, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}
                                     >
                                         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: height * 0.02 }}>
                                             Cancel
@@ -67,9 +75,9 @@ const Modal = ({ title, onSelectedValue, fetchedData, modalId }) => {
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => handleModalState(false)}
-                                        style={{ width: width * 0.4, height: height * 0.06, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}
+                                        style={{ width: width * 0.4, height: height * 0.06, backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}
                                     >
-                                        <Text style={{ color: '#111', fontWeight: 'bold', fontSize: height * 0.02 }}>
+                                        <Text style={{ color: Colors.whiteColor, fontWeight: 'bold', fontSize: height * 0.02 }}>
                                             Yes
                                         </Text>
                                     </TouchableOpacity>
