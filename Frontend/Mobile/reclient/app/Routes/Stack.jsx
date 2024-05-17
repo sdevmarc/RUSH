@@ -9,7 +9,6 @@ import SelectedItem from '../screens/Dashboard/SelectedItem'
 import Cart from '../screens/Dashboard/Cart'
 import SuccessfulCheckout from '../screens/Dashboard/Successful'
 import DeliveryAddress from '../screens/Settings/DeliveryAddress'
-import PaymentOption from '../screens/Dashboard/PaymentOption'
 import Product from '../screens/Seller/Product'
 import ShopInformation from '../screens/Seller/AddStore/ShopInformation'
 import BusinessInformation from '../screens/Seller/AddStore/BusinessInformation'
@@ -42,7 +41,6 @@ function StackRoutes() {
                 <Stack.Screen name="SelectedStore" component={SelectedStore} options={{ headerTitle: 'Store', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="SelectedItem" component={SelectedItem} options={{ headerTitle: 'Item', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="Cart" component={Cart} options={{ headerTitle: 'Cart', headerTitleAlign: 'center', headerShown: false }} />
-                <Stack.Screen name="PaymentOption" component={PaymentOption} options={{ headerTitle: 'ShippingOption', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="SuccessfulCheckout" component={SuccessfulCheckout} options={{ headerTitle: 'SuccessfulCheckout', headerTitleAlign: 'center', headerShown: false }} />
                 {/* ACCOUNT */}
                 <Stack.Screen name="Address" component={DeliveryAddress} options={{ headerTitle: 'Address', headerTitleAlign: 'center', headerShown: false }} />
