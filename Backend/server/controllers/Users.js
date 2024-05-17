@@ -5,7 +5,7 @@ const UserController = {
         try {
             const values = req.body
 
-           await Users.create(values)
+            await Users.create(values)
             res.json({ success: true, message: 'User added successfully!' })
         } catch (error) {
             res.json({ success: false, message: `Error adding user controller: ${error}` })
@@ -46,7 +46,7 @@ const UserController = {
 
             if (activeIndex !== -1) {
                 ActiveAddress = deliveryAddress[activeIndex]
-                res.json({ success: true, message: 'Fetched Active Address successful', data: { personalDetails, ActiveAddress,contactno } })
+                res.json({ success: true, message: 'Fetched Active Address successful', data: { personalDetails, ActiveAddress, contactno } })
             } else {
                 res.json({ success: true, message: 'No active address has been set' });
             }
@@ -106,6 +106,29 @@ const UserController = {
 
         } catch (error) {
             res.json({ success: false, message: `Catch error from controller: ${error}` })
+        }
+    },
+    SearchUsers: async (req, res) => {
+        try {
+            const { searchId } = req.params
+
+            const checkusers = await Users.find({
+                username: { $regex: new RegExp(searchId, 'i') },
+                displayName: { $regex: new RegExp(searchId, 'i') }
+            })
+
+            res.json({ success: true, message: 'Searching a user is successful!', data: checkusers })
+
+        } catch (error) {
+            res.json({ success: false, message: `Search user error from controller: ${error}` })
+        }
+    },
+    GetAllUsers: async (req, res) => {
+        try {
+            const users = await Users.find()
+            res.json({ success: true, message: 'Retrieving all users is successfull!', data: users })
+        } catch (error) {
+            res.json({ success: false, message: `Get all user error from controller: ${error}` })
         }
     }
 }
