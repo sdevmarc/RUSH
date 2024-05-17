@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../../../config/host'
 import { useNavigation } from '@react-navigation/native'
+import * as Colors from '../../../../utils/colors'
 
 const { width, height } = Dimensions.get('window')
 
@@ -214,8 +215,8 @@ const AddProducts = () => {
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-            <View style={{ width: width, height: height, backgroundColor: '#323d48' }}>
-                <Navbar title='Add Product' backgroundColor='#323d48' />
+            <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                <Navbar title='Add Product' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <Context.Provider value={{ IsModalOpen, setIsModalOpen }}>
                     <Modal title='Category' onSelectedValue={(item) => handleOnChangeProductInformationArray('category', 'name', item, 3)} fetchedData={SampleCategory} modalId='category' />
                     <Modal title='sizes' onSelectedValue={(item) => handleOnChangeProductInformationArray('sizes', 'size', item, 6)} fetchedData={SampleSizes} modalId='sizes' />
@@ -226,7 +227,7 @@ const AddProducts = () => {
                         <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                             <View style={{ width: '100%', paddingTop: height * 0.1, paddingBottom: height * 0.2, gap: height * 0.01 }}>
                                 <View style={{ width: '100%', flexDirection: 'row' }}>
-                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold' }}>
                                         Product Gallery
                                     </Text>
                                 </View>
@@ -248,7 +249,7 @@ const AddProducts = () => {
                                             </>
                                         )
                                         : <View style={{ width: '22%', height: height * 0.1, overflow: 'hidden', justifyContent: 'center', alignItems: 'center', backgroundColor: '#AEAEAE' }}>
-                                            <Text style={{ color: 'white', fontWeight: '500' }}>
+                                            <Text style={{ color: Colors.whiteColor, fontWeight: '500' }}>
                                                 None
                                             </Text>
                                         </View>
@@ -256,19 +257,19 @@ const AddProducts = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={pickImage}
-                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.orange, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                 >
                                     <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        <Text style={{ color: Colors.whiteColor, textAlign: 'justify', fontWeight: '600' }}>
                                             Add Photo
                                         </Text>
-                                        <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                        <Text style={{ width: '50%', color: Colors.whiteColor, textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
                                             {selectedPicture.gallery.length}/8
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                         Product Name
                                     </Text>
                                     <TextInput
@@ -276,7 +277,7 @@ const AddProducts = () => {
                                         style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='What is the name of your product?' />
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                         Product Description
                                     </Text>
                                     <TextInput
@@ -284,13 +285,13 @@ const AddProducts = () => {
                                         style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Can you describe what your product is?' />
                                 </View>
                                 <View style={{ width: '100%', flexDirection: 'column', gap: height * 0.005 }}>
-                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold' }}>
                                         Category
                                     </Text>
                                     <View style={{ width: '100%', gap: width * 0.02, alignItems: 'flex-start', flexDirection: 'row', flexWrap: 'wrap' }}>
                                         {values.productInformation.category.map((item, index) => (
                                             <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.005, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
-                                                <Text style={{ color: 'white', fontWeight: '500' }}>
+                                                <Text style={{ color: Colors.fontColor, fontWeight: '500' }}>
                                                     {item.name}
                                                 </Text>
                                             </TouchableOpacity>
@@ -299,19 +300,19 @@ const AddProducts = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => handleModalState('category', true)}
-                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.orange, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                 >
                                     <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        <Text style={{ color: Colors.whiteColor, textAlign: 'justify', fontWeight: '600' }}>
                                             Add Category
                                         </Text>
-                                        <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                        <Text style={{ width: '50%', color: Colors.whiteColor, textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
                                             {values.productInformation.category.length}/3
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
                                 <View style={{ width: '100%', flexDirection: 'row' }}>
-                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold' }}>
                                         Days of Rent
                                     </Text>
                                 </View>
@@ -321,13 +322,13 @@ const AddProducts = () => {
                                         style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Days are you willing rent this product?' />
                                 </View>
                                 <View style={{ width: '100%', flexDirection: 'column', gap: height * 0.005 }}>
-                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold' }}>
                                         Variation
                                     </Text>
                                     <View style={{ width: '100%', gap: width * 0.02, alignItems: 'flex-start', flexDirection: 'row', flexWrap: 'wrap' }}>
                                         {values.productInformation.sizes.map((item, index) => (
                                             <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.005, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
-                                                <Text style={{ color: 'white', fontWeight: '500' }}>
+                                                <Text style={{ color: Colors.fontColor, fontWeight: '500' }}>
                                                     {item.size}
                                                 </Text>
                                             </TouchableOpacity>
@@ -342,13 +343,13 @@ const AddProducts = () => {
 
                                             <TouchableOpacity
                                                 onPress={() => handleModalState('sizes', true)}
-                                                style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                                style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.orange, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                             >
                                                 <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
-                                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                                    <Text style={{ color: Colors.whiteColor, textAlign: 'justify', fontWeight: '600' }}>
                                                         Add Sizes
                                                     </Text>
-                                                    <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                                    <Text style={{ width: '50%', color: Colors.whiteColor, textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
                                                         Optional
                                                     </Text>
                                                 </View>
@@ -389,13 +390,13 @@ const AddProducts = () => {
                                     )
                                 }
                                 <View style={{ width: '100%', flexDirection: 'column', gap: height * 0.005 }}>
-                                    <Text style={{ color: 'white', textAlign: 'justify', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: 'bold' }}>
                                         Shipping Availability
                                     </Text>
                                     <View style={{ width: '100%', gap: width * 0.02, alignItems: 'flex-start', flexDirection: 'row', flexWrap: 'wrap' }}>
                                         {values.productInformation.shippingAvailability.map((item, index) => (
                                             <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.005, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
-                                                <Text style={{ color: 'white', fontWeight: '500' }}>
+                                                <Text style={{ color: Colors.whiteColor, fontWeight: '500' }}>
                                                     {item.shippingName}
                                                 </Text>
                                             </TouchableOpacity>
@@ -405,19 +406,19 @@ const AddProducts = () => {
                                 </View>
                                 <TouchableOpacity
                                     onPress={() => handleModalState('shipping', true)}
-                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: '#4a4c59', padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                    style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.orange, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                                 >
                                     <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
-                                        <Text style={{ color: 'white', textAlign: 'justify', fontWeight: '600' }}>
+                                        <Text style={{ color: Colors.whiteColor, textAlign: 'justify', fontWeight: '600' }}>
                                             Add Shipping Option
                                         </Text>
-                                        <Text style={{ width: '50%', color: 'white', textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                        <Text style={{ width: '50%', color: Colors.whiteColor, textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
                                             {values.productInformation.shippingAvailability.length}/2
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                         Price
                                     </Text>
                                     <TextInput
@@ -425,7 +426,7 @@ const AddProducts = () => {
                                         style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='How much is the price of the product?' />
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: 'bold' }}>
                                         Shipping Fee
                                     </Text>
                                     <TextInput
