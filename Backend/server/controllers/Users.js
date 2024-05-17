@@ -81,7 +81,6 @@ const UserController = {
             const { userId, deliveryAddress } = req.body
 
             const data = await Users.findByIdAndUpdate(userId, { $push: { deliveryAddress: deliveryAddress } }, { new: true })
-            console.log(data)
             if (data) {
                 res.json({ success: true, message: 'Address added successfully!' })
             } else {
@@ -97,7 +96,6 @@ const UserController = {
             const { userId, personalDetails } = req.body
 
             const data = await Users.findByIdAndUpdate(userId, { personalDetails }, { new: true })
-            console.log(data)
             if (data) {
                 next()
             } else {
