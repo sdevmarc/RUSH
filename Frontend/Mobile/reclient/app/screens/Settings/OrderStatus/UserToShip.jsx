@@ -15,12 +15,14 @@ import Navbar from '../../../components/Navbar'
 import axios from 'axios'
 import address from '../../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Loading from '../../../components/Loading'
 
 const { width, height } = Dimensions.get('window')
 
 export default function UserToShip() {
     const navigation = useNavigation()
     const [values, setValues] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
     useFocusEffect(useCallback(() => {
         fetchPending()
@@ -28,13 +30,20 @@ export default function UserToShip() {
 
 
     const fetchPending = async () => {
-        const userId = await AsyncStorage.getItem('userId')
-        const res = await axios.get(`http:${address}/api/viewstatustransactions/${userId}/user/PENDING`)
+        try {
+            setIsLoading(true)
+            const userId = await AsyncStorage.getItem('userId')
+            const res = await axios.get(`http:${address}/api/viewstatustransactions/${userId}/user/PENDING`)
 
-        if (res?.data?.success) {
-            setValues(res?.data?.data)
-        } else {
-            Alert.alert(res?.data?.message)
+            if (res?.data?.success) {
+                setValues(res?.data?.data)
+            } else {
+                console.log(res?.data?.message)
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -50,6 +59,7 @@ export default function UserToShip() {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                {isLoading && <Loading title={`Loading`} />}
                 <Navbar title='To Ship' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
