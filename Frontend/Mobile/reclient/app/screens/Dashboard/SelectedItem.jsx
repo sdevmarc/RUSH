@@ -50,9 +50,7 @@ const SelectedItem = ({ route }) => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-                {
-                    (isLoading || imageLoading) && <Loading title={`Loading`} />
-                }
+                {(isLoading || imageLoading) && <Loading title={`Loading`} />}
                 <Navbar backgroundColor='none' tintColor={Colors.black} />
                 <ScrollView>
                     <View style={{ width: width, paddingTop: height * 0.09 }}>
@@ -67,38 +65,33 @@ const SelectedItem = ({ route }) => {
 
                                 }}
                             >
-                                {values.productInformation && values.productInformation.gallery && (
-                                    <Image
-                                        source={{ uri: values.productInformation.gallery[0].uri }}
-                                        resizeMode='cover'
-                                        style={{ width: '100%', height: '100%' }}
-                                        onLoad={() => setImageLoading(false)}
-                                        onError={() => setImageLoading(false)}
-                                    />
-                                )}
+                                <Image
+                                    source={{ uri: values?.productInformation?.gallery[0]?.uri }}
+                                    resizeMode='cover'
+                                    style={{ width: '100%', height: '100%' }}
+                                    onLoad={() => setImageLoading(false)}
+                                    onError={() => setImageLoading(false)}
+                                />
                             </View>
                         </View>
 
                         <View style={{ width: '100%', height: height * 0.5, paddingHorizontal: width * 0.03, paddingBottom: height * 0.1, justifyContent: 'space-between' }}>
                             <View style={{ width: '100%', gap: height * 0.01 }}>
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    {values.productInformation && values.productInformation.productName && (
-                                        <Text style={{ width: width * 0.7, color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.07, flexWrap: 'wrap' }} >
-                                            {values.productInformation.productName}
-                                        </Text>
-                                    )}
-
+                                    <Text style={{ width: '60%', color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.07, flexWrap: 'wrap' }} numberOfLines={2} ellipsizeMode='tail'>
+                                        {values?.productInformation?.productName}
+                                    </Text>
                                     <TouchableOpacity
                                         style={{
                                             paddingHorizontal: width * 0.02,
                                             paddingVertical: height * 0.0065,
                                             borderRadius: height * 0.01,
-                                            backgroundColor: '#d7a152',
+                                            backgroundColor: values?.productInformation?.isAvailable === 'Available' ? Colors.orange : Colors.semiblack,
                                             justifyContent: 'center',
                                             alignItems: 'center'
                                         }}>
                                         <Text style={{ fontFamily: 'Poppins-Regular', color: Colors.whiteColor }}>
-                                            Available
+                                            {values?.productInformation?.isAvailable}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -107,8 +100,8 @@ const SelectedItem = ({ route }) => {
                                         Shipping Availability
                                     </Text>
                                     <View style={{ flexDirection: 'row', gap: width * 0.03 }}>
-                                        {values.productInformation && values.productInformation.shippingAvailability && (
-                                            values.productInformation.shippingAvailability.map((item) => (
+                                        {
+                                            values?.productInformation?.shippingAvailability.map((item) => (
                                                 <TouchableOpacity
                                                     key={item._id}
                                                     style={{
@@ -124,19 +117,16 @@ const SelectedItem = ({ route }) => {
                                                     </Text>
                                                 </TouchableOpacity>
                                             ))
-                                        )}
-
+                                        }
                                     </View>
                                 </View>
                                 <View style={{ width: '100%', gap: height * 0.01 }}>
                                     <Text style={{ color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
                                         Description
                                     </Text>
-                                    {values.productInformation && values.productInformation.productDescription && (
-                                        <Text style={{ textAlign: 'justify', color: Colors.fontColor, fontSize: width * 0.03 }}>
-                                            {values.productInformation.productDescription}
-                                        </Text>
-                                    )}
+                                    <Text style={{ textAlign: 'justify', color: Colors.fontColor, fontSize: width * 0.03 }}>
+                                        {values?.productInformation?.productDescription}
+                                    </Text>
                                 </View>
                             </View>
                         </View>
@@ -165,14 +155,12 @@ const SelectedItem = ({ route }) => {
                         <Text style={{ color: Colors.fontColor, fontWeight: '500', fontSize: width * 0.04 }}>
                             Price
                         </Text>
-                        {values.productInformation && values.productInformation.productDescription && (
-                            <Text style={{ color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.05 }}>
-                                ₱ {values.productInformation.price}.00
-                            </Text>
-                        )}
-
+                        <Text style={{ color: Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.05 }}>
+                            ₱ {values?.productInformation?.price}.00
+                        </Text>
                     </View>
 
+                    
                     <TouchableOpacity
                         onPress={handleAddtoCart}
                         style={{
@@ -180,11 +168,12 @@ const SelectedItem = ({ route }) => {
                             height: height * 0.06,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            backgroundColor: '#d7a152',
+                            backgroundColor: values?.productInformation?.isAvailable === 'Available' ? Colors.orange : Colors.idleColor,
                             borderRadius: height * 0.02
                         }}
+                        disabled={values?.productInformation?.isAvailable === 'Not Available' && true}
                     >
-                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: width * 0.04 }}>
+                        <Text style={{ color: values?.productInformation?.isAvailable === 'Available' ? Colors.whiteColor : Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
                             RENT
                         </Text>
                     </TouchableOpacity>
