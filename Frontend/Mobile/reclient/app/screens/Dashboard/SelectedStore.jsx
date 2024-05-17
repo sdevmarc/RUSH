@@ -20,12 +20,15 @@ import axios from 'axios'
 import address from '../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Colors from '../../../utils/colors'
+import Loading from '../../components/Loading';
 
 const { width, height } = Dimensions.get('window')
 
 const SelectedStore = ({ route }) => {
     const [shopName, setShopName] = useState('')
     const [mobileNumber, setMobileNumber] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const [imageLoading, setImageLoading] = useState(true)
     const [values, setValues] = useState([])
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -53,21 +56,33 @@ const SelectedStore = ({ route }) => {
     }, [])
 
     const fetchProducts = async () => {
-        const { userId, storeId } = route.params
-        const token = await AsyncStorage.getItem('token')
+        try {
+            setIsLoading(true)
+            const { userId, storeId } = route.params
+            const token = await AsyncStorage.getItem('token')
 
-        const getStoreName = await axios.get(`http://${address}/api/getstore/${userId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
+            const getStoreName = await axios.get(`http://${address}/api/getstore/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setMobileNumber(getStoreName?.data?.data?.shopInformation?.mobileNumber)
+
+            const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
+            console.log(res?.data?.data[0])
+
+            if(res?.data?.data.length === 0) {
+                setImageLoading(false)
             }
-        })
 
-        setMobileNumber(getStoreName?.data?.data?.shopInformation?.mobileNumber)
+            setValues(res?.data?.data)
+            setShopName(getStoreName?.data?.data?.shopInformation?.shopName)
+        } catch (error) {
+            console.log('Error', error);
+        } finally {
+            setIsLoading(false)
+        }
 
-        const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
-     
-        setValues(res.data.data)
-        setShopName(getStoreName?.data?.data?.shopInformation?.shopName)
     }
 
     const handleSelectItem = async (item) => {
@@ -96,6 +111,7 @@ const SelectedStore = ({ route }) => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                { (isLoading || imageLoading) && <Loading title={`Loading`} /> }
                 <Animated.View style={{ position: 'absolute', width: '100%', height: headerHeight, overflow: 'hidden', zIndex: 1 }}>
                     <BlurView
                         intensity={50}
@@ -215,6 +231,8 @@ const SelectedStore = ({ route }) => {
                                                 source={{ uri: item.productInformation.gallery[0].uri }}
                                                 resizeMode='cover'
                                                 style={{ width: '100%', height: '100%' }}
+                                                onLoad={() => setImageLoading(false)}
+                                                onError={() => setImageLoading(false)}
                                             />
                                         </View>
                                         <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'flex-start' }}>
