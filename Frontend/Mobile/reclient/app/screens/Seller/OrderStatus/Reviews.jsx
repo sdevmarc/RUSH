@@ -30,7 +30,7 @@ export default function Reviews() {
         try {
             setIsLoading(true)
             const sellerId = await AsyncStorage.getItem('storeId')
-            const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/COMPLETED`)
+            const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/RATING`)
 
             if (res?.data?.success) {
                 setValues(res?.data?.data)
@@ -48,7 +48,7 @@ export default function Reviews() {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-            {isLoading && <Loading title={`Loading`} />}
+                {isLoading && <Loading title={`Loading`} />}
                 <Navbar title='Reviews' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
@@ -95,14 +95,14 @@ export default function Reviews() {
                                         </View>
 
                                         <View style={{ width: '100%', height: '30%', padding: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <View style={{ width: '100%', height: '100%', backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
+                                            <View style={{  width: '45%', height: '100%', backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
-                                                    Completed
+                                                    RETURNED
                                                 </Text>
                                             </View>
-                                            <View style={{ width: '100%', height: '100%', backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
+                                            <View style={{ width: '45%', height: '100%', backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
