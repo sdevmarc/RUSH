@@ -5,7 +5,8 @@ import {
     StatusBar,
     ScrollView,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    ImageBackground
 } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
@@ -49,8 +50,47 @@ const Product = () => {
                                 </Text>
                                 <MaterialIcons name="arrow-forward-ios" size={width * 0.05} color="white" />
                             </TouchableOpacity>
+
+                            <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                                <TouchableOpacity
+                                    // key={item.userId}
+                                    // onPress={() => handleSelectStore(item.userId, item._id)}
+                                    style={{
+                                        overflow: 'hidden',
+                                        width: width * 0.452,
+                                        height: height * 0.3,
+                                        borderRadius: height * 0.02,
+                                        backgroundColor: '#4a4c59'
+                                    }}
+                                >
+                                    <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                        <ImageBackground
+                                            // source={{ uri: `${item.shopInformation.shopImage}` }}
+                                            source={{ uri: `https://source.unsplash.com/man-wearing-black-notched-lapel-suit-jacket-in-focus-photography-WMD64tMfc4k` }}
+                                            resizeMode='cover'
+                                            style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                        >
+                                            <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                    <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }}>
+                                                        {/* {item.shopInformation.shopName} */}
+                                                        asdasdasd
+                                                    </Text>
+                                                    <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }}>
+                                                        Rate
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                </TouchableOpacity>
+                                
+                            </View>
                         </View>
                     </View>
+
+
+
                 </ScrollView >
             </View >
         </>
