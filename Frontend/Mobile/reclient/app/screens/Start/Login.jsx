@@ -27,20 +27,7 @@ const Login = () => {
         password: ''
     })
 
-    useEffect(() => {
-        removeItem()
-    }, [])
-
-    const removeItem = async () => {
-        const data = await AsyncStorage.getAllKeys()
-        console.log(data)
-        await AsyncStorage.removeItem('storeId')
-        console.log('Removed storeId')
-    }
-
     const handleLogin = async () => {
-        // navigation.replace('DrawerRoutes')
-
         try {
             if (values.username === '' || values.password === '') {
                 Alert.alert('Warning', 'Please fill-in the required fields.')
