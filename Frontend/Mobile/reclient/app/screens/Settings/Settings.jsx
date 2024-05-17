@@ -68,13 +68,13 @@ const Settings = () => {
                                 </Text>
                                 <SimpleLineIcons name="arrow-right" size={20} color="black" />
                             </TouchableOpacity>
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                                 style={{ width: '100%', height: height * 0.07, backgroundColor: Colors.idleColor, borderRadius: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.016, fontWeight: '600' }}>
                                     Privacy Settings
                                 </Text>
                                 <SimpleLineIcons name="arrow-right" size={20} color="black" />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             <TouchableOpacity
                                 style={{ width: '100%', height: height * 0.07, backgroundColor: Colors.idleColor, borderRadius: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.016, fontWeight: '600' }}>
