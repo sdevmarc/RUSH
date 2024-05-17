@@ -23,52 +23,85 @@ import Navbar from '../../components/Navbar'
 const { width, height } = Dimensions.get('window')
 
 export default function ChatPerson({ route }) {
-    const [shopName, setShopName] = useState()
-    const [IsMessageId, setMessageId] = useState()
-    const [details, setDetails] = useState([])
+    const navigation = useNavigation();
+    const [shopName, setShopName] = useState('');
+    const [details, setDetails] = useState([]);
     const [values, setValues] = useState({
         messageId: null,
-        userId: [],
+        userId: '',
+        storeUserId: '',
         body: ''
-    })
-    const scrollViewRef = useRef(null)
+    });
+    const scrollViewRef = useRef(null);
 
     useFocusEffect(useCallback(() => {
-        fetchMessages()
-    }, []))
+        fetchMessages();
+    }, []));
 
     useEffect(() => {
-        // refresh()
-    }, [])
+        // Optionally uncomment if you want to enable auto-refresh
+        // return refresh();
+    }, []);
 
     const refresh = () => {
-        const interval = setInterval(fetchMessages, 1000)
-        return () => clearInterval(interval)
-    }
+        const interval = setInterval(fetchMessages, 1000);
+        return () => clearInterval(interval);
+    };
 
     const fetchMessages = async () => {
-        const userId = await AsyncStorage.getItem('userId')
-        const routevar = route.params
+        const userId = await AsyncStorage.getItem('userId');
+        const { messageId, shopName, storeUserId } = route.params;
+        console.log({ messageId, shopName, storeUserId, userId })
+        setShopName(shopName);
 
-        console.log(routevar.messageId)
-        const res = await axios.get(`http://${address}/api/receivemessage/${routevar.messageId}/${userId}/${routevar.storeUserId}`)
-        console.log(res?.data?.data?._id)
-        // setDetails(res?.data?.data?.messages)
-        setValues((prev) => ({
-            ...prev,
-            messageId: res?.data?.data?._id,
-            userId: userId
-        }))
-    }
+        try {
+            const res = await axios.get(`http://${address}/api/receivemessage/${messageId || 'null'}/${userId}/${storeUserId}`);
+            // console.log(res?.data?.data)
+            if (res.data.success) {
+                setValues(prev => ({
+                    ...prev,
+                    messageId: res.data.data?._id || null,
+                    storeUserId: storeUserId,
+                    userId: userId
+                }));
+                setDetails(res.data.data?.messages || []);
+            } else {
+                setValues(prev => ({
+                    ...prev,
+                    messageId: null,
+                    storeUserId: storeUserId,
+                    userId: userId
+                }));
+            }
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+            Alert.alert('Error', 'Failed to fetch messages.');
+        }
+    };
 
     const sendMessage = async () => {
-        const routevar = route.params
-        await axios.post(`http://${address}/api/sendmessage`, { values, storeUserId: routevar.storeUserId })
-        fetchMessages()
-        setValues((prev) => ({
-            ...prev,
-            body: '',
-        }))
+        if (!values.body.trim()) {
+            Alert.alert('Error', 'Message cannot be empty.');
+            return;
+        }
+
+        try {
+            const res = await axios.post(`http://${address}/api/sendmessage`, values);
+
+            if (res.data.success) {
+                setValues(prev => ({
+                    ...prev,
+                    messageId: res.data.data?._id,
+                    body: ''
+                }));
+                fetchMessages();
+            } else {
+                Alert.alert('Error', res.data.message);
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+            Alert.alert('Error', 'Failed to send message.');
+        }
     }
 
     const handleOnChange = (value) => {
@@ -101,11 +134,11 @@ export default function ChatPerson({ route }) {
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
                 <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-                    <Navbar title={'shopName'} backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
+                    <Navbar title={shopName} backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                     <ScrollView ref={scrollViewRef} contentContainerStyle={{ flexGrow: 1 }} onContentSizeChange={handleContentSizeChange}>
                         <View style={{ width: width, paddingVertical: height * 0.03 }}>
                             <View style={{ width: '100%', paddingTop: height * 0.1, paddingHorizontal: width * 0.03, gap: height * 0.01 }}>
-                                {/* {details.map((item) => (
+                                {details.map((item) => (
                                     <TouchableOpacity
                                         key={item._id}
                                         style={[item?.authorId === values?.userId
@@ -141,7 +174,7 @@ export default function ChatPerson({ route }) {
                                             {formatTime(item?.timestamp)}
                                         </Text>
                                     </TouchableOpacity>
-                                ))} */}
+                                ))}
                             </View>
                         </View>
                     </ScrollView>
