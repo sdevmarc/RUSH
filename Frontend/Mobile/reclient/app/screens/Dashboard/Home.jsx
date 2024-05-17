@@ -9,10 +9,10 @@ import {
     TextInput,
     ImageBackground
 } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../../config/host'
@@ -22,16 +22,17 @@ import Loading from '../../components/Loading';
 const { width, height } = Dimensions.get('window')
 
 const Categories = [
-    { id: 1, name: 'Clothes' },
-    { id: 2, name: 'Electronic' },
-    { id: 3, name: 'Accessories' },
-    { id: 4, name: 'Homegoods' },
-    { id: 5, name: 'Beauty' },
-    { id: 6, name: 'Sports' },
-    { id: 7, name: 'Toys' },
-    { id: 8, name: 'Sports' },
-    { id: 9, name: 'Food' },
-    { id: 10, name: 'Pets' }
+    { id: 1, name: 'All' },
+    { id: 2, name: 'Clothes' },
+    { id: 3, name: 'Electronic' },
+    { id: 4, name: 'Accessories' },
+    { id: 5, name: 'Homegoods' },
+    { id: 6, name: 'Beauty' },
+    { id: 7, name: 'Sports' },
+    { id: 8, name: 'Toys' },
+    { id: 9, name: 'Sports' },
+    { id: 10, name: 'Food' },
+    { id: 11, name: 'Pets' }
 ]
 
 const Home = ({ route }) => {
@@ -40,10 +41,12 @@ const Home = ({ route }) => {
     const [imageLoading, setImageLoading] = useState(true)
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
+    const [activeCategory, setActiveCategory] = useState(Categories[0].id);
+    const scrollViewRef = useRef();
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         fetchStores()
-    }, [])
+    }, []))
 
     const fetchStores = async () => {
         try {
@@ -68,6 +71,13 @@ const Home = ({ route }) => {
         } finally {
             setIsLoading(false)
         }
+    }
+    const handleCategoryPress = (item, index) => {
+        setActiveCategory(item.id);
+        scrollViewRef.current.scrollTo({
+            x: index * (width * 0.2) - (width / 2) + (width * 0.1),
+            animated: true,
+        });
     }
 
     const handleSelectStore = async (item, id) => {
@@ -96,6 +106,7 @@ const Home = ({ route }) => {
         'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
         'Poppins-Bold': require('../../../assets/fonts/Poppins-Bold.ttf'),
     });
+
 
     if (!fontsLoaded) {
         return null;
@@ -171,6 +182,7 @@ const Home = ({ route }) => {
                                 </Text>
                             </View>
                             <ScrollView
+                                ref={scrollViewRef}
                                 contentContainerStyle={{
                                     paddingHorizontal: width * 0.03,
                                     paddingVertical: height * 0.0065,
@@ -178,32 +190,25 @@ const Home = ({ route }) => {
                                 }}
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}>
-                                {/* <TouchableOpacity
-                                    style={{
-                                        paddingHorizontal: width * 0.05,
-                                        paddingVertical: height * 0.0065,
-                                        borderRadius: height * 0.01,
-                                        backgroundColor: Colors.orange,
-                                        justifyContent: 'center',
-                                        alignItems: 'center'
-                                    }}>
-                                    <Text style={{ fontFamily: 'Poppins-Bold', color: Colors.whiteColor }}>
-                                        All
-                                    </Text>
-                                </TouchableOpacity> */}
-
                                 {Categories.map((item) => (
                                     <TouchableOpacity
-                                        key={item.id}
+                                        key={item?.id}
+                                        onPress={() => handleCategoryPress(item, item?.id)}
                                         style={{
                                             paddingHorizontal: width * 0.05,
                                             paddingVertical: height * 0.0065,
                                             borderRadius: height * 0.01,
-                                            backgroundColor: Colors.idleColor,
+                                            backgroundColor: activeCategory === item.id ? Colors.orange : Colors.idleColor,
                                             justifyContent: 'center',
                                             alignItems: 'center'
                                         }}>
-                                        <Text style={{ fontFamily: 'Poppins-Regular', color: Colors.fontColor }}>{item.name}</Text>
+                                        <Text
+                                            style={{
+                                                fontFamily: 'Poppins-Regular',
+                                                color: activeCategory === item.id ? Colors.whiteColor : Colors.fontColor
+                                            }}>
+                                            {item.name}
+                                        </Text>
                                     </TouchableOpacity>
                                 ))}
                             </ScrollView>
