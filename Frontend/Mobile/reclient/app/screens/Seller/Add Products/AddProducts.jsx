@@ -23,6 +23,7 @@ import axios from 'axios'
 import address from '../../../../config/host'
 import { useNavigation } from '@react-navigation/native'
 import * as Colors from '../../../../utils/colors'
+import Loading from '../../../components/Loading'
 
 const { width, height } = Dimensions.get('window')
 
@@ -48,6 +49,7 @@ const SampleShipping = [
 
 const AddProducts = () => {
     const navigation = useNavigation()
+    const [isLoading, setIsLoading] = useState(false)
     const [selectedPicture, setSelectedPicture] = useState({
         gallery: []
     })
@@ -62,6 +64,7 @@ const AddProducts = () => {
             productName: '',
             productDescription: '',
             days: '',
+            isAvailable: 'Available',
             category: [],
             gallery: [],
             sizes: [],
@@ -80,7 +83,6 @@ const AddProducts = () => {
 
     const fetchData = async () => {
         const storeId = await AsyncStorage.getItem('storeId')
-        console.log('Add Products: (StoreID): ', storeId)
         setValues((prevValue) => ({
             ...prevValue,
             storeId: storeId
@@ -90,8 +92,8 @@ const AddProducts = () => {
     const sendData = async () => {
         try {
             const res = await axios.post(`http://${address}/api/addproduct`, values);
+
             if (res.data.success) {
-                console.log(values.productInformation.gallery);
                 Alert.alert(res.data.message);
                 navigation.reset({
                     index: 0,
@@ -108,6 +110,24 @@ const AddProducts = () => {
 
     const handlePublish = async () => {
         try {
+            const { storeId, productInformation } = values;
+            const {
+                productName,
+                productDescription,
+                days,
+                category,
+                gallery,
+                price,
+                isAvailable,
+                shippingFee
+            } = productInformation
+
+            if (!storeId || !productName || !productDescription || !days || !isAvailable || category.length === 0 || gallery.length === 0 || !price || !shippingFee) {
+                Alert.alert('Please fill-up the required fields!')
+                return
+            }
+
+            setIsLoading(true)
             const uploadPromises = selectedPicture.gallery.map(async (image) => {
                 return await handleUploadImage(image.uri);
             })
@@ -120,8 +140,12 @@ const AddProducts = () => {
                 }
             }))
 
+
         } catch (error) {
             console.log('Error', error)
+            Alert.alert(error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -184,7 +208,6 @@ const AddProducts = () => {
 
     const handleModalState = (e, value) => {
         setIsModalOpen((prevValue => ({ ...prevValue, [e]: value })))
-        console.log(IsModalOpen)
     }
 
     const handleOnChangeProductInformationArray = (e, object, value, limit) => {
@@ -216,6 +239,7 @@ const AddProducts = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                {isLoading && <Loading title={`Publishing`} />}
                 <Navbar title='Add Product' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <Context.Provider value={{ IsModalOpen, setIsModalOpen }}>
                     <Modal title='Category' onSelectedValue={(item) => handleOnChangeProductInformationArray('category', 'name', item, 3)} fetchedData={SampleCategory} modalId='category' />
@@ -290,8 +314,8 @@ const AddProducts = () => {
                                     </Text>
                                     <View style={{ width: '100%', gap: width * 0.02, alignItems: 'flex-start', flexDirection: 'row', flexWrap: 'wrap' }}>
                                         {values.productInformation.category.map((item, index) => (
-                                            <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.005, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
-                                                <Text style={{ color: Colors.fontColor, fontWeight: '500' }}>
+                                            <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.007, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
+                                                <Text style={{ color: Colors.whiteColor, fontWeight: '500' }}>
                                                     {item.name}
                                                 </Text>
                                             </TouchableOpacity>
@@ -327,8 +351,8 @@ const AddProducts = () => {
                                     </Text>
                                     <View style={{ width: '100%', gap: width * 0.02, alignItems: 'flex-start', flexDirection: 'row', flexWrap: 'wrap' }}>
                                         {values.productInformation.sizes.map((item, index) => (
-                                            <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.005, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
-                                                <Text style={{ color: Colors.fontColor, fontWeight: '500' }}>
+                                            <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.007, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
+                                                <Text style={{ color: Colors.whiteColor, fontWeight: '500' }}>
                                                     {item.size}
                                                 </Text>
                                             </TouchableOpacity>
@@ -395,7 +419,7 @@ const AddProducts = () => {
                                     </Text>
                                     <View style={{ width: '100%', gap: width * 0.02, alignItems: 'flex-start', flexDirection: 'row', flexWrap: 'wrap' }}>
                                         {values.productInformation.shippingAvailability.map((item, index) => (
-                                            <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.005, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
+                                            <TouchableOpacity key={index} style={{ paddingHorizontal: width * 0.07, paddingVertical: height * 0.007, backgroundColor: '#d7a152', borderRadius: height * 0.01 }}>
                                                 <Text style={{ color: Colors.whiteColor, fontWeight: '500' }}>
                                                     {item.shippingName}
                                                 </Text>
@@ -438,7 +462,7 @@ const AddProducts = () => {
                     </ScrollView>
                 </KeyboardAvoidingView>
                 <BottomBar title='Publish' redirect={handlePublish} />
-            </View>
+            </View >
         </>
     )
 }
