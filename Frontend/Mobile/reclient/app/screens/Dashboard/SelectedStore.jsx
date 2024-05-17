@@ -9,11 +9,12 @@ import {
     StatusBar,
     Platform,
     Linking,
-    Alert
+    Alert,
+    ImageBackground
 } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { BlurView } from 'expo-blur';
 import axios from 'axios'
 import address from '../../../config/host'
@@ -50,9 +51,9 @@ const SelectedStore = ({ route }) => {
         extrapolate: 'clamp',
     })
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         fetchProducts()
-    }, [])
+    }, []))
 
     const fetchProducts = async () => {
         try {
@@ -69,7 +70,7 @@ const SelectedStore = ({ route }) => {
 
             const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
 
-            if(res?.data?.data.length === 0) {
+            if (res?.data?.data.length === 0) {
                 setImageLoading(false)
             }
 
@@ -109,104 +110,72 @@ const SelectedStore = ({ route }) => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-                { (isLoading || imageLoading) && <Loading title={`Loading`} /> }
-                <Animated.View style={{ position: 'absolute', width: '100%', height: headerHeight, overflow: 'hidden', zIndex: 1 }}>
-                    <BlurView
-                        intensity={50}
+                {(isLoading || imageLoading) && <Loading title={`Loading`} />}
+                <ImageBackground source={{ uri: 'https://source.unsplash.com/photo-of-woman-holding-white-and-black-paper-bags-_3Q3tsJ01nc' }} style={{ width: '100%', height: height * 0.25, }} resizeMode='cover'>
+                    <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.05, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.05 }} numberOfLines={2} ellipsizeMode='tail'>
+                                {shopName}
+                            </Text>
+                            <View style={{ gap: height * 0.01 }}>
+                                <TouchableOpacity style={{ paddingHorizontal: width * 0.03, paddingVertical: height * 0.006, backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
+                                        Follow
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={handleMessage}
+                                    style={{ paddingHorizontal: width * 0.03, paddingVertical: height * 0.006, backgroundColor: Colors.idleColor, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ color: Colors.fontColor, fontWeight: '600', fontSize: width * 0.03 }}>
+                                        Message
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+                        <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03 }}>
+                            <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
+                                Rating 3.5
+                            </Text>
+                            <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
+                                Followers 30
+                            </Text>
+                        </View>
+
+                    </View>
+                    <View
                         style={{
                             position: 'absolute',
                             width: '100%',
-                            height: '100%',
-                            backgroundColor: `${Platform.OS === 'android' ? '#313c47' : 'none'}`
+                            height: height * 0.13,
+                            overflow: 'hidden',
+                            zIndex: 1,
+                            paddingBottom: height * 0.009
                         }}
-                        tint="dark"
                     >
                         <View
                             style={{
-                                position: 'absolute',
-                                top: height * 0.07,
-                                width: '100%',
-                                paddingHorizontal: width * 0.05,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                zIndex: 1
-                            }}>
-                            <TouchableOpacity onPress={handleBack}>
-                                <Ionicons name="chevron-back-circle" size={width * 0.08} color="#dedede" />
-                            </TouchableOpacity>
-                            <Animated.View style={{ opacity: opacityTitle1 }}>
-                                {shopName && (
-                                    <Text style={{ fontSize: width * 0.04, color: Colors.whiteColor, fontFamily: 'Poppins-Bold' }}>
-                                        {shopName}
-                                    </Text>
-                                )}
-
-                            </Animated.View>
-                            <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
-                                <Ionicons name="search" size={24} color="white" />
-                            </TouchableOpacity>
-                        </View>
-                        <Animated.View
-                            style={{
-                                opacity,
                                 width: '100%',
                                 height: '100%',
-                                justifyContent: 'flex-end',
-                                alignItems: 'flex-start',
                                 paddingHorizontal: width * 0.05,
-                                paddingVertical: height * 0.02,
-                            }}>
-                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                {shopName && (
-                                    <Text style={{ width: '60%', flexWrap: 'wrap', fontSize: width * 0.045, color: Colors.whiteColor, fontWeight: '700', fontFamily: 'Poppins-Bold' }} numberOfLines={2} ellipsizeMode='tail' >
-                                        {shopName}
-                                    </Text>
-
-                                )}
-                                <View style={{ gap: height * 0.01 }}>
-                                    <TouchableOpacity
-                                        style={{
-                                            paddingHorizontal: width * 0.05,
-                                            paddingVertical: height * 0.003,
-                                            borderRadius: height * 0.01,
-                                            backgroundColor: '#d7a152',
-                                            justifyContent: 'center',
-                                            alignItems: 'center'
-                                        }}>
-                                        <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>
-                                            Follow
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={handleMessage}
-                                        style={{
-                                            paddingHorizontal: width * 0.05,
-                                            paddingVertical: height * 0.003,
-                                            borderRadius: height * 0.01,
-                                            backgroundColor: '#4a4c59',
-                                            justifyContent: 'center',
-                                            alignItems: 'center'
-                                        }}>
-                                        <Text style={{ fontFamily: 'Poppins-Regular', color: 'white' }}>
-                                            Message
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </Animated.View>
-                    </BlurView>
-                </Animated.View>
-                <ScrollView
-                    onScroll={
-                        Animated.event(
-                            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-                            { useNativeDriver: false }
-                        )}
-                    scrollEventThrottle={16}
-                >
-                    <View style={{ width: '100%', gap: height * 0.022, paddingHorizontal: width * 0.03, paddingTop: height * 0.24 }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03, paddingHorizontal: width * 0.03 }}>
+                                width: width,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'flex-end',
+                                zIndex: 1
+                            }}
+                        >
+                            <TouchableOpacity
+                                onPress={handleBack}
+                            >
+                                <Ionicons name="chevron-back-circle" size={width * 0.08} color="#dedede" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </ImageBackground>
+                <ScrollView>
+                    <View style={{ width: width, paddingHorizontal: width * 0.03, paddingTop: height * 0.02, gap: height * 0.01, paddingBottom: height * 0.5 }}>
+                        <View style={{ width: '100%', gap: height * 0.01 }}>
                             <Text style={{ fontSize: width * 0.05, color: Colors.fontColor, fontFamily: 'Poppins-Regular' }}>
                                 Products
                             </Text>
@@ -217,40 +186,32 @@ const SelectedStore = ({ route }) => {
                                     key={item._id}
                                     onPress={() => handleSelectItem(item._id)}
                                     style={{
+                                        overflow: 'hidden',
                                         width: width * 0.452,
                                         height: height * 0.3,
                                         borderRadius: height * 0.02,
                                         backgroundColor: '#4a4c59'
                                     }}
                                 >
-                                    <View style={{ width: '100%', height: '100%', justifyContent: 'space-between', alignItems: 'flex-start', padding: width * 0.03 }}>
-                                        <View style={{ overflow: 'hidden', width: '100%', height: '80%', backgroundColor: 'white', borderRadius: height * 0.01 }}>
-                                            <Image
-                                                source={{ uri: item.productInformation.gallery[0].uri }}
-                                                resizeMode='cover'
-                                                style={{ width: '100%', height: '100%' }}
-                                                onLoad={() => setImageLoading(false)}
-                                                onError={() => setImageLoading(false)}
-                                            />
-                                        </View>
-                                        <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'flex-start' }}>
-                                            <Text style={{ width: '100%', color: Colors.whiteColor, fontSize: width * 0.04, fontFamily: 'Poppins-Regular', flexWrap: 'wrap' }} numberOfLines={1} ellipsizeMode='tail' >
-                                                {item.productInformation.productName}
-                                            </Text>
-                                            <Text
-                                                style={{
-                                                    color: Colors.whiteColor,
-                                                    backgroundColor: '#d7a152',
-                                                    paddingHorizontal: width * 0.03,
-                                                    paddingVertical: width * 0.005,
-                                                    borderRadius: height * 0.005,
-                                                    fontSize: width * 0.03,
-                                                    fontFamily: 'Poppins-Regular'
-                                                }}
-                                            >
-                                                Available
-                                            </Text>
-                                        </View>
+                                    <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                        <ImageBackground
+                                            source={{ uri: item?.productInformation?.gallery[0]?.uri }}
+                                            resizeMode='cover'
+                                            style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                            onLoad={() => setImageLoading(false)}
+                                            onError={() => setImageLoading(false)}
+                                        >
+                                            <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                    <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                        {item?.productInformation?.productName}
+                                                    </Text>
+                                                    <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                        Rate
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        </ImageBackground>
                                     </View>
                                 </TouchableOpacity>
                             ))}
