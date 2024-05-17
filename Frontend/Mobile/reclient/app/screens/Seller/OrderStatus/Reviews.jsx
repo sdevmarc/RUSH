@@ -96,7 +96,7 @@ export default function Reviews() {
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
-                                                    Rated
+                                                    {item?.transaction?.checkout?.status}
                                                 </Text>
                                             </View>
                                         </View>
