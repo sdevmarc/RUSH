@@ -8,16 +8,45 @@ import {
     TextInput,
     ImageBackground
 } from 'react-native'
-import React from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useCallback, useState } from 'react'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import Navbar from '../../components/Navbar'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Colors from '../../../utils/colors'
+import axios from 'axios'
+import address from '../../../config/host'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Loading from '../../components/Loading'
 
 const { width, height } = Dimensions.get('window')
 
 const Product = () => {
     const navigation = useNavigation()
+    const [isLoading, setIsLoading] = useState(false)
+    const [imageLoading, setImageLoading] = useState(true)
+    const [products, setProducts] = useState([])
+
+    useFocusEffect(useCallback(() => {
+        fetchUserProducts()
+    }, []))
+
+    const fetchUserProducts = async () => {
+        try {
+            setIsLoading(true)
+            const storeId = await AsyncStorage.getItem('storeId')
+
+            const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
+            if (res?.data?.data.length > 0) {
+                setProducts(res?.data?.data)
+            } else {
+                setProducts([])
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     const handleOnPressAddProduct = () => {
         navigation.navigate('AddProduct')
@@ -27,6 +56,7 @@ const Product = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                {(isLoading || imageLoading) && <Loading title={`Loading`} />}
                 <Navbar title='Products' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
@@ -52,45 +82,43 @@ const Product = () => {
                             </TouchableOpacity>
 
                             <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                                <TouchableOpacity
-                                    // key={item.userId}
-                                    // onPress={() => handleSelectStore(item.userId, item._id)}
-                                    style={{
-                                        overflow: 'hidden',
-                                        width: width * 0.452,
-                                        height: height * 0.3,
-                                        borderRadius: height * 0.02,
-                                        backgroundColor: '#4a4c59'
-                                    }}
-                                >
-                                    <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
-                                        <ImageBackground
-                                            // source={{ uri: `${item.shopInformation.shopImage}` }}
-                                            source={{ uri: `https://source.unsplash.com/man-wearing-black-notched-lapel-suit-jacket-in-focus-photography-WMD64tMfc4k` }}
-                                            resizeMode='cover'
-                                            style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
-                                        >
-                                            <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
-                                                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }}>
-                                                        {/* {item.shopInformation.shopName} */}
-                                                        asdasdasd
-                                                    </Text>
-                                                    <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }}>
-                                                        Rate
-                                                    </Text>
+                                {products?.map((item) => (
+                                    <TouchableOpacity
+                                        key={item._id}
+                                        // onPress={() => handleSelectStore(item.userId, item._id)}
+                                        style={{
+                                            overflow: 'hidden',
+                                            width: width * 0.452,
+                                            height: height * 0.3,
+                                            borderRadius: height * 0.02,
+                                            backgroundColor: '#4a4c59'
+                                        }}
+                                    >
+                                        <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                            <ImageBackground
+                                                source={{ uri: item?.productInformation?.gallery[0]?.uri }}
+                                                resizeMode='cover'
+                                                style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                                onLoad={() => setImageLoading(false)}
+                                                onError={() => setImageLoading(false)}
+                                            >
+                                                <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                            {item?.productInformation?.productName}
+                                                        </Text>
+                                                        <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                            Rate
+                                                        </Text>
+                                                    </View>
                                                 </View>
-                                            </View>
-                                        </ImageBackground>
-                                    </View>
-                                </TouchableOpacity>
-                                
+                                            </ImageBackground>
+                                        </View>
+                                    </TouchableOpacity>
+                                ))}
                             </View>
                         </View>
                     </View>
-
-
-
                 </ScrollView >
             </View >
         </>
