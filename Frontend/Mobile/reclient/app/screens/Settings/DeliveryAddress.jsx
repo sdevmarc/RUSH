@@ -7,8 +7,8 @@ import {
     ScrollView,
     Alert
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import Navbar from '../../components/Navbar'
 import * as Colors from '../../../utils/colors'
 import axios from 'axios'
@@ -20,9 +20,9 @@ const DeliveryAddress = ({ route }) => {
     const navigation = useNavigation()
     const [values, setValues] = useState([])
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         fetchAddress()
-    }, [])
+    }, []))
 
     const fetchAddress = async () => {
         const userId = await AsyncStorage.getItem('userId')
