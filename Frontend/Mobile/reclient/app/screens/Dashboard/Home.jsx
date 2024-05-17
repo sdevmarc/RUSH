@@ -7,7 +7,8 @@ import {
     Animated,
     Image,
     StatusBar,
-    TextInput
+    TextInput,
+    ImageBackground
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -101,7 +102,8 @@ const Home = ({ route }) => {
                             paddingHorizontal: width * 0.05,
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            alignItems: 'center'
+                            alignItems: 'center',
+                            zIndex: 2
                         }}
                     >
                         <TouchableOpacity
@@ -109,21 +111,23 @@ const Home = ({ route }) => {
                         >
                             <MaterialCommunityIcons name="dots-grid" size={width * 0.08} color="black" />
                         </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            top: height * 0.07,
+                            width: '100%',
+                            paddingHorizontal: width * 0.05,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
                         <Animated.View style={{ opacity: opacityTitle1 }}>
                             <Text style={{ fontSize: width * 0.04, color: Colors.fontColor, fontFamily: 'Poppins-Bold' }}>
                                 Home
                             </Text>
                         </Animated.View>
-                        <View style={{ gap: width * 0.03, flexDirection: 'row' }}>
-                            <TouchableOpacity style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
-                                <Ionicons name="notifications" size={24} color="black" />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                            onPress={handleChat}
-                            style={{ paddingHorizontal: width * 0.02, paddingVertical: width * 0.02 }}>
-                                <Ionicons name="chatbubble-ellipses-sharp" size={24} color="black" />
-                            </TouchableOpacity>
-                        </View>
                     </View>
                     <Animated.View style={{ opacity, position: 'absolute', top: height * 0.14, paddingHorizontal: width * 0.05, width: width }}>
                         <Text style={{ fontSize: width * 0.05, fontWeight: '700', color: Colors.fontColor, fontFamily: 'Poppins-Bold' }}>
@@ -153,8 +157,15 @@ const Home = ({ route }) => {
                                     Categories
                                 </Text>
                             </View>
-                            <ScrollView contentContainerStyle={{ gap: width * 0.02, paddingStart: width * 0.03 }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <TouchableOpacity
+                            <ScrollView
+                                contentContainerStyle={{
+                                    paddingHorizontal: width * 0.03,
+                                    paddingVertical: height * 0.0065,
+                                    gap: width * 0.02,
+                                }}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}>
+                                {/* <TouchableOpacity
                                     style={{
                                         paddingHorizontal: width * 0.05,
                                         paddingVertical: height * 0.0065,
@@ -166,7 +177,8 @@ const Home = ({ route }) => {
                                     <Text style={{ fontFamily: 'Poppins-Bold', color: Colors.whiteColor }}>
                                         All
                                     </Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
+
                                 {Categories.map((item) => (
                                     <TouchableOpacity
                                         key={item.id}
@@ -195,38 +207,31 @@ const Home = ({ route }) => {
                                         key={item.userId}
                                         onPress={() => handleSelectStore(item.userId, item._id)}
                                         style={{
+                                            overflow: 'hidden',
                                             width: width * 0.452,
                                             height: height * 0.3,
                                             borderRadius: height * 0.02,
                                             backgroundColor: '#4a4c59'
                                         }}
                                     >
-                                        <View style={{ width: '100%', height: '100%', alignItems: 'center', padding: width * 0.03 }}>
-                                            <View style={{ overflow: 'hidden', width: '100%', height: '80%', backgroundColor: 'white', borderRadius: height * 0.015 }}>
-                                                <Image
-                                                    source={{ uri: `${item.shopInformation.shopImage}` }}
-                                                    resizeMode='cover'
-                                                    style={{ width: '100%', height: '100%' }}
-                                                />
-                                            </View>
-                                            <View style={{ width: '100%', height: '20%', justifyContent: 'space-evenly', alignItems: 'flex-start' }}>
-                                                <Text style={{ color: Colors.whiteColor, fontSize: width * 0.03, fontFamily: 'Poppins-Regular' }} numberOfLines={1} ellipsizeMode='tail' >
-                                                    {item.shopInformation.shopName}
-                                                </Text>
-                                                <Text
-                                                    style={{
-                                                        color: Colors.whiteColor,
-                                                        backgroundColor: Colors.accent,
-                                                        paddingHorizontal: width * 0.03,
-                                                        paddingVertical: width * 0.005,
-                                                        borderRadius: height * 0.005,
-                                                        fontSize: width * 0.023,
-                                                        fontFamily: 'Poppins-Regular'
-                                                    }}
-                                                >
-                                                    Category
-                                                </Text>
-                                            </View>
+                                        <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                            <ImageBackground
+                                                source={{ uri: `${item.shopInformation.shopImage}` }}
+
+                                                resizeMode='cover'
+                                                style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                            >
+                                                <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }}>
+                                                            {item.shopInformation.shopName}
+                                                        </Text>
+                                                        <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }}>
+                                                            Rate
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </ImageBackground>
                                         </View>
                                     </TouchableOpacity>
                                 ))}
@@ -235,9 +240,7 @@ const Home = ({ route }) => {
                     </View >
                 </ScrollView >
             </View >
-
         </>
-
     )
 }
 
