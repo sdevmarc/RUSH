@@ -89,7 +89,7 @@ export default function Cancelled() {
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
-                                                    Cancelled
+                                                      {item?.transaction?.checkout?.status}
                                                 </Text>
                                             </View>
                                             
