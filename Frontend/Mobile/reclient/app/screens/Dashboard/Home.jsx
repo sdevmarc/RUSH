@@ -5,19 +5,19 @@ import {
     View,
     Dimensions,
     Animated,
-    Image,
     StatusBar,
     TextInput,
     ImageBackground
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../../config/host'
 import * as Colors from '../../../utils/colors'
+import Loading from '../../components/Loading';
 
 const { width, height } = Dimensions.get('window')
 
@@ -36,6 +36,8 @@ const Categories = [
 
 const Home = ({ route }) => {
     const [stores, setStores] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [imageLoading, setImageLoading] = useState(true)
     const navigation = useNavigation()
     const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -44,14 +46,21 @@ const Home = ({ route }) => {
     }, [])
 
     const fetchStores = async () => {
-        const token = await AsyncStorage.getItem('token')
+        try {
+            setIsLoading(true)
+            const token = await AsyncStorage.getItem('token')
+            const data = await axios.get(`http://${address}/api/getallstore`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setStores(data.data.data)
+        } catch (error) {
+            console.error(`Error Home: ${error}`)
+        } finally {
+            setIsLoading(false)
+        }
 
-        const data = await axios.get(`http://${address}/api/getallstore`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        setStores(data.data.data)
     }
 
     const handleSelectStore = async (item, id) => {
@@ -85,14 +94,13 @@ const Home = ({ route }) => {
         return null;
     }
 
-    const handleChat = () => {
-        navigation.navigate('Chat')
-    }
-
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                {
+                    (isLoading || imageLoading) && <Loading title={`Loading`} />
+                }
                 <Animated.View style={{ width: '100%', height: headerHeight }}>
                     <View
                         style={{
@@ -217,7 +225,8 @@ const Home = ({ route }) => {
                                         <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
                                             <ImageBackground
                                                 source={{ uri: `${item.shopInformation.shopImage}` }}
-
+                                                onLoad={() => setImageLoading(false)}
+                                                onError={() => setImageLoading(false)}
                                                 resizeMode='cover'
                                                 style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
                                             >
