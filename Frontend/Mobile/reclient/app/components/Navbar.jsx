@@ -22,9 +22,7 @@ const Navbar = ({ backgroundColor, remove, tintColor, title }) => {
                 overflow: 'hidden',
                 zIndex: 1,
                 backgroundColor: `${backgroundColor}`,
-                paddingVertical: height * 0.009,
-                borderBottomWidth: 1,
-                borderBottomColor: "#dddddd"
+                paddingVertical: height * 0.009
             }}
         >
             <View
