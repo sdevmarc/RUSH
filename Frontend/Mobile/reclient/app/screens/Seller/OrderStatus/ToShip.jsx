@@ -47,6 +47,22 @@ export default function ToShip() {
         }
     }
 
+    const handleUpdateToCancelled = async (value) => {
+        try {
+            setIsLoading(true)
+
+            const updateTransaction = await axios.post(`http://${address}/api/updatetransactionstatus`, { status: 'CANCELLED', transactionId: value })
+            if (updateTransaction?.data?.success) {
+                Alert.alert('Success!', 'The product has been cancelled!')
+                navigation.navigate('StoreDashboard')
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     const handleViewOrder = (value) => {
         navigation.navigate('Summary', { transactionId: value })
     }
@@ -55,7 +71,7 @@ export default function ToShip() {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-            {isLoading && <Loading title={`Loading`} />}
+                {isLoading && <Loading title={`Loading`} />}
                 <Navbar title='To Ship' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
@@ -102,7 +118,9 @@ export default function ToShip() {
                                         </View>
 
                                         <View style={{ width: '100%', height: '30%', padding: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <TouchableOpacity style={{ width: '47%', height: '100%', backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
+                                            <TouchableOpacity
+                                                onPress={() => handleUpdateToCancelled(item?.transaction?._id)}
+                                                style={{ width: '47%', height: '100%', backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
