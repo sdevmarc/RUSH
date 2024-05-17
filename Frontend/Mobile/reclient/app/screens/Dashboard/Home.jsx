@@ -49,12 +49,22 @@ const Home = ({ route }) => {
         try {
             setIsLoading(true)
             const token = await AsyncStorage.getItem('token')
+
             const data = await axios.get(`http://${address}/api/getallstore`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
-            setStores(data.data.data)
+
+            if (data?.data?.data.length === 0) {
+                setIsLoading(false)
+                setImageLoading(false)
+                return
+            } else {
+                setStores(data?.data?.data)
+            }
+
+
         } catch (error) {
             console.error(`Error Home: ${error}`)
         } finally {
@@ -155,7 +165,7 @@ const Home = ({ route }) => {
                         )}
                     scrollEventThrottle={16}
                 >
-                    <View style={{ width: width, gap: height * 0.022 }}>
+                    <View style={{ width: width, gap: height * 0.022, paddingBottom: height * 0.5 }}>
                         <View style={{ width: '100%', gap: height * 0.02 }}>
                             <View style={{ width: '100%', paddingHorizontal: width * 0.03 }}>
                                 <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Search for stores, items, categories...' />
@@ -232,10 +242,10 @@ const Home = ({ route }) => {
                                             >
                                                 <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
                                                     <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                        <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }}>
+                                                        <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
                                                             {item.shopInformation.shopName}
                                                         </Text>
-                                                        <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }}>
+                                                        <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={1} ellipsizeMode='tail'>
                                                             Rate
                                                         </Text>
                                                     </View>
@@ -245,6 +255,7 @@ const Home = ({ route }) => {
                                     </TouchableOpacity>
                                 ))}
                             </View>
+
                         </View>
                     </View >
                 </ScrollView >
