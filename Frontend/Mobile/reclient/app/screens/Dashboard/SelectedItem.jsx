@@ -3,7 +3,6 @@ import {
     Dimensions,
     Text,
     StatusBar,
-    Animated,
     TouchableOpacity,
     ScrollView,
     Image
@@ -14,11 +13,14 @@ import Navbar from '../../components/Navbar'
 import axios from 'axios'
 import address from '../../../config/host'
 import * as Colors from '../../../utils/colors'
+import Loading from '../../components/Loading'
 
 const { width, height } = Dimensions.get('window')
 
 const SelectedItem = ({ route }) => {
     const [values, setValues] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [imageLoading, setImageLoading] = useState(true)
     const navigation = useNavigation()
 
     useEffect(() => {
@@ -26,15 +28,21 @@ const SelectedItem = ({ route }) => {
     }, [])
 
     const fetchProductItem = async () => {
-        const { id, shopName } = route.params
-        console.log(shopName)
-        const res = await axios.get(`http://${address}/api/selectproduct/${id}`)
-        setValues(res.data.data)
+        try {
+            setIsLoading(true)
+            const { id } = route.params
+            const res = await axios.get(`http://${address}/api/selectproduct/${id}`)
+            setValues(res?.data?.data)
+        } catch (error) {
+            console.error(`Error Selected Item: ${error}`)
+        } finally {
+            setIsLoading(false)
+        }
+
     }
 
     const handleAddtoCart = () => {
         const { id, shopName } = route.params
-        console.log(shopName)
         navigation.navigate('Cart', { id: id, shopName })
     }
 
@@ -42,6 +50,9 @@ const SelectedItem = ({ route }) => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                {
+                    (isLoading || imageLoading) && <Loading title={`Loading`} />
+                }
                 <Navbar backgroundColor='none' tintColor={Colors.black} />
                 <ScrollView>
                     <View style={{ width: width, paddingTop: height * 0.09 }}>
@@ -61,6 +72,8 @@ const SelectedItem = ({ route }) => {
                                         source={{ uri: values.productInformation.gallery[0].uri }}
                                         resizeMode='cover'
                                         style={{ width: '100%', height: '100%' }}
+                                        onLoad={() => setImageLoading(false)}
+                                        onError={() => setImageLoading(false)}
                                     />
                                 )}
                             </View>
