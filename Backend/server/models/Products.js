@@ -6,9 +6,22 @@ const ProductSchema = new mongoose.Schema({
         required: true
     },
     productInformation: {
-        productName: String,
-        productDescription: String,
-        days: String,
+        productName: {
+            type: String,
+            required: true
+        },
+        productDescription: {
+            type: String,
+            required: true
+        },
+        days: {
+            type: String,
+            required: true
+        },
+        isAvailable: {
+            type: String,
+            required: true
+        },
         category: [
             { name: String }
         ],
