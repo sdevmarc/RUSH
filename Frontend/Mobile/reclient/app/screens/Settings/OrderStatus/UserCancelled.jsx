@@ -99,7 +99,7 @@ export default function UserCancelled() {
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
-                                                    Cancelled
+                                                    DECLINED
                                                 </Text>
                                             </View>
 
