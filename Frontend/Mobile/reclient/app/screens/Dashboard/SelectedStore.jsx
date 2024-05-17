@@ -15,7 +15,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios'
 import address from '../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -69,7 +68,6 @@ const SelectedStore = ({ route }) => {
             setMobileNumber(getStoreName?.data?.data?.shopInformation?.mobileNumber)
 
             const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
-            console.log(res?.data?.data[0])
 
             if(res?.data?.data.length === 0) {
                 setImageLoading(false)
