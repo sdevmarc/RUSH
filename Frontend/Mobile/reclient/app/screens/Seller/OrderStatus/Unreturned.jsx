@@ -28,7 +28,7 @@ export default function Unreturned() {
     const fetchUnreturned = async () => {
         const sellerId = await AsyncStorage.getItem('storeId')
         const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/UNRETURNED`)
-
+       
         if (res?.data?.success) {
             setValues(res?.data?.data)
         } else {
@@ -90,7 +90,7 @@ export default function Unreturned() {
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
-                                                    Returned
+                                                    Set to Returned
                                                 </Text>
                                             </TouchableOpacity>
                                         </View>
