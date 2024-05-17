@@ -8,5 +8,6 @@ const checkStoreIfExists = require('../middleware/checkStore')
 router.post('/addstore', authenticateUser, checkStoreIfExists, Stores.UpdateSellerType, Stores.CreateStore)
 router.get('/getstore/:userId', authenticateUser, Stores.GetStore)
 router.get('/getallstore', authenticateUser, Stores.GetAllStore)
+router.get('/searchstore/:searchId', Stores.SearchStore)
 
 module.exports = router
