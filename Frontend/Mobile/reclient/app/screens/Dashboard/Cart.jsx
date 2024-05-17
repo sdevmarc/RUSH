@@ -17,6 +17,7 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Context from '../../components/Context'
 import Modal from '../../components/Modal'
+import Loading from '../../components/Loading'
 
 const ShippingOption = [
     { id: 1, name: 'Pickup' },
@@ -31,6 +32,8 @@ const paymentOptions = [
 const { width, height } = Dimensions.get('window')
 
 const Cart = ({ route }) => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [imageLoading, setImageLoading] = useState(true)
     const [IsModalOpen, setIsModalOpen] = useState({
         shippingOption: false,
         paymentMethod: false
@@ -64,7 +67,7 @@ const Cart = ({ route }) => {
     const navigation = useNavigation()
 
     useFocusEffect(
-        React.useCallback(() => {
+        useCallback(() => {
             fetchProductItem()
             fetchAddressDetails()
         }, []))
@@ -79,37 +82,44 @@ const Cart = ({ route }) => {
         } else {
             Alert.alert(res?.data?.message)
         }
-
-        // navigation.replace('SuccessfulCheckout')
     }
 
     const fetchProductItem = async () => {
-        const { id, shopName } = route.params
-        const res = await axios.get(`http://${address}/api/selectproduct/${id}`)
-        setValues(res?.data?.data)
-        setShopName(shopName)
+        try {
+            setIsLoading(true)
+            const { id, shopName } = route.params
+            const res = await axios.get(`http://${address}/api/selectproduct/${id}`)
+            setValues(res?.data?.data)
+            setShopName(shopName)
 
-        const merchandiseSubTotal = parseFloat(res?.data?.data?.productInformation?.price)
-        const shippingSubTotal = parseFloat(res?.data?.data?.productInformation?.shippingFee)
-        const totalPayment = merchandiseSubTotal + shippingSubTotal
-        setCheckout((prev) => ({
-            ...prev,
-            sellerId: res?.data?.data?.storeId,
-            productId: res?.data?.data?._id,
-            checkout: {
-                ...prev?.checkout,
-                paymentDetails: {
-                    ...prev?.checkout?.paymentDetails,
-                    merchandiseSubTotal: merchandiseSubTotal,
-                    shippingSubTotal: shippingSubTotal,
-                    totalPayment: totalPayment
+            const merchandiseSubTotal = parseFloat(res?.data?.data?.productInformation?.price)
+            const shippingSubTotal = parseFloat(res?.data?.data?.productInformation?.shippingFee)
+            const totalPayment = merchandiseSubTotal + shippingSubTotal
+            setCheckout((prev) => ({
+                ...prev,
+                sellerId: res?.data?.data?.storeId,
+                productId: res?.data?.data?._id,
+                checkout: {
+                    ...prev?.checkout,
+                    paymentDetails: {
+                        ...prev?.checkout?.paymentDetails,
+                        merchandiseSubTotal: merchandiseSubTotal,
+                        shippingSubTotal: shippingSubTotal,
+                        totalPayment: totalPayment
+                    }
                 }
-            }
-        }))
+            }))
+        } catch (error) {
+            console.log(`Error Cart: ${error}`)
+        } finally {
+            setIsLoading(false)
+        }
+
     }
 
     const fetchAddressDetails = async () => {
         try {
+            setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
             const res = await axios.get(`http://${address}/api/getactiveaddress/${userId}`)
 
@@ -135,8 +145,9 @@ const Cart = ({ route }) => {
                 Alert.alert(res?.data?.message)
             }
         } catch (error) {
-            console.error("Error fetching address details:", error);
-            Alert.alert("Failed to fetch address details. Please try again later.");
+            console.error("Error fetching address details:", error)
+        } finally {
+setIsLoading(false)
         }
     }
 
@@ -148,14 +159,12 @@ const Cart = ({ route }) => {
         setIsModalOpen({
             shippingOption: true
         })
-        // navigation.navigate('ShippingOption')
     }
 
     const handlePaymentOption = () => {
         setIsModalOpen({
             paymentMethod: true
         })
-        // navigation.navigate('PaymentOption')
     }
 
     const handleOnChangeArrayOption = (e, value) => {
@@ -177,6 +186,7 @@ const Cart = ({ route }) => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+            { (isLoading || imageLoading) && <Loading title={`Loading`} /> }
                 <Context.Provider value={{ IsModalOpen, setIsModalOpen }}>
                     <Modal title={`Shipping Option`} onSelectedValue={(item) => handleOnChangeArrayOption('shippingOption', item)} fetchedData={ShippingOption} modalId={`shippingOption`} />
                     <Modal title={`Payment Method`} onSelectedValue={(item) => handleOnChangeArrayOption('paymentMethod', item)} fetchedData={paymentOptions} modalId={`paymentMethod`} />
@@ -236,6 +246,8 @@ const Cart = ({ route }) => {
                                         source={{ uri: values?.productInformation?.gallery[0]?.uri }}
                                         resizeMode='cover'
                                         style={{ width: '100%', height: '100%' }}
+                                        onLoad={() => setImageLoading(false)}
+                                        onError={() => setImageLoading(false)}
                                     />
                                 </View>
                                 <View style={{ width: '60%', height: '100%', padding: height * 0.01, justifyContent: 'center', gap: height * 0.01 }}>
