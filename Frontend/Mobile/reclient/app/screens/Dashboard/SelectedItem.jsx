@@ -7,8 +7,8 @@ import {
     ScrollView,
     Image
 } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import Navbar from '../../components/Navbar'
 import axios from 'axios'
 import address from '../../../config/host'
@@ -23,9 +23,9 @@ const SelectedItem = ({ route }) => {
     const [imageLoading, setImageLoading] = useState(true)
     const navigation = useNavigation()
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         fetchProductItem()
-    }, [])
+    }, []))
 
     const fetchProductItem = async () => {
         try {
