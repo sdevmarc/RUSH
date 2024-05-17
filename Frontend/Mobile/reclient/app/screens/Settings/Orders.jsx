@@ -12,11 +12,13 @@ import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons'
 import * as Colors from '../../../utils/colors'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Loading from '../../components/Loading'
 
 const { width, height } = Dimensions.get('window')
 
 const Orders = () => {
     const navigation = useNavigation()
+    const [isLoading, setIsLoading] = useState(false)
     const [status, setStatus] = useState({
         pending: '',
         cancelled: '',
@@ -30,27 +32,35 @@ const Orders = () => {
     }, []))
 
     const fetchOrderTransactions = async () => {
-        const userId = await AsyncStorage.getItem('userId')
-        const res = await axios.get(`http://${address}/api/viewtransactions/${userId}/userId`)
+        try {
+            setIsLoading(true)
+            const userId = await AsyncStorage.getItem('userId')
+            const res = await axios.get(`http://${address}/api/viewtransactions/${userId}/userId`)
 
-        if (res?.data?.success) {
-            setStatus((prev) => ({
-                ...prev,
-                pending: res?.data?.statusCount?.pending,
-                cancelled: res?.data?.statusCount?.cancelled,
-                unreturned: res?.data?.statusCount?.unreturned,
-                review:  res?.data?.statusCount?.review,
-                completed: res?.data?.statusCount?.completed
-            }))
-        } else {
-            setStatus((prev) => ({
-                ...prev,
-                pending: '0',
-                cancelled: '0',
-                unreturned: '0',
-                completed: '0'
-            }))
+            if (res?.data?.success) {
+                setStatus((prev) => ({
+                    ...prev,
+                    pending: res?.data?.statusCount?.pending,
+                    cancelled: res?.data?.statusCount?.cancelled,
+                    unreturned: res?.data?.statusCount?.unreturned,
+                    review: res?.data?.statusCount?.review,
+                    completed: res?.data?.statusCount?.completed
+                }))
+            } else {
+                setStatus((prev) => ({
+                    ...prev,
+                    pending: '0',
+                    cancelled: '0',
+                    unreturned: '0',
+                    completed: '0'
+                }))
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
         }
+
     }
 
     const handleOpenDrawer = () => {
@@ -77,6 +87,7 @@ const Orders = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+                {isLoading && <Loading title={`Loading`} />}
                 <View
                     style={{
                         position: 'absolute',
