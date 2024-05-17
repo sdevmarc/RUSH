@@ -27,7 +27,8 @@ const Store = () => {
         pending: '',
         cancelled: '',
         unreturned: '',
-        completed: ''
+        completed: '',
+        rating: ''
     })
 
     useFocusEffect(
@@ -60,7 +61,8 @@ const Store = () => {
                         pending: getTransactions?.data?.statusCount?.pending,
                         cancelled: getTransactions?.data?.statusCount?.cancelled,
                         unreturned: getTransactions?.data?.statusCount?.unreturned,
-                        completed: getTransactions?.data?.statusCount?.completed
+                        completed: getTransactions?.data?.statusCount?.completed,
+                        rating: getTransactions?.data?.statusCount?.rating
                     }))
                 } else {
                     setStatus((prev) => ({
@@ -68,7 +70,8 @@ const Store = () => {
                         pending: '0',
                         cancelled: '0',
                         unreturned: '0',
-                        completed: '0'
+                        completed: '0',
+                        rating: '0'
                     }))
                 }
             }
@@ -78,36 +81,6 @@ const Store = () => {
             setIsLoading(false)
         }
     }
-
-    // const fetchTransactionStatus = async () => {
-    //     try {
-    //         setIsLoading(true)
-    //         const sellerId = await AsyncStorage.getItem('storeId')
-    //         const getTransactions = await axios.get(`http://${address}/api/viewtransactions/${sellerId}/sellerId`)
-
-    //         if (getTransactions?.data?.success) {
-    //             setStatus((prev) => ({
-    //                 ...prev,
-    //                 pending: getTransactions?.data?.statusCount?.pending,
-    //                 cancelled: getTransactions?.data?.statusCount?.cancelled,
-    //                 unreturned: getTransactions?.data?.statusCount?.unreturned,
-    //                 completed: getTransactions?.data?.statusCount?.completed
-    //             }))
-    //         } else {
-    //             setStatus((prev) => ({
-    //                 ...prev,
-    //                 pending: '0',
-    //                 cancelled: '0',
-    //                 unreturned: '0',
-    //                 completed: '0'
-    //             }))
-    //         }
-    //     } catch (error) {
-    //         console.log('Error fetch transaction status: ', error)
-    //     } finally {
-    //         setIsLoading(false)
-    //     }
-    // }
 
     const handleToShip = () => {
         navigation.navigate('ToShip')
@@ -240,7 +213,7 @@ const Store = () => {
                                 </Text>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.02, fontWeight: '600' }}>
                                     {
-                                        status?.completed && status?.completed
+                                        status?.rating && status?.rating
                                     }
                                 </Text>
                             </TouchableOpacity>
