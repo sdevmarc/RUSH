@@ -20,6 +20,7 @@ const { width, height } = Dimensions.get('window')
 
 export default function Chat() {
     const navigation = useNavigation()
+    const [shopName, setShopName] = useState('')
     const [values, setValues] = useState([])
 
     useFocusEffect(useCallback(() => {
@@ -28,20 +29,19 @@ export default function Chat() {
 
     const fetchMessages = async () => {
         const userId = await AsyncStorage.getItem('userId')
-
         const res = await axios.get(`http://${address}/api/getallmessages/${userId}`)
-        console.log(res?.data?.data[0]?.name?._id)
 
+        // console.log(res?.data?.data)
         if (res?.data?.success) {
+            setShopName(res?.data?.data?.shopName)
             setValues(res?.data?.data)
         } else {
             console.log(res?.data?.message)
         }
     }
 
-    const handleChatPerson = (value) => {
-        // console.log('From Chat, authorId: ', value?._id)
-        navigation.navigate('ChatPerson', { messageId: value?._id, storeUserId: value?.name?._id })
+    const handleChatPerson = async (value) => {
+        navigation.navigate('ChatPerson', { messageId: value?._id, storeUserId: value?.shopUserId, shopName: value?.shopName })
     }
     return (
         <>
@@ -60,7 +60,7 @@ export default function Chat() {
                                         <Text
                                             style={{ width: '100%', color: Colors.fontColor, fontWeight: '600' }}
                                         >
-                                            {item?.name?.shopInformation?.shopName}
+                                            {item?.shopName}
                                         </Text>
                                     </View>
                                     <View style={{ width: '100%', justifyContent: 'space-between', flexDirection: 'row', }}>
