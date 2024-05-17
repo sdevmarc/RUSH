@@ -25,7 +25,7 @@ const ShopInformation = () => {
     const [IsModalOpen, setIsModalOpen] = useState(false)
     const [IsAddress, setIsAddress] = useState([]);
     const [values, setValues] = useState({
-        shopImage: 'https://cdn-icons-png.freepik.com/512/407/407861.png',
+        shopImage: 'https://www.shutterstock.com/image-vector/no-image-available-picture-coming-600nw-2057829641.jpg',
         shopName: '',
         pickupAddress: {
             municipality: '',
@@ -84,7 +84,6 @@ const ShopInformation = () => {
         try {
             const dataShopInformation = JSON.stringify(values)
             const data = await AsyncStorage.setItem('shopInfo', dataShopInformation)
-            console.log('From Shop Information shopInfo: ', data)
             navigation.navigate('BusinessInformation')
         } catch (error) {
             console.error(error)
