@@ -1,4 +1,5 @@
 const Product = require('../models/Products')
+const Transactions = require('../models/Transactions')
 
 const ProductController = {
     AddProduct: async (req, res) => {
@@ -6,6 +7,7 @@ const ProductController = {
             const values = req.body
 
             const data = await Product.create(values)
+
             if (data) {
                 res.json({ success: true, message: 'Product successfully added' })
             } else {
@@ -18,7 +20,7 @@ const ProductController = {
     FetchProducts: async (req, res) => {
         try {
             const { storeId } = req.params
-            // console.log(storeId)
+
             const data = await Product.find({ storeId: storeId })
             if (data) {
                 res.json({ success: true, message: 'Product successfully fetched', data })
@@ -34,8 +36,34 @@ const ProductController = {
             const { id } = req.params
             const data = await Product.findById({ _id: id })
 
+            const findTransaction = await Transactions.findOne({ productId: id })
+            const Availability = findTransaction?.checkout?.status
+            if (Availability === 'UNRETURNED') {
+                await Product.findByIdAndUpdate(
+                    id,
+                    {
+                        "productInformation.isAvailable": "Not Available"
+                    },
+                    {
+                        new: true
+                    }
+                )
+            }
+
+            if (Availability === 'RATING') {
+                await Product.findByIdAndUpdate(
+                    id,
+                    {
+                        "productInformation.isAvailable": "Available"
+                    },
+                    {
+                        new: true
+                    }
+                )
+            }
+
             if (res) {
-                res.json({ success: false, message: 'Product did  fetched', data })
+                res.json({ success: false, message: 'Product did fetched', data })
             } else {
                 res.json({ success: false, message: 'Product did not fetched' })
             }
