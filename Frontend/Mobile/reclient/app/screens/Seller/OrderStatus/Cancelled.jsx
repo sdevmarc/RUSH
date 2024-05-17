@@ -44,6 +44,8 @@ export default function Cancelled() {
         }
     }
 
+
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
