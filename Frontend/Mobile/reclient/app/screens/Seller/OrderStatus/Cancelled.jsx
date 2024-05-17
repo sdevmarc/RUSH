@@ -14,24 +14,33 @@ import Navbar from '../../../components/Navbar'
 import axios from 'axios'
 import address from '../../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Loading from '../../../components/Loading'
 
 const { width, height } = Dimensions.get('window')
 
 export default function Cancelled() {
     const [values, setValues] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
     useFocusEffect(useCallback(() => {
         fetchCancelled()
     }, []))
 
     const fetchCancelled = async () => {
-        const sellerId = await AsyncStorage.getItem('storeId')
-        const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/CANCELLED`)
-
-        if (res?.data?.success) {
-            setValues(res?.data?.data)
-        } else {
-            Alert.alert(res?.data?.message)
+        try {
+            setIsLoading(true)
+            const sellerId = await AsyncStorage.getItem('storeId')
+            const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/CANCELLED`)
+    
+            if (res?.data?.success) {
+                setValues(res?.data?.data)
+            } else {
+                console.log(res?.data?.message)
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -39,6 +48,7 @@ export default function Cancelled() {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
+            {isLoading && <Loading title={`Loading`} />}
                 <Navbar title='Cancelled' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
@@ -89,10 +99,10 @@ export default function Cancelled() {
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
-                                                      {item?.transaction?.checkout?.status}
+                                                    {item?.transaction?.checkout?.status}
                                                 </Text>
                                             </View>
-                                            
+
                                         </View>
                                     </View>
                                 </View>
