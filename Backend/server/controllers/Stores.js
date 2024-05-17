@@ -58,6 +58,21 @@ const StoreController = {
         } catch (error) {
             res.json({ success: false, message: `Error searching a store controller: ${error}` })
         }
+    },
+    RestrictStore: async (req, res) => {
+        try {
+            const { id } = req.body
+
+            const restricStore = await Stores.findByIdAndUpdate(
+                id,
+                {
+                    
+                }
+            )
+
+        } catch (error) {
+            res.json({ success: false, message: `Error restrictig a store controller: ${error}` })
+        }
     }
 }
 
