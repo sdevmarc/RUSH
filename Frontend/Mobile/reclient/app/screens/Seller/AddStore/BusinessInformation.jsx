@@ -104,7 +104,7 @@ const BusinessInformation = () => {
             const shopData = JSON.parse(await AsyncStorage.getItem('shopInfo'))
             const token = await AsyncStorage.getItem('token')
             const userId = await AsyncStorage.getItem('userId')
-console.log(userId)
+
             setToken(token)
             setValues({
                 ...values,
