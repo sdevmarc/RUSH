@@ -1,5 +1,6 @@
 const Stores = require('../models/Stores')
 const Users = require('../models/Users')
+const Products = require('../models/Products')
 const jwt = require('jsonwebtoken')
 
 const StoreController = {
@@ -18,12 +19,12 @@ const StoreController = {
             const { userId } = req.params
             const data = await Stores.findOne({ userId: userId })
 
-            if(data) {
+            if (data) {
                 res.json({ success: true, message: 'Get store successfully', data })
             } else {
                 res.json({ success: false, message: 'No Store Retrieved!' })
             }
-            
+
         } catch (error) {
             res.json({ success: false, message: `Error get store controller: ${error}` })
         }
@@ -43,6 +44,19 @@ const StoreController = {
             res.json({ success: true, message: 'Fetched all stores successfully', data: data })
         } catch (error) {
             res.json({ success: false, message: `Error get all store controller: ${error}` })
+        }
+    },
+    SearchStore: async (req, res) => {
+        try {
+            const { searchId } = req.params
+
+            const searchStore = await Stores.find(
+                { "shopInformation.shopName": { $regex: new RegExp(searchId, 'i') } }
+            )
+
+            res.json({ success: true, message: 'Search a store fetched successfully!', data: searchStore })
+        } catch (error) {
+            res.json({ success: false, message: `Error searching a store controller: ${error}` })
         }
     }
 }
