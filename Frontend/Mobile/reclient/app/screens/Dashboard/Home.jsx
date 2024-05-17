@@ -63,14 +63,11 @@ const Home = ({ route }) => {
             } else {
                 setStores(data?.data?.data)
             }
-
-
         } catch (error) {
             console.error(`Error Home: ${error}`)
         } finally {
             setIsLoading(false)
         }
-
     }
 
     const handleSelectStore = async (item, id) => {
@@ -108,9 +105,7 @@ const Home = ({ route }) => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-                {
-                    (isLoading || imageLoading) && <Loading title={`Loading`} />
-                }
+                {(isLoading || imageLoading) && <Loading title={`Loading`} />}
                 <Animated.View style={{ width: '100%', height: headerHeight }}>
                     <View
                         style={{
