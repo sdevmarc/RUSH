@@ -12,10 +12,9 @@ import {
     Alert,
     ImageBackground
 } from 'react-native'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { BlurView } from 'expo-blur';
 import axios from 'axios'
 import address from '../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -31,25 +30,6 @@ const SelectedStore = ({ route }) => {
     const [imageLoading, setImageLoading] = useState(true)
     const [values, setValues] = useState([])
     const navigation = useNavigation()
-    const scrollY = useRef(new Animated.Value(0)).current;
-
-    const headerHeight = scrollY.interpolate({
-        inputRange: [0, height * 0.2],
-        outputRange: [height * 0.22, height * 0.14],
-        extrapolate: 'clamp',
-    })
-
-    const opacityTitle1 = scrollY.interpolate({
-        inputRange: [0, height * 0.2 - height * 0.05],
-        outputRange: [0, 1],
-        extrapolate: 'clamp',
-    });
-
-    const opacity = scrollY.interpolate({
-        inputRange: [0, height * 0.15 - height * 0.05],
-        outputRange: [1, 0],
-        extrapolate: 'clamp',
-    })
 
     useFocusEffect(useCallback(() => {
         fetchProducts()
@@ -189,7 +169,7 @@ const SelectedStore = ({ route }) => {
                                         overflow: 'hidden',
                                         width: width * 0.452,
                                         height: height * 0.3,
-                                        borderRadius: height * 0.02,
+                                        borderRadius: height * 0.01,
                                         backgroundColor: '#4a4c59'
                                     }}
                                 >
