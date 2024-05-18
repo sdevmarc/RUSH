@@ -16,12 +16,14 @@ import axios from 'axios'
 import address from '../../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loading from '../../../components/Loading'
+import RateProductModal from '../../../components/RateProductModal'
 
 const { width, height } = Dimensions.get('window')
 
 export default function UserToReview() {
     const [values, setValues] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [isModalVisible, setIsModalVisible] = useState(false)
 
     useFocusEffect(useCallback(() => {
         fetchUnreturned()
@@ -32,7 +34,7 @@ export default function UserToReview() {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
             const res = await axios.get(`http:${address}/api/viewstatustransactions/${userId}/user/RATING`)
-    
+
             if (res?.data?.success) {
                 setValues(res?.data?.data)
             } else {
@@ -45,12 +47,22 @@ export default function UserToReview() {
         }
     }
 
+    const handleOnClickRate = () => {
+        setIsModalVisible(true)
+    }
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false)
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
-            {isLoading && <Loading title={`Loading`} />}
+                {isLoading && <Loading title={`Loading`} />}
+                <RateProductModal isVisible={isModalVisible} onClose={handleCloseModal} />
                 <Navbar title='To Review' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
+
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.01 }}>
@@ -96,7 +108,9 @@ export default function UserToReview() {
                                         </View>
 
                                         <View style={{ width: '100%', height: '30%', padding: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <TouchableOpacity style={{ width: '100%', height: '100%', backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
+                                            <TouchableOpacity
+                                                onPress={handleOnClickRate}
+                                                style={{ width: '100%', height: '100%', backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
@@ -110,6 +124,7 @@ export default function UserToReview() {
                         </View>
                     </View>
                 </ScrollView>
+
             </View>
         </>
     )
