@@ -27,8 +27,8 @@ const Register = () => {
         contactno: '',
         username: '',
         password: '',
-        UserType: 'Rentee'
-
+        UserType: 'Rentee',
+        profilePhoto: 'https://www.shutterstock.com/image-vector/no-image-available-picture-coming-600nw-2057829641.jpg'
     })
 
     const [confirmPassword, setConfirmPassword] = useState('')
