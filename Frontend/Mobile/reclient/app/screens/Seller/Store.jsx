@@ -106,18 +106,29 @@ const Store = () => {
         navigation.openDrawer()
     }
 
+    const handleOnVisitShop = () => {
+        navigation.navigate('VisitShop')
+    }
+
+    const handleHelpCenter = () => {
+        navigation.navigate('CustomerService')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, backgroundColor: Colors.backgroundColor }}>
                 {isLoading && <Loading title={`Loading`} />}
-                <ImageBackground source={{ uri: 'https://source.unsplash.com/photo-of-woman-holding-white-and-black-paper-bags-_3Q3tsJ01nc' }} style={{ width: '100%', height: height * 0.25, }} resizeMode='cover'>
+                <ImageBackground source={{ uri: values?.shopInformation?.shopImage }} style={{ width: '100%', height: height * 0.25, }} resizeMode='cover'>
                     <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.05, backgroundColor: 'rgba(0,0,0,0.2)' }}>
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.05 }} numberOfLines={2} ellipsizeMode='tail'>
                                 {values?.shopInformation?.shopName}
                             </Text>
-                            <TouchableOpacity style={{ paddingHorizontal: width * 0.03, paddingVertical: height * 0.008, backgroundColor: Colors.orange }}>
+                            <TouchableOpacity
+                                onPress={handleOnVisitShop}
+                                style={{ paddingHorizontal: width * 0.03, paddingVertical: height * 0.008, backgroundColor: Colors.orange }}
+                            >
                                 <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
                                     Visit Shop
                                 </Text>
@@ -258,22 +269,7 @@ const Store = () => {
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{
-                                        width: width * 0.29,
-                                        height: height * 0.13,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: Colors.idleColor,
-                                        borderRadius: height * 0.02,
-                                        gap: height * 0.01
-                                    }}
-                                >
-                                    <Ionicons name="analytics" size={24} color="black" />
-                                    <Text style={{ color: Colors.fontColor, fontWeight: '600' }}>
-                                        Performance
-                                    </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
+                                    onPress={handleHelpCenter}
                                     style={{
                                         width: width * 0.29,
                                         height: height * 0.13,
