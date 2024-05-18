@@ -17,7 +17,7 @@ const UserController = {
 
             const data = await Users.findOne({ _id: userId })
             const { displayName, username, contactno, UserType, profilePhoto } = data
-            res.json({ success: true, message: 'Fetching user successful', data: { username, displayName, contactno, UserType,profilePhoto } })
+            res.json({ success: true, message: 'Fetching user successful', data: { username, displayName, contactno, UserType, profilePhoto } })
         } catch (error) {
             res.json({ success: false, message: `Error getting user controller: ${error}` })
         }
@@ -144,14 +144,39 @@ const UserController = {
                 }
             )
 
-            if(updateProfile) {
+            if (updateProfile) {
                 res.json({ success: true, message: 'User photo updated!', data: updateProfile })
             } else {
                 res.json({ success: false, message: 'Failed to update user photo' })
             }
 
         } catch (error) {
-            res.json({ success: false, message: `Get all user error from controller: ${error}` })
+            res.json({ success: false, message: `Update profile photo error from user controller: ${error}` })
+        }
+    },
+    UpdateAccountDetails: async (req, res) => {
+        try {
+            const { userId, displayName, contactno } = req.body
+
+            const updateDetails = await Users.findByIdAndUpdate(
+                userId,
+                {
+                    displayName: displayName,
+                    contactno: contactno
+                },
+                {
+                    new: true
+                }
+            )
+            if(updateDetails) {
+                res.json({ success: true, message: 'User updated account details successfully!', data: updateDetails })
+            } else {
+                res.json({ success: false, message: 'Failed to update user details!' })
+            }
+           
+
+        } catch (error) {
+            res.json({ success: false, message: `Update account details error from user controller: ${error}` })
         }
     }
 }
