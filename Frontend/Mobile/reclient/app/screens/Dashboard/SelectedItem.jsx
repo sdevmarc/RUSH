@@ -160,7 +160,7 @@ const SelectedItem = ({ route }) => {
                         </Text>
                     </View>
 
-                    
+
                     <TouchableOpacity
                         onPress={handleAddtoCart}
                         style={{
