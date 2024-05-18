@@ -54,7 +54,8 @@ const Orders = () => {
                     pending: '0',
                     cancelled: '0',
                     unreturned: '0',
-                    completed: '0'
+                    completed: '0',
+                    rating: '0'
                 }))
             }
         } catch (error) {
