@@ -10,5 +10,6 @@ router.post('/activeaddress', Users.UpdateActiveAddress)
 router.get('/searchuser/:searchId', Users.SearchUsers)
 router.get('/getalluser', Users.GetAllUsers)
 router.post('/updateprofilephoto', Users.UpdateProfiePhoto)
+router.post('/updateaccountdetails', Users.UpdateAccountDetails)
 
 module.exports = router
