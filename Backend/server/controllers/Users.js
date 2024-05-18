@@ -16,8 +16,8 @@ const UserController = {
             const { userId } = req.params
 
             const data = await Users.findOne({ _id: userId })
-            const { displayName, username, contactno, UserType } = data
-            res.json({ success: true, message: 'Fetching user successful', data: { username, displayName, contactno, UserType } })
+            const { displayName, username, contactno, UserType, profilePhoto } = data
+            res.json({ success: true, message: 'Fetching user successful', data: { username, displayName, contactno, UserType,profilePhoto } })
         } catch (error) {
             res.json({ success: false, message: `Error getting user controller: ${error}` })
         }
@@ -125,6 +125,31 @@ const UserController = {
         try {
             const users = await Users.find()
             res.json({ success: true, message: 'Retrieving all users is successfull!', data: users })
+        } catch (error) {
+            res.json({ success: false, message: `Get all user error from controller: ${error}` })
+        }
+    },
+    UpdateProfiePhoto: async (req, res) => {
+        try {
+            const { userId, profilePhoto } = req.body
+            if (!userId || !profilePhoto) return res.json({ success: false, message: 'Empty fields, please fill in' })
+
+            const updateProfile = await Users.findByIdAndUpdate(
+                userId,
+                {
+                    profilePhoto: profilePhoto
+                },
+                {
+                    new: true
+                }
+            )
+
+            if(updateProfile) {
+                res.json({ success: true, message: 'User photo updated!', data: updateProfile })
+            } else {
+                res.json({ success: false, message: 'Failed to update user photo' })
+            }
+
         } catch (error) {
             res.json({ success: false, message: `Get all user error from controller: ${error}` })
         }
