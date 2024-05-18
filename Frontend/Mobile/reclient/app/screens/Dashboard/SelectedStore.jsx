@@ -1,13 +1,10 @@
 import {
-    Animated,
     ScrollView,
     Text,
     View,
     Dimensions,
     TouchableOpacity,
-    Image,
     StatusBar,
-    Platform,
     Linking,
     Alert,
     ImageBackground
@@ -24,8 +21,7 @@ import Loading from '../../components/Loading';
 const { width, height } = Dimensions.get('window')
 
 const SelectedStore = ({ route }) => {
-    const [shopName, setShopName] = useState('')
-    const [mobileNumber, setMobileNumber] = useState('')
+    const [details, setDetails] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [imageLoading, setImageLoading] = useState(true)
     const [values, setValues] = useState([])
@@ -46,16 +42,15 @@ const SelectedStore = ({ route }) => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            setMobileNumber(getStoreName?.data?.data?.shopInformation?.mobileNumber)
+            setDetails(getStoreName?.data?.data)
 
             const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
 
-            if (res?.data?.data.length === 0) {
-                setImageLoading(false)
-            }
+            // if (res?.data?.data.length === 0 || getStoreName?.data?.data?.shopInformation?.shopImage) {
+            //     setImageLoading(false)
+            // }
 
             setValues(res?.data?.data)
-            setShopName(getStoreName?.data?.data?.shopInformation?.shopName)
         } catch (error) {
             console.log('Error', error);
         } finally {
@@ -65,7 +60,7 @@ const SelectedStore = ({ route }) => {
     }
 
     const handleSelectItem = async (item) => {
-        navigation.navigate('SelectedItem', { id: item, shopName: shopName })
+        navigation.navigate('SelectedItem', { id: item, shopName: details?.shopInformation?.shopName })
     }
 
     const handleBack = () => {
@@ -73,8 +68,8 @@ const SelectedStore = ({ route }) => {
     }
 
     const handleMessage = async () => {
-        const message = `Hi ${shopName}, I'd like to chat with you.`
-        const phoneNumber = mobileNumber
+        const message = `Hi ${details?.shopInformation?.shopName}, I'd like to chat with you.`
+        const phoneNumber = details?.shopInformation?.mobileNumber
 
         const url = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
 
@@ -91,11 +86,17 @@ const SelectedStore = ({ route }) => {
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
                 {(isLoading || imageLoading) && <Loading title={`Loading`} />}
-                <ImageBackground source={{ uri: 'https://source.unsplash.com/photo-of-woman-holding-white-and-black-paper-bags-_3Q3tsJ01nc' }} style={{ width: '100%', height: height * 0.25, }} resizeMode='cover'>
+                <ImageBackground
+                    source={{ uri: details?.shopInformation?.shopImage }}
+                    style={{ width: '100%', height: height * 0.25, }}
+                    resizeMode='cover'
+                    onLoad={() => setImageLoading(false)}
+                    onError={() => setImageLoading(false)}
+                >
                     <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.05, backgroundColor: 'rgba(0,0,0,0.2)' }}>
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.05 }} numberOfLines={2} ellipsizeMode='tail'>
-                                {shopName}
+                                {details?.shopInformation?.shopName}
                             </Text>
                             <View style={{ gap: height * 0.01 }}>
                                 <TouchableOpacity style={{ paddingHorizontal: width * 0.03, paddingVertical: height * 0.006, backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center' }}>
