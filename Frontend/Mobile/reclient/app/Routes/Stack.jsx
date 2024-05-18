@@ -24,6 +24,8 @@ import UserToShip from '../screens/Settings/OrderStatus/UserToShip'
 import UserCancelled from '../screens/Settings/OrderStatus/UserCancelled'
 import UserToReturn from '../screens/Settings/OrderStatus/UserToReturn'
 import UserToReview from '../screens/Settings/OrderStatus/UserToReview'
+import EditAccountDetails from '../screens/Settings/Profile/EditAccountDetails'
+import VisitShop from '../screens/Seller/VisitShop'
 
 const Stack = createNativeStackNavigator()
 
@@ -47,6 +49,7 @@ function StackRoutes() {
                 <Stack.Screen name="ShopInformation" component={ShopInformation} options={{ headerTitle: 'ShopInformation', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="BusinessInformation" component={BusinessInformation} options={{ headerTitle: 'BusinessInformation', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="AddAddress" component={AddAddress} options={{ headerTitle: 'AddAddress', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="EditAccountDetails" component={EditAccountDetails} options={{ headerTitle: 'EditAccountDetails', headerTitleAlign: 'center', headerShown: false }} />
                 {/* ORDERS */}
                 <Stack.Screen name="UserToShip" component={UserToShip} options={{ headerTitle: 'UserToShip', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="UserCancelled" component={UserCancelled} options={{ headerTitle: 'UserCancelled', headerTitleAlign: 'center', headerShown: false }} />
@@ -60,6 +63,7 @@ function StackRoutes() {
                 <Stack.Screen name="Cancelled" component={Cancelled} options={{ headerTitle: 'Cancelled', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="Unreturned" component={Unreturned} options={{ headerTitle: 'Unreturned', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="Reviews" component={Reviews} options={{ headerTitle: 'Reviews', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="VisitShop" component={VisitShop} options={{ headerTitle: 'VisitShop', headerTitleAlign: 'center', headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     )
