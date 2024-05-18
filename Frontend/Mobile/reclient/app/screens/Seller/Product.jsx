@@ -36,10 +36,12 @@ const Product = () => {
             const storeId = await AsyncStorage.getItem('storeId')
 
             const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
+            console.log(res?.data)
             if (res?.data?.data.length > 0) {
                 setProducts(res?.data?.data)
             } else {
                 setProducts([])
+                setImageLoading(false)
             }
         } catch (error) {
             console.error(error)
