@@ -8,7 +8,7 @@ import {
     ImageBackground,
     Alert
 } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons, MaterialIcons, Entypo } from '@expo/vector-icons'
 import axios from 'axios'
@@ -23,13 +23,10 @@ const { width, height } = Dimensions.get('window')
 const Account = () => {
     const navigation = useNavigation()
     const [isLoading, setIsLoading] = useState(false)
+    const [imageLoading, setImageLoading] = useState(true)
     const [values, setValues] = useState([])
     const [isEdit, setEdit] = useState(false)
     const [isImage, setImage] = useState('')
-    const [details, setDetails] = useState({
-        userId: '',
-        profilePhoto: ''
-    })
 
     useFocusEffect(useCallback(() => {
         fetchData()
@@ -63,12 +60,15 @@ const Account = () => {
 
     const handleSaveEditedPhoto = () => {
         setIsLoading(true)
-        handleUploadImage(isImage)
+        handleUploadImage(isImage);
+    }
+
+    const handleOnClickAccountDetails = () => {
+        navigation.navigate('EditAccountDetails')
     }
 
     const handleUploadImage = async (value) => {
         try {
-            setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
             const data = new FormData();
             data.append('file', {
@@ -80,6 +80,7 @@ const Account = () => {
             data.append('cloud_name', 'do1p9llzd')
             data.append('folder', 'user_photo')
 
+            setIsLoading(true)
             const res = await axios.post(`https://api.cloudinary.com/v1_1/do1p9llzd/image/upload`, data, {
                 headers: {
                     'Accept': 'application/json',
@@ -145,14 +146,19 @@ const Account = () => {
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <View style={{ width: width, backgroundColor: Colors.backgroundColor }}>
-                {isLoading && <Loading title={`Loading`} />}
-                <ImageBackground source={{ uri: isImage ? isImage : values?.profilePhoto }} style={{ width: '100%', height: height * 0.25, }} resizeMode='cover'>
+                {(isLoading || imageLoading) && <Loading title={`Loading`} />}
+                <ImageBackground
+                    source={{ uri: isImage ? isImage : values?.profilePhoto }}
+                    style={{ width: '100%', height: height * 0.25, }}
+                    resizeMode='cover'
+                    onLoad={() => setImageLoading(false)}
+                    onError={() => setImageLoading(false)}
+                >
                     <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.05, backgroundColor: 'rgba(0,0,0,0.2)' }}>
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.05 }}>
                                 {values.displayName}
                             </Text>
-
                             {
                                 isEdit ? (
                                     <View style={{ gap: height * 0.01 }}>
@@ -225,6 +231,7 @@ const Account = () => {
                                 My Account
                             </Text>
                             <TouchableOpacity
+                                onPress={handleOnClickAccountDetails}
                                 style={{ width: '100%', gap: height * 0.01, backgroundColor: Colors.idleColor, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
                             >
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
