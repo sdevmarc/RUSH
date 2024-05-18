@@ -47,8 +47,20 @@ export default function UserToShip() {
         }
     }
 
-    const handleCancelOrder = async () => {
-        const res = axios.post(`http://${address}/api/updatetransactionstatus`)
+    const handleUpdateToCancelled = async (value) => {
+        try {
+            setIsLoading(true)
+
+            const updateTransaction = await axios.post(`http://${address}/api/updatetransactionstatus`, { status: 'CANCELLED', transactionId: value })
+            if (updateTransaction?.data?.success) {
+                Alert.alert('Success!', 'The product has been cancelled!')
+                navigation.goBack()
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const handleViewOrder = (value) => {
@@ -106,7 +118,9 @@ export default function UserToShip() {
                                         </View>
 
                                         <View style={{ width: '100%', height: '30%', padding: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <TouchableOpacity style={{ width: '47%', height: '100%', backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
+                                            <TouchableOpacity 
+                                            onPress={() => handleUpdateToCancelled(item?.transaction?._id)}
+                                            style={{ width: '47%', height: '100%', backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
                                                 >
