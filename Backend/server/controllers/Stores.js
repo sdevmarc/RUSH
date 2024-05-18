@@ -66,12 +66,47 @@ const StoreController = {
             const restricStore = await Stores.findByIdAndUpdate(
                 id,
                 {
-                    
+
                 }
             )
 
         } catch (error) {
             res.json({ success: false, message: `Error restrictig a store controller: ${error}` })
+        }
+    },
+    UpdateStoreDetails: async (req, res) => {
+        try {
+            const { storeId, shopImage, shopName } = req.body
+
+            if (!shopImage) {
+                const updateStoreDetails = await Stores.findByIdAndUpdate(
+                    storeId,
+                    {
+                        "shopInformation.shopName": shopName
+                    },
+                    {
+                        new: true
+                    }
+                )
+                res.json({ success: true, message: 'Store details has been updated!', updateStoreDetails })
+            } else {
+                const updateStoreDetails = await Stores.findByIdAndUpdate(
+                    storeId,
+                    {
+                        "shopInformation.shopImage": shopImage,
+                        "shopInformation.shopName": shopName
+                    },
+                    {
+                        new: true
+                    }
+                )
+                res.json({ success: true, message: 'Store details has been updated!', updateStoreDetails })
+            }
+
+
+
+        } catch (error) {
+            res.json({ success: false, message: `Error update store details from store controller: ${error}` })
         }
     }
 }
