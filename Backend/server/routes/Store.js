@@ -9,5 +9,6 @@ router.post('/addstore', authenticateUser, checkStoreIfExists, Stores.UpdateSell
 router.get('/getstore/:userId', authenticateUser, Stores.GetStore)
 router.get('/getallstore', authenticateUser, Stores.GetAllStore)
 router.get('/searchstore/:searchId', Stores.SearchStore)
+router.post('/updatestoredetails', Stores.UpdateStoreDetails)
 
 module.exports = router
