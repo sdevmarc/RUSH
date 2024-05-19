@@ -64,7 +64,7 @@ export default function UserToShip() {
     }
 
     const handleViewOrder = (value) => {
-        navigation.navigate('Summary', { transactionId: value })
+        navigation.navigate('UserViewOrder', { transactionId: value })
     }
 
     return (
@@ -128,7 +128,7 @@ export default function UserToShip() {
                                                 </Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity
-                                                // onPress={() => handleViewOrder(item?.transaction?._id)}
+                                                onPress={() => handleViewOrder(item?.transaction?._id)}
                                                 style={{ width: '47%', height: '100%', backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center', borderRadius: height * 0.01 }}>
                                                 <Text
                                                     style={{ color: Colors.whiteColor, fontSize: height * 0.02 }}
