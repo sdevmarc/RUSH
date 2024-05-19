@@ -48,7 +48,7 @@ export default function Completed() {
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
                 {isLoading && <Loading title={`Loading`} />}
-                <Navbar title='Cancelled' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
+                <Navbar title='Completed' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.01 }}>
