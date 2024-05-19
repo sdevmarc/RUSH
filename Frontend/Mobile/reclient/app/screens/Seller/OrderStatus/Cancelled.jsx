@@ -4,8 +4,7 @@ import {
     StatusBar,
     Dimensions,
     ScrollView,
-    Image,
-    Alert
+    Image
 } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
@@ -43,8 +42,6 @@ export default function Cancelled() {
             setIsLoading(false)
         }
     }
-
-
 
     return (
         <>
