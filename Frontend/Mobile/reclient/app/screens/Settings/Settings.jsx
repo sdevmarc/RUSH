@@ -71,6 +71,10 @@ const Settings = () => {
         Alert.alert('Coming Soon!', 'The app is still in alpha testing, stay tuned!')
     }
 
+    const handleReport = () => {
+        navigation.navigate('Report')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
@@ -113,13 +117,6 @@ const Settings = () => {
                 <ScrollView>
                     <View style={{ width: width, height: height, paddingHorizontal: width * 0.03, paddingTop: height * 0.13, gap: height * 0.01 }}>
                         <View style={{ width: '100%', gap: height * 0.01 }}>
-                            {/* <TouchableOpacity
-                                style={{ width: '100%', height: height * 0.07, backgroundColor: Colors.idleColor, borderRadius: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
-                                <Text style={{ color: Colors.fontColor, fontSize: height * 0.016, fontWeight: '600' }}>
-                                    Notification Settings
-                                </Text>
-                                <SimpleLineIcons name="arrow-right" size={20} color="black" />
-                            </TouchableOpacity> */}
                             <TouchableOpacity
                                 onPress={handleCommunityPolicies}
                                 style={{ width: '100%', height: height * 0.07, backgroundColor: Colors.idleColor, borderRadius: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
@@ -145,6 +142,7 @@ const Settings = () => {
                                 <SimpleLineIcons name="arrow-right" size={20} color="black" />
                             </TouchableOpacity>
                             <TouchableOpacity
+                                onPress={handleReport}
                                 style={{ width: '100%', height: height * 0.07, backgroundColor: Colors.idleColor, borderRadius: height * 0.01, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: width * 0.05 }}>
                                 <Text style={{ color: Colors.fontColor, fontSize: height * 0.016, fontWeight: '600' }}>
                                     Report
