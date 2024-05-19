@@ -10,7 +10,7 @@ import {
     ImageBackground
 } from 'react-native'
 import React, { useCallback, useState } from 'react'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import address from '../../../config/host'
@@ -99,11 +99,6 @@ const SelectedStore = ({ route }) => {
                                 {details?.shopInformation?.shopName}
                             </Text>
                             <View style={{ gap: height * 0.01 }}>
-                                <TouchableOpacity style={{ paddingHorizontal: width * 0.03, paddingVertical: height * 0.006, backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
-                                        Follow
-                                    </Text>
-                                </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={handleMessage}
                                     style={{ paddingHorizontal: width * 0.03, paddingVertical: height * 0.006, backgroundColor: Colors.idleColor, justifyContent: 'center', alignItems: 'center' }}>
@@ -117,9 +112,6 @@ const SelectedStore = ({ route }) => {
                         <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03 }}>
                             <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
                                 Rating 3.5
-                            </Text>
-                            <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
-                                Followers 30
                             </Text>
                         </View>
 
@@ -188,7 +180,7 @@ const SelectedStore = ({ route }) => {
                                                         {item?.productInformation?.productName}
                                                     </Text>
                                                     <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
-                                                        Rate
+                                                        <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
                                                     </Text>
                                                 </View>
                                             </View>
