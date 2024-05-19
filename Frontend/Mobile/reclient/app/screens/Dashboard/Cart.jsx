@@ -276,7 +276,7 @@ const Cart = ({ route }) => {
         await Notifications.scheduleNotificationAsync({
             content: {
                 title: "Rent Successful 📬",
-                body: `You have made a purchased from ${shopName}`,
+                body: `You have made a purchase from ${shopName}`,
                 data: { data: 'goes here', test: { test1: 'more data' } },
                 sound: 'default'
             },
