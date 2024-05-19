@@ -5,11 +5,10 @@ import {
     Dimensions,
     TouchableOpacity,
     StatusBar,
-    ImageBackground,
-    Modal
+    ImageBackground
 } from 'react-native'
 import React, { useCallback, useState } from 'react'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import address from '../../../config/host'
@@ -33,7 +32,7 @@ export default function VisitShop() {
     }, []))
 
     const fetchProducts = async () => {
-        try { 
+        try {
             const userId = await AsyncStorage.getItem('userId')
             const storeId = await AsyncStorage.getItem('storeId')
             const token = await AsyncStorage.getItem('token')
@@ -110,9 +109,6 @@ export default function VisitShop() {
                             <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
                                 Rating 3.5
                             </Text>
-                            <Text style={{ color: Colors.whiteColor, fontWeight: '600', fontSize: width * 0.03 }}>
-                                Followers 30
-                            </Text>
                         </View>
 
                     </View>
@@ -180,7 +176,7 @@ export default function VisitShop() {
                                                         {item?.productInformation?.productName}
                                                     </Text>
                                                     <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
-                                                        Rate
+                                                        <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
                                                     </Text>
                                                 </View>
                                             </View>
