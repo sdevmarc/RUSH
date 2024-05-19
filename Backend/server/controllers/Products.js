@@ -120,6 +120,21 @@ const ProductController = {
         } catch (error) {
             res.json({ success: false, message: `Error update a product controller: ${error}` })
         }
+    },
+    DeleteProduct: async (req, res) => {
+        try {
+            const { productId } = req.params;
+
+            const deleteProduct = await Product.findByIdAndDelete(productId);
+
+            if (deleteProduct) {
+                res.json({ success: true, message: 'Product deleted successfully!' });
+            } else {
+                res.json({ success: false, message: 'Product deletion failed!' });
+            }
+        } catch (error) {
+            res.json({ success: false, message: `Error deleting product: ${error}`, error });
+        }
     }
 }
 
