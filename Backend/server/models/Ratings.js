@@ -1,15 +1,19 @@
 const mongoose = require('mongoose')
 
 const RatingsSchema = new mongoose.Schema({
+    transactionId: {
+        type: String,
+        required: true
+    },
     userId: {
         type: String,
         required: true
     },
-    productId: {
+    storeId: {
         type: String,
         required: true
     },
-    storeId: {
+    productId: {
         type: String,
         required: true
     },
