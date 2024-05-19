@@ -18,6 +18,7 @@ const UserRoute = require('../routes/Users')
 const ProductRoute = require('../routes/Product')
 const TransactionRoute = require('../routes/Transactions')
 const RateRoute = require('../routes/Rating')
+const ReportsRoute = require('../routes/Reports')
 
 
 app.use(cors({
@@ -50,6 +51,8 @@ app.use('/api', ProductRoute)
 app.use('/api', TransactionRoute)
 
 app.use('/api', RateRoute)
+
+app.use('/api', ReportsRoute)
 
 // app.use('/api', MessageRoute)
 
