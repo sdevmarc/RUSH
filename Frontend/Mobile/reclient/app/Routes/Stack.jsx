@@ -29,6 +29,7 @@ import VisitShop from '../screens/Seller/VisitShop'
 import UserCompleted from '../screens/Settings/OrderStatus/UserCompleted'
 import Completed from '../screens/Seller/OrderStatus/Completed'
 import SellerViewProduct from '../screens/Seller/Add Products/SellerViewProduct'
+import Report from '../screens/Settings/Report'
 
 const Stack = createNativeStackNavigator()
 
@@ -53,6 +54,7 @@ function StackRoutes() {
                 <Stack.Screen name="BusinessInformation" component={BusinessInformation} options={{ headerTitle: 'BusinessInformation', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="AddAddress" component={AddAddress} options={{ headerTitle: 'AddAddress', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="EditAccountDetails" component={EditAccountDetails} options={{ headerTitle: 'EditAccountDetails', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="Report" component={Report} options={{ headerTitle: 'Report', headerTitleAlign: 'center', headerShown: false }} />
                 {/* ORDERS */}
                 <Stack.Screen name="UserToShip" component={UserToShip} options={{ headerTitle: 'UserToShip', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="UserCancelled" component={UserCancelled} options={{ headerTitle: 'UserCancelled', headerTitleAlign: 'center', headerShown: false }} />
