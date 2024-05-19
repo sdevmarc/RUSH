@@ -30,6 +30,7 @@ import UserCompleted from '../screens/Settings/OrderStatus/UserCompleted'
 import Completed from '../screens/Seller/OrderStatus/Completed'
 import SellerViewProduct from '../screens/Seller/Add Products/SellerViewProduct'
 import Report from '../screens/Settings/Report'
+import UserViewOrder from '../screens/Settings/UserViewOrder'
 
 const Stack = createNativeStackNavigator()
 
@@ -61,6 +62,7 @@ function StackRoutes() {
                 <Stack.Screen name="UserToReturn" component={UserToReturn} options={{ headerTitle: 'UserToReturn', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="UserToReview" component={UserToReview} options={{ headerTitle: 'UserToReview', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="UserCompleted" component={UserCompleted} options={{ headerTitle: 'UserCompleted', headerTitleAlign: 'center', headerShown: false }} />
+                <Stack.Screen name="UserViewOrder" component={UserViewOrder} options={{ headerTitle: 'UserViewOrder', headerTitleAlign: 'center', headerShown: false }} />
                 {/* SELLER */}
                 <Stack.Screen name="Products" component={Product} options={{ headerTitle: 'Products', headerTitleAlign: 'center', headerShown: false }} />
                 <Stack.Screen name="AddProduct" component={AddProducts} options={{ headerTitle: 'AddProducts', headerTitleAlign: 'center', headerShown: false }} />
