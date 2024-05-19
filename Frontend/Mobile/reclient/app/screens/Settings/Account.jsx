@@ -321,7 +321,7 @@ const Account = () => {
                                         </TouchableOpacity>
                                     )
                                 }
-                                <TouchableOpacity
+                                {/* <TouchableOpacity
                                     style={{
                                         width: width * 0.29,
                                         height: height * 0.13,
@@ -336,7 +336,7 @@ const Account = () => {
                                     <Text style={{ width: '80%', color: Colors.fontColor, fontWeight: '600', textAlign: 'center' }}>
                                         Account Settings
                                     </Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
                         </View>
                     </View>
