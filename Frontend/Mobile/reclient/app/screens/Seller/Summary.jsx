@@ -3,7 +3,6 @@ import {
     Dimensions,
     Text,
     StatusBar,
-    TouchableOpacity,
     ScrollView,
     Image,
     Alert,
@@ -11,7 +10,6 @@ import {
 import React, { useState, useEffect, useCallback } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Colors from '../../../utils/colors'
 import Navbar from '../../components/Navbar'
 import BottomBar from '../../components/BottomBar'
