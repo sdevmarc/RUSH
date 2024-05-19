@@ -7,8 +7,10 @@ import {
     ScrollView,
     Image,
     Alert,
+    Platform
 } from 'react-native'
-import React, { useState, useCallback } from 'react'
+import * as Device from 'expo-device';
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import Navbar from '../../components/Navbar'
 import * as Colors from '../../../utils/colors'
@@ -18,6 +20,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Context from '../../components/Context'
 import Modal from '../../components/Modal'
 import Loading from '../../components/Loading'
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 
 const ShippingOption = [
     { id: 1, name: 'Pickup' },
@@ -30,6 +34,14 @@ const paymentOptions = [
 ]
 
 const { width, height } = Dimensions.get('window')
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
 
 const Cart = ({ route }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -65,11 +77,43 @@ const Cart = ({ route }) => {
         }
     })
     const navigation = useNavigation()
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [channels, setChannels] = useState([]);
+    const [notification, setNotification] = useState(undefined);
+    const notificationListener = useRef();
+    const responseListener = useRef();
 
     useFocusEffect(
         useCallback(() => {
             fetchProductItem()
             fetchAddressDetails()
+            registerForPushNotificationsAsync().then(
+                (token) => token && setExpoPushToken(token),
+              );
+          
+              if (Platform.OS === 'android') {
+                Notifications.getNotificationChannelsAsync().then((value) =>
+                  setChannels(value ?? []),
+                );
+              }
+              notificationListener.current =
+                Notifications.addNotificationReceivedListener((notification) => {
+                  setNotification(notification);
+                });
+          
+              responseListener.current =
+                Notifications.addNotificationResponseReceivedListener((response) => {
+                  console.log(response);
+                });
+          
+              return () => {
+                notificationListener.current &&
+                  Notifications.removeNotificationSubscription(
+                    notificationListener.current,
+                  );
+                responseListener.current &&
+                  Notifications.removeNotificationSubscription(responseListener.current);
+              };
         }, []))
 
     const handleCheckout = async () => {
@@ -101,11 +145,13 @@ const Cart = ({ route }) => {
 
             setIsLoading(true)
             const res = await axios.post(`http://${address}/api/createtransaction`, IsCheckout)
+           
             if (res?.data?.success) {
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'SuccessfulCheckout' }]
-                })
+                await schedulePushNotification()
+                // navigation.reset({
+                //     index: 0,
+                //     routes: [{ name: 'SuccessfulCheckout' }]
+                // })
             } else {
                 Alert.alert(res?.data?.message)
             }
@@ -215,6 +261,69 @@ const Cart = ({ route }) => {
         }
     }
 
+    async function schedulePushNotification() {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Rent Successful 📬",
+            body: `You have made a purchased from ${shopName}`,
+            data: { data: 'goes here', test: { test1: 'more data' } },
+            sound: 'default'
+          },
+          trigger: { seconds: 1 },
+        });
+      }
+      
+      async function registerForPushNotificationsAsync() {
+        let token;
+      
+        if (Platform.OS === 'android') {
+          await Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+            sound: null  // Ensuring sound is null for the channel
+          });
+        }
+      
+        if (Device.isDevice) {
+          const { status: existingStatus } =
+            await Notifications.getPermissionsAsync();
+          let finalStatus = existingStatus;
+          if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+          }
+          if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+          }
+          // Learn more about projectId:
+          // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
+          // EAS projectId is used here.
+          try {
+            const projectId =
+              Constants?.expoConfig?.extra?.eas?.projectId ??
+              Constants?.easConfig?.projectId;
+            if (!projectId) {
+              throw new Error('Project ID not found');
+            }
+            token = (
+              await Notifications.getExpoPushTokenAsync({
+                projectId,
+              })
+            ).data;
+            console.log(token);
+          } catch (e) {
+            token = `${e}`;
+          }
+        } else {
+          alert('Must use physical device for Push Notifications');
+        }
+      
+        return token;
+      }
+      
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
@@ -382,3 +491,4 @@ const Cart = ({ route }) => {
 }
 
 export default Cart
+
