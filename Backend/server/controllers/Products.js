@@ -33,9 +33,9 @@ const ProductController = {
     },
     SelectedItem: async (req, res) => {
         try {
-            const { id } = req.params
+            const { id, IsDelivery } = req.params
+            console.log(IsDelivery)
             const data = await Product.findById({ _id: id })
-
             const findTransaction = await Transactions.findOne({ productId: id })
             const Availability = findTransaction?.checkout?.status
             if (Availability === 'UNRETURNED') {
@@ -62,8 +62,14 @@ const ProductController = {
                 )
             }
 
-            if (res) {
-                res.json({ success: false, message: 'Product did fetched', data })
+            if (data) {
+                if (IsDelivery === 'true') {
+                    res.json({ success: false, message: 'Product did fetched', data, shippingFee: data?.productInformation?.shippingFee })
+                } else {
+                    res.json({ success: false, message: 'Product did fetched', data, shippingFee: 0 })
+                }
+
+
             } else {
                 res.json({ success: false, message: 'Product did not fetched' })
             }
