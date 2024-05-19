@@ -54,6 +54,10 @@ const Product = () => {
         navigation.navigate('AddProduct')
     }
 
+    const handleViewProduct = (value) => {
+        navigation.navigate('SellerViewProduct', { id: value })
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
@@ -87,6 +91,7 @@ const Product = () => {
                                 {products?.map((item) => (
                                     <TouchableOpacity
                                         key={item._id}
+                                        onPress={() => handleViewProduct(item?._id)}
                                         // onPress={() => handleSelectStore(item.userId, item._id)}
                                         style={{
                                             overflow: 'hidden',
