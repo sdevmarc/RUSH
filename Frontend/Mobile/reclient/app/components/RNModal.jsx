@@ -91,7 +91,6 @@ export default function RNModal({ isVisible, onClose }) {
             setIsLoading(false)
             setImageLoading(false)
         }
-
     }
 
     const handleUploadImage = async (value) => {
