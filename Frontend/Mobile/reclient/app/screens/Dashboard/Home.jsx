@@ -10,7 +10,7 @@ import {
     ImageBackground
 } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import { useFonts } from 'expo-font';
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -246,7 +246,7 @@ const Home = ({ route }) => {
                                                             {item.shopInformation.shopName}
                                                         </Text>
                                                         <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={1} ellipsizeMode='tail'>
-                                                            Rate
+                                                            <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
                                                         </Text>
                                                     </View>
                                                 </View>
