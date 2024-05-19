@@ -8,5 +8,6 @@ router.get('/getproducts/:storeId', Products.FetchProducts)
 router.get('/selectproduct/:id/:IsDelivery', Products.SelectedItem)
 router.get('/searchproduct/:storeId/:searchId', Products.SearchProduct)
 router.post('/updateproductdetails', Products.UpdateProductDetails)
+router.get('/deleteproduct/:productId', Products.DeleteProduct)
 
 module.exports = router
