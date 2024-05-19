@@ -42,7 +42,6 @@ const DeliveryAddress = ({ route }) => {
 
     const handleAddAddress = async () => {
         const userId = await AsyncStorage.getItem('userId')
-        console.log(userId)
         navigation.navigate('AddAddress', { userId: userId })
     }
 
@@ -94,14 +93,9 @@ const DeliveryAddress = ({ route }) => {
                                     </View>
 
                                     <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: width * 0.03 }}>
-                                        <TouchableOpacity style={{ width: '45%', height: height * 0.04, borderRadius: height * 0.01, backgroundColor: Colors.semiblack, justifyContent: 'center', alignItems: 'center' }}>
-                                            <Text style={{ color: Colors.whiteColor, fontWeight: 'bold' }}>
-                                                Edit
-                                            </Text>
-                                        </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() => handleSetActiveAddress(item?._id)}
-                                            style={{ width: '45%', height: height * 0.04, borderRadius: height * 0.01, backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center' }}>
+                                            style={{ width: '100%', height: height * 0.04, borderRadius: height * 0.01, backgroundColor: Colors.orange, justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{ color: Colors.whiteColor, fontWeight: 'bold' }}>
                                                 Set as default
                                             </Text>
