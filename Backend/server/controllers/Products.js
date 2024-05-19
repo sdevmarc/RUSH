@@ -34,7 +34,7 @@ const ProductController = {
     SelectedItem: async (req, res) => {
         try {
             const { id, IsDelivery } = req.params
-            console.log(IsDelivery)
+
             const data = await Product.findById({ _id: id })
             const findTransaction = await Transactions.findOne({ productId: id })
             const Availability = findTransaction?.checkout?.status
@@ -90,6 +90,35 @@ const ProductController = {
             res.json({ success: true, message: 'Search product successfully!', data: checkProducts })
         } catch (error) {
             res.json({ success: false, message: `Error searching a product controller: ${error}` })
+        }
+    },
+    UpdateProductDetails: async (req, res) => {
+        try {
+            const { productId, productInformation } = req.body
+            const { productName, productDescription, price, shippingFee } = productInformation
+            console.log(productId, productInformation)
+
+            const updateProduct = await Product.findByIdAndUpdate(
+                productId,
+                {
+                    "productInformation.productName": productName,
+                    "productInformation.productDescription": productDescription,
+                    "productInformation.price": price,
+                    "productInformation.shippingFee": shippingFee,
+                },
+                {
+                    new: true
+                }
+            )
+            if (updateProduct) {
+                res.json({ success: true, message: 'Product updated successfully!', updateProduct })
+            } else {
+                res.json({ success: false, message: 'Product failed to update!' })
+            }
+
+
+        } catch (error) {
+            res.json({ success: false, message: `Error update a product controller: ${error}` })
         }
     }
 }
