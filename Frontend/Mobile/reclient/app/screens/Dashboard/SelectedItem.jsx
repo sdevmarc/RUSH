@@ -159,8 +159,6 @@ const SelectedItem = ({ route }) => {
                             ₱ {values?.productInformation?.price}.00
                         </Text>
                     </View>
-
-
                     <TouchableOpacity
                         onPress={handleAddtoCart}
                         style={{
