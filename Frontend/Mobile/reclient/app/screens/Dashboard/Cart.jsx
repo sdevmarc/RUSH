@@ -25,23 +25,24 @@ import Constants from 'expo-constants';
 
 const ShippingOption = [
     { id: 1, name: 'Pickup' },
-    { id: 2, name: 'Cash-on-delivery' }
+    { id: 2, name: 'Delivery' }
 ]
 
 const paymentOptions = [
     { id: 1, name: 'Gcash' },
-    { id: 2, name: 'Debit Card' }
+    { id: 2, name: 'Debit Card' },
+    { id: 3, name: 'Cash-on-delivery' },
 ]
 
 const { width, height } = Dimensions.get('window')
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: false,
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
     }),
-  });
+});
 
 const Cart = ({ route }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -82,6 +83,7 @@ const Cart = ({ route }) => {
     const [notification, setNotification] = useState(undefined);
     const notificationListener = useRef();
     const responseListener = useRef();
+    const [IsDelivery, setDelivery] = useState(false)
 
     useFocusEffect(
         useCallback(() => {
@@ -89,31 +91,31 @@ const Cart = ({ route }) => {
             fetchAddressDetails()
             registerForPushNotificationsAsync().then(
                 (token) => token && setExpoPushToken(token),
-              );
-          
-              if (Platform.OS === 'android') {
+            );
+
+            if (Platform.OS === 'android') {
                 Notifications.getNotificationChannelsAsync().then((value) =>
-                  setChannels(value ?? []),
+                    setChannels(value ?? []),
                 );
-              }
-              notificationListener.current =
+            }
+            notificationListener.current =
                 Notifications.addNotificationReceivedListener((notification) => {
-                  setNotification(notification);
+                    setNotification(notification);
                 });
-          
-              responseListener.current =
+
+            responseListener.current =
                 Notifications.addNotificationResponseReceivedListener((response) => {
-                  console.log(response);
+                    console.log(response);
                 });
-          
-              return () => {
+
+            return () => {
                 notificationListener.current &&
-                  Notifications.removeNotificationSubscription(
-                    notificationListener.current,
-                  );
+                    Notifications.removeNotificationSubscription(
+                        notificationListener.current,
+                    );
                 responseListener.current &&
-                  Notifications.removeNotificationSubscription(responseListener.current);
-              };
+                    Notifications.removeNotificationSubscription(responseListener.current);
+            };
         }, []))
 
     const handleCheckout = async () => {
@@ -138,20 +140,20 @@ const Cart = ({ route }) => {
                 Alert.alert('Error', 'Please select a payment method.')
                 return
             }
-            if (!paymentDetails.merchandiseSubTotal || !paymentDetails.shippingSubTotal || !paymentDetails.totalPayment) {
+            if (!paymentDetails.merchandiseSubTotal || !paymentDetails.totalPayment) {
                 Alert.alert('Error', 'Invalid payment details.')
                 return
             }
 
             setIsLoading(true)
             const res = await axios.post(`http://${address}/api/createtransaction`, IsCheckout)
-           
+
             if (res?.data?.success) {
                 await schedulePushNotification()
-                // navigation.reset({
-                //     index: 0,
-                //     routes: [{ name: 'SuccessfulCheckout' }]
-                // })
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'SuccessfulCheckout' }]
+                })
             } else {
                 Alert.alert(res?.data?.message)
             }
@@ -164,16 +166,17 @@ const Cart = ({ route }) => {
 
     }
 
-    const fetchProductItem = async () => {
+    const fetchProductItem = async (value) => {
         try {
             setIsLoading(true)
+
             const { id, shopName } = route.params
-            const res = await axios.get(`http://${address}/api/selectproduct/${id}`)
+            const res = await axios.get(`http://${address}/api/selectproduct/${id}/${value}`)
             setValues(res?.data?.data)
             setShopName(shopName)
 
             const merchandiseSubTotal = parseFloat(res?.data?.data?.productInformation?.price)
-            const shippingSubTotal = parseFloat(res?.data?.data?.productInformation?.shippingFee)
+            const shippingSubTotal = parseFloat(res?.data?.shippingFee)
             const totalPayment = merchandiseSubTotal + shippingSubTotal
             setCheckout((prev) => ({
                 ...prev,
@@ -249,6 +252,12 @@ const Cart = ({ route }) => {
 
     const handleOnChangeArrayOption = (e, value) => {
         try {
+            if (value === 'Delivery') {
+                fetchProductItem(true)
+            } else if (value === 'Pickup') {
+                fetchProductItem(false)
+            }
+
             setCheckout((prev) => ({
                 ...prev,
                 checkout: {
@@ -258,72 +267,74 @@ const Cart = ({ route }) => {
             }))
         } catch (error) {
             console.log('Error handle onchange error: ', error)
+        } finally {
+
         }
     }
 
     async function schedulePushNotification() {
         await Notifications.scheduleNotificationAsync({
-          content: {
-            title: "Rent Successful 📬",
-            body: `You have made a purchased from ${shopName}`,
-            data: { data: 'goes here', test: { test1: 'more data' } },
-            sound: 'default'
-          },
-          trigger: { seconds: 1 },
+            content: {
+                title: "Rent Successful 📬",
+                body: `You have made a purchased from ${shopName}`,
+                data: { data: 'goes here', test: { test1: 'more data' } },
+                sound: 'default'
+            },
+            trigger: { seconds: 1 },
         });
-      }
-      
-      async function registerForPushNotificationsAsync() {
+    }
+
+    async function registerForPushNotificationsAsync() {
         let token;
-      
+
         if (Platform.OS === 'android') {
-          await Notifications.setNotificationChannelAsync('default', {
-            name: 'default',
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-            lightColor: '#FF231F7C',
-            sound: null  // Ensuring sound is null for the channel
-          });
+            await Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+                sound: null  // Ensuring sound is null for the channel
+            });
         }
-      
+
         if (Device.isDevice) {
-          const { status: existingStatus } =
-            await Notifications.getPermissionsAsync();
-          let finalStatus = existingStatus;
-          if (existingStatus !== 'granted') {
-            const { status } = await Notifications.requestPermissionsAsync();
-            finalStatus = status;
-          }
-          if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
-            return;
-          }
-          // Learn more about projectId:
-          // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
-          // EAS projectId is used here.
-          try {
-            const projectId =
-              Constants?.expoConfig?.extra?.eas?.projectId ??
-              Constants?.easConfig?.projectId;
-            if (!projectId) {
-              throw new Error('Project ID not found');
+            const { status: existingStatus } =
+                await Notifications.getPermissionsAsync();
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Notifications.requestPermissionsAsync();
+                finalStatus = status;
             }
-            token = (
-              await Notifications.getExpoPushTokenAsync({
-                projectId,
-              })
-            ).data;
-            console.log(token);
-          } catch (e) {
-            token = `${e}`;
-          }
+            if (finalStatus !== 'granted') {
+                alert('Failed to get push token for push notification!');
+                return;
+            }
+            // Learn more about projectId:
+            // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
+            // EAS projectId is used here.
+            try {
+                const projectId =
+                    Constants?.expoConfig?.extra?.eas?.projectId ??
+                    Constants?.easConfig?.projectId;
+                if (!projectId) {
+                    throw new Error('Project ID not found');
+                }
+                token = (
+                    await Notifications.getExpoPushTokenAsync({
+                        projectId,
+                    })
+                ).data;
+                console.log(token);
+            } catch (e) {
+                token = `${e}`;
+            }
         } else {
-          alert('Must use physical device for Push Notifications');
+            alert('Must use physical device for Push Notifications');
         }
-      
+
         return token;
-      }
-      
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
