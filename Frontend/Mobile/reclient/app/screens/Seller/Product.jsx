@@ -167,7 +167,7 @@ const Product = () => {
                                                                     {item?.productInformation?.productName}
                                                                 </Text>
                                                                 <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
-                                                                    Rate
+                                                                <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
                                                                 </Text>
                                                             </View>
                                                         </View>
