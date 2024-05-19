@@ -86,6 +86,10 @@ const Orders = () => {
         navigation.navigate('UserToReview')
     }
 
+    const handleCompletedOrders = () => {
+        navigation.navigate('UserCompleted')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
@@ -176,7 +180,7 @@ const Orders = () => {
                                 Others
                             </Text>
                             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: width * 0.03 }}>
-                                <TouchableOpacity
+                                {/* <TouchableOpacity
                                     style={{
                                         width: width * 0.29,
                                         height: height * 0.13,
@@ -191,8 +195,9 @@ const Orders = () => {
                                     <Text style={{ width: '80%', color: Colors.fontColor, fontWeight: '600', textAlign: 'center' }}>
                                         My Likes
                                     </Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                                 <TouchableOpacity
+                                    onPress={handleCompletedOrders}
                                     style={{
                                         width: width * 0.29,
                                         height: height * 0.13,
