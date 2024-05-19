@@ -25,6 +25,7 @@ const Product = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [imageLoading, setImageLoading] = useState(true)
     const [products, setProducts] = useState([])
+    const [isSearch, setSearch] = useState([])
 
     useFocusEffect(useCallback(() => {
         fetchUserProducts()
@@ -58,6 +59,19 @@ const Product = () => {
         navigation.navigate('SellerViewProduct', { id: value })
     }
 
+    const handleOnChangeSearch = async (value) => {
+        const storeId = await AsyncStorage.getItem('storeId')
+
+        if (!value) {
+            fetchUserProducts()
+            setSearch([])
+        } else {
+            const res = await axios.get(`http://${address}/api/searchproduct/${storeId}/${value}`)
+            setSearch(res?.data?.data)
+        }
+
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
@@ -67,7 +81,9 @@ const Product = () => {
                 <ScrollView>
                     <View style={{ width: width, paddingHorizontal: width * 0.03, paddingVertical: height * 0.03 }}>
                         <View style={{ width: '100%', paddingTop: height * 0.1, gap: height * 0.01 }}>
-                            <TextInput style={{ width: '100%', height: height * 0.06, paddingHorizontal: width * 0.03, borderRadius: height * 0.02, backgroundColor: Colors.idleColor }} placeholder='Search products here...' />
+                            <TextInput
+                                onChangeText={(value) => handleOnChangeSearch(value)}
+                                style={{ width: '100%', height: height * 0.06, paddingHorizontal: width * 0.03, borderRadius: height * 0.02, backgroundColor: Colors.idleColor }} placeholder='Search products here...' />
                             <TouchableOpacity
                                 onPress={handleOnPressAddProduct}
                                 style={{
@@ -88,41 +104,79 @@ const Product = () => {
                             </TouchableOpacity>
 
                             <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                                {products?.map((item) => (
-                                    <TouchableOpacity
-                                        key={item._id}
-                                        onPress={() => handleViewProduct(item?._id)}
-                                        // onPress={() => handleSelectStore(item.userId, item._id)}
-                                        style={{
-                                            overflow: 'hidden',
-                                            width: width * 0.452,
-                                            height: height * 0.3,
-                                            borderRadius: height * 0.01,
-                                            backgroundColor: '#4a4c59'
-                                        }}
-                                    >
-                                        <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
-                                            <ImageBackground
-                                                source={{ uri: item?.productInformation?.gallery[0]?.uri }}
-                                                resizeMode='cover'
-                                                style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
-                                                onLoad={() => setImageLoading(false)}
-                                                onError={() => setImageLoading(false)}
+                                {
+                                    isSearch.length > 0 ? (
+                                        isSearch?.map((item) => (
+                                            <TouchableOpacity
+                                                key={item._id}
+                                                onPress={() => handleViewProduct(item?._id)}
+                                                style={{
+                                                    overflow: 'hidden',
+                                                    width: width * 0.452,
+                                                    height: height * 0.3,
+                                                    borderRadius: height * 0.01,
+                                                    backgroundColor: '#4a4c59'
+                                                }}
                                             >
-                                                <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
-                                                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                        <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
-                                                            {item?.productInformation?.productName}
-                                                        </Text>
-                                                        <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
-                                                            Rate
-                                                        </Text>
-                                                    </View>
+                                                <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                                    <ImageBackground
+                                                        source={{ uri: item?.productInformation?.gallery[0]?.uri }}
+                                                        resizeMode='cover'
+                                                        style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                                        onLoad={() => setImageLoading(false)}
+                                                        onError={() => setImageLoading(false)}
+                                                    >
+                                                        <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                                    {item?.productInformation?.productName}
+                                                                </Text>
+                                                                <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                                    Rate
+                                                                </Text>
+                                                            </View>
+                                                        </View>
+                                                    </ImageBackground>
                                                 </View>
-                                            </ImageBackground>
-                                        </View>
-                                    </TouchableOpacity>
-                                ))}
+                                            </TouchableOpacity>
+                                        ))
+                                    ) : (
+                                        products?.map((item) => (
+                                            <TouchableOpacity
+                                                key={item._id}
+                                                onPress={() => handleViewProduct(item?._id)}
+                                                style={{
+                                                    overflow: 'hidden',
+                                                    width: width * 0.452,
+                                                    height: height * 0.3,
+                                                    borderRadius: height * 0.01,
+                                                    backgroundColor: '#4a4c59'
+                                                }}
+                                            >
+                                                <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                                    <ImageBackground
+                                                        source={{ uri: item?.productInformation?.gallery[0]?.uri }}
+                                                        resizeMode='cover'
+                                                        style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                                        onLoad={() => setImageLoading(false)}
+                                                        onError={() => setImageLoading(false)}
+                                                    >
+                                                        <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                                    {item?.productInformation?.productName}
+                                                                </Text>
+                                                                <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                                    Rate
+                                                                </Text>
+                                                            </View>
+                                                        </View>
+                                                    </ImageBackground>
+                                                </View>
+                                            </TouchableOpacity>
+                                        ))
+                                    )
+                                }
                             </View>
                         </View>
                     </View>
