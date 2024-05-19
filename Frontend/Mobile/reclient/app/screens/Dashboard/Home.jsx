@@ -43,6 +43,7 @@ const Home = ({ route }) => {
     const scrollY = useRef(new Animated.Value(0)).current;
     const [activeCategory, setActiveCategory] = useState(Categories[0].id);
     const scrollViewRef = useRef();
+    const [isSearch, setSearch] = useState([])
 
     useFocusEffect(useCallback(() => {
         fetchStores()
@@ -112,6 +113,25 @@ const Home = ({ route }) => {
         return null;
     }
 
+    const handleChangeSearch = async (value) => {
+        try {
+            if (!value) {
+                fetchStores()
+                setSearch([])
+            } else {
+                const res = await axios.get(`http://${address}/api/searchstore/${value}`)
+                console.log(res?.data?.data)
+                setSearch(res?.data?.data)
+            }
+
+        } catch (error) {
+            console.error(error)
+        } finally {
+            fetchStores()
+        }
+
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
@@ -174,7 +194,9 @@ const Home = ({ route }) => {
                     <View style={{ width: width, gap: height * 0.022, paddingBottom: height * 0.5 }}>
                         <View style={{ width: '100%', gap: height * 0.02 }}>
                             <View style={{ width: '100%', paddingHorizontal: width * 0.03 }}>
-                                <TextInput style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Search for stores, items, categories...' />
+                                <TextInput
+                                    onChangeText={handleChangeSearch}
+                                    style={{ height: height * 0.06, backgroundColor: '#e8e8e8', borderRadius: 10, paddingHorizontal: width * 0.05, fontSize: width * 0.035 }} placeholder='Search for stores, items, categories...' />
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: width * 0.03, paddingHorizontal: width * 0.03 }}>
                                 <Text style={{ fontSize: width * 0.05, color: Colors.fontColor, fontFamily: 'Poppins-Bold' }}>
@@ -220,42 +242,80 @@ const Home = ({ route }) => {
                                 </Text>
                             </View>
                             <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                                {stores.map((item) => (
-                                    <TouchableOpacity
-                                        key={item.userId}
-                                        onPress={() => handleSelectStore(item.userId, item._id)}
-                                        style={{
-                                            overflow: 'hidden',
-                                            width: width * 0.452,
-                                            height: height * 0.3,
-                                            borderRadius: height * 0.02,
-                                            backgroundColor: '#4a4c59'
-                                        }}
-                                    >
-                                        <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
-                                            <ImageBackground
-                                                source={{ uri: `${item.shopInformation.shopImage}` }}
-                                                onLoad={() => setImageLoading(false)}
-                                                onError={() => setImageLoading(false)}
-                                                resizeMode='cover'
-                                                style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                {
+                                    isSearch?.length > 0 ? (
+                                        isSearch.map((item) => (
+                                            <TouchableOpacity
+                                                key={item.userId}
+                                                onPress={() => handleSelectStore(item.userId, item._id)}
+                                                style={{
+                                                    overflow: 'hidden',
+                                                    width: width * 0.452,
+                                                    height: height * 0.3,
+                                                    borderRadius: height * 0.02,
+                                                    backgroundColor: '#4a4c59'
+                                                }}
                                             >
-                                                <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
-                                                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                        <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
-                                                            {item.shopInformation.shopName}
-                                                        </Text>
-                                                        <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={1} ellipsizeMode='tail'>
-                                                            <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
-                                                        </Text>
-                                                    </View>
+                                                <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                                    <ImageBackground
+                                                        source={{ uri: `${item.shopInformation.shopImage}` }}
+                                                        onLoad={() => setImageLoading(false)}
+                                                        onError={() => setImageLoading(false)}
+                                                        resizeMode='cover'
+                                                        style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                                    >
+                                                        <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                                    {item.shopInformation.shopName}
+                                                                </Text>
+                                                                <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={1} ellipsizeMode='tail'>
+                                                                    <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
+                                                                </Text>
+                                                            </View>
+                                                        </View>
+                                                    </ImageBackground>
                                                 </View>
-                                            </ImageBackground>
-                                        </View>
-                                    </TouchableOpacity>
-                                ))}
+                                            </TouchableOpacity>
+                                        ))
+                                    ) : (
+                                        stores.map((item) => (
+                                            <TouchableOpacity
+                                                key={item.userId}
+                                                onPress={() => handleSelectStore(item.userId, item._id)}
+                                                style={{
+                                                    overflow: 'hidden',
+                                                    width: width * 0.452,
+                                                    height: height * 0.3,
+                                                    borderRadius: height * 0.02,
+                                                    backgroundColor: '#4a4c59'
+                                                }}
+                                            >
+                                                <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                                    <ImageBackground
+                                                        source={{ uri: `${item.shopInformation.shopImage}` }}
+                                                        onLoad={() => setImageLoading(false)}
+                                                        onError={() => setImageLoading(false)}
+                                                        resizeMode='cover'
+                                                        style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                                    >
+                                                        <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                                    {item.shopInformation.shopName}
+                                                                </Text>
+                                                                <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={1} ellipsizeMode='tail'>
+                                                                    <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
+                                                                </Text>
+                                                            </View>
+                                                        </View>
+                                                    </ImageBackground>
+                                                </View>
+                                            </TouchableOpacity>
+                                        ))
+                                    )
+                                }
                             </View>
-
                         </View>
                     </View >
                 </ScrollView >
