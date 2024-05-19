@@ -4,30 +4,26 @@ import {
     Modal,
     TouchableOpacity,
     Dimensions,
-    ImageBackground,
     ScrollView,
     TextInput,
     Alert,
     Keyboard,
     TouchableWithoutFeedback
 } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import * as Colors from '../../utils/colors'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import address from '../../config/host'
 import Loading from './Loading'
-import * as ImagePicker from 'expo-image-picker'
 import BottomBar from './BottomBar'
 
 const { width, height } = Dimensions.get('window')
 
-export default function RateProductModal({ isVisible, onClose }) {
+export default function RateProductModal({ isVisible, onClose, data }) {
     const [isLoading, setIsLoading] = useState(false)
     const [ratings, setRatings] = useState({ product: 0, service: 0 });
-    const [comments, setComments] = useState('');
+    const [comments, setComments] = useState('')
 
     const renderStars = (ratingType) => {
         let stars = [];
@@ -43,6 +39,51 @@ export default function RateProductModal({ isVisible, onClose }) {
             );
         }
         return stars;
+    }
+
+    const handleRate = async () => {
+        try {
+            const { transactionId, userId, storeId, productId } = data
+            const { product, service } = ratings
+
+            if (!transactionId || !userId || !storeId || !productId || !product || !service) return Alert.alert('Error', 'Please fill-in the required fields!')
+
+            setIsLoading(true)
+
+            const rated = {
+                transactionId,
+                userId,
+                storeId,
+                productId,
+                ratings: {
+                    productRating: product,
+                    serviceRating: service,
+                    comment: comments
+                }
+            }
+            const res = await axios.post(`http://${address}/api/rateitem`, rated)
+            if (res?.data?.success) {
+                Alert.alert('Success!', res?.data?.message)
+                onClose()
+            } else {
+                console.log(res?.data?.message)
+                onClose()
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleClose = () => {
+        setRatings((prev) => ({
+            ...prev,
+            product: 0,
+            service: 0
+        }))
+        setComments('')
+        onClose()
     }
 
     return (
@@ -74,7 +115,7 @@ export default function RateProductModal({ isVisible, onClose }) {
                             }}
                         >
                             <TouchableOpacity
-                                onPress={onClose}
+                                onPress={handleClose}
                             >
                                 <Ionicons name="chevron-back-circle" size={width * 0.08} color={Colors.black} />
                             </TouchableOpacity>
@@ -136,9 +177,9 @@ export default function RateProductModal({ isVisible, onClose }) {
                                         Do you have any comments?
                                     </Text>
                                     <View style={{ overflow: 'hidden', width: '100% ', height: height * 0.12, backgroundColor: Colors.idleColor, borderRadius: height * 0.01, padding: height * 0.01 }}>
-                                        <View style={{ width: '100%', height: '100%', backgroundColor: Colors.semiblack, borderRadius: height * 0.01 }}>
+                                        <View style={{ width: '100%', height: '100%', backgroundColor: Colors.whiteColor, borderRadius: height * 0.01 }}>
                                             <TextInput
-                                                style={{ width: '100%', height: '100%', padding: height * 0.01, color: Colors.whiteColor }}
+                                                style={{ width: '100%', height: '100%', padding: height * 0.01, color: Colors.fontColor }}
                                                 placeholder='Enter your comment here...'
                                                 multiline={true}
                                                 numberOfLines={4}
@@ -152,7 +193,7 @@ export default function RateProductModal({ isVisible, onClose }) {
 
                                 </View>
                             </View>
-                            <BottomBar title='RATE' />
+                            <BottomBar title='RATE' redirect={handleRate} />
                         </ScrollView >
                     </TouchableWithoutFeedback>
                 </View >
