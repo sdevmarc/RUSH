@@ -9,7 +9,7 @@ import {
     TouchableOpacity
 } from 'react-native'
 import React, { useCallback, useState } from 'react'
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import * as Colors from '../../../../utils/colors'
 import Navbar from '../../../components/Navbar'
 import axios from 'axios'
@@ -24,6 +24,7 @@ export default function UserToReview() {
     const [values, setValues] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [isModalVisible, setIsModalVisible] = useState(false)
+    const navigation = useNavigation()
 
     useFocusEffect(useCallback(() => {
         fetchUnreturned()
@@ -53,6 +54,7 @@ export default function UserToReview() {
 
     const handleCloseModal = () => {
         setIsModalVisible(false)
+        navigation.goBack()
     }
 
     return (
@@ -60,7 +62,7 @@ export default function UserToReview() {
             <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             <View style={{ width: width, height: height, backgroundColor: Colors.backgroundColor }}>
                 {isLoading && <Loading title={`Loading`} />}
-                <RateProductModal isVisible={isModalVisible} onClose={handleCloseModal} />
+
                 <Navbar title='To Review' backgroundColor={Colors.backgroundColor} tintColor={Colors.fontColor} />
 
                 <ScrollView>
@@ -119,6 +121,7 @@ export default function UserToReview() {
                                             </TouchableOpacity>
                                         </View>
                                     </View>
+                                    <RateProductModal isVisible={isModalVisible} onClose={handleCloseModal} data={{ transactionId: item?.transaction?._id, userId: item?.transaction?.userId, storeId: item?.transaction?.sellerId, productId: item?.transaction?.productId }} />
                                 </View>
                             ))}
                         </View>
