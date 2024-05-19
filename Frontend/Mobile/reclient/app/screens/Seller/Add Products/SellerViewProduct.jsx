@@ -5,7 +5,8 @@ import {
     StatusBar,
     TouchableOpacity,
     ScrollView,
-    Image
+    Image,
+    Alert
 } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
@@ -50,6 +51,20 @@ export default function SellerViewProduct({ route }) {
     const handleCloseModal = () => {
         setIsModalVisible(false)
         fetchProductItem()
+    }
+
+    const handleDeleteProduct = async () => {
+        try {
+            const res = await axios.get(`http://${address}/api/deleteproduct/${id}`)
+            if (res?.data?.success) {
+                Alert.alert('Success!', res?.data?.message)
+                navigation.goBack()
+            } else {
+                console.log(res?.data?.message)
+            }
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
@@ -145,7 +160,8 @@ export default function SellerViewProduct({ route }) {
                 <View
                     style={{
                         position: 'absolute',
-                        bottom: 0, width: '100%',
+                        bottom: 0,
+                        width: '100%',
                         height: height * 0.13,
                         backgroundColor: Colors.backgroundColor,
                         flexDirection: 'row',
@@ -155,11 +171,11 @@ export default function SellerViewProduct({ route }) {
                     }}>
                     <View
                         style={{
-                            width: width * 0.3,
-                            height: height * 0.06,
+                            width: '35%',
+                            height: '65%',
                             justifyContent: 'center',
                             alignItems: 'flex-start',
-                            borderRadius: height * 0.015
+                            borderRadius: height * 0.015,
                         }}
                     >
                         <Text style={{ color: Colors.fontColor, fontWeight: '500', fontSize: width * 0.04 }}>
@@ -169,22 +185,42 @@ export default function SellerViewProduct({ route }) {
                             ₱ {values?.productInformation?.price}.00
                         </Text>
                     </View>
-                    <TouchableOpacity
-                        onPress={handleOnClickEdit}
-                        style={{
-                            width: width * 0.55,
-                            height: height * 0.06,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: values?.productInformation?.isAvailable === 'Available' ? Colors.orange : Colors.idleColor,
-                            borderRadius: height * 0.02
-                        }}
-                        disabled={values?.productInformation?.isAvailable === 'Not Available' && true}
-                    >
-                        <Text style={{ color: values?.productInformation?.isAvailable === 'Available' ? Colors.whiteColor : Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
-                            EDIT
-                        </Text>
-                    </TouchableOpacity>
+                    <View style={{ width: '65%', height: '65%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: height * 0.01 }}>
+                        <TouchableOpacity
+                            onPress={handleDeleteProduct}
+                            style={{
+                                width: '45%',
+                                height: height * 0.06,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: values?.productInformation?.isAvailable === 'Available' ? Colors.orange : Colors.idleColor,
+                                borderRadius: height * 0.02
+                            }}
+                            disabled={values?.productInformation?.isAvailable === 'Not Available' && true}
+                        >
+                            <Text style={{ color: values?.productInformation?.isAvailable === 'Available' ? Colors.whiteColor : Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
+                                DELETE
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={handleOnClickEdit}
+                            style={{
+                                width: '45%',
+                                height: height * 0.06,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: values?.productInformation?.isAvailable === 'Available' ? Colors.orange : Colors.idleColor,
+                                borderRadius: height * 0.02
+                            }}
+                            disabled={values?.productInformation?.isAvailable === 'Not Available' && true}
+                        >
+                            <Text style={{ color: values?.productInformation?.isAvailable === 'Available' ? Colors.whiteColor : Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
+                                EDIT
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
+
                 </View>
             </View >
         </>
