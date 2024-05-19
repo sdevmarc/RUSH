@@ -114,6 +114,10 @@ const Store = () => {
         navigation.navigate('CustomerService')
     }
 
+    const handleCompleted = () => {
+        navigation.navigate('Completed')
+    }
+
     return (
         <>
             <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
@@ -253,6 +257,7 @@ const Store = () => {
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
+                                    onPress={handleCompleted}
                                     style={{
                                         width: width * 0.29,
                                         height: height * 0.13,
