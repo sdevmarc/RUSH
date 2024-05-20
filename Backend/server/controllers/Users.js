@@ -195,8 +195,7 @@ const UserController = {
         } catch (error) {
             res.json({ success: false, message: `Get renters details error from user controller: ${error}` })
         }
-    },
-    AddUser
+    }
 }
 
 module.exports = UserController
