@@ -58,8 +58,6 @@ export default function Shops() {
                                     placeholder='Search for shops...'
                                 />
                             </div>
-
-                            <Button variant="contained" sx={{ background: '#333' }}>Add Shop</Button>
                         </div>
                         <div className="w-full h-[90%] bg-yellow flex justify-center items-center">
                             <DataGrid
