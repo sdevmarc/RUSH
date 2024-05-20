@@ -15,7 +15,7 @@ const Home = () => {
             <div className="w-full h-screen">
                 <div className="home flex justify-end items-center px-[5rem]">
                     <form
-                    onSubmit={handleSubmit}
+                        onSubmit={handleSubmit}
                         className='login-form w-[25rem] h-[30rem] rounded-[1.5rem] px-[1rem] flex flex-col justify-center items-center gap-[1rem]'
                     >
                         <h1 className='font-[600] text-[2rem]'>Login</h1>
