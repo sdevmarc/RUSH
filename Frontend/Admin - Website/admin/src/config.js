@@ -1,2 +1,2 @@
-const address = '172.20.10.2:3001'
+const address = '192.168.0.142:3001'
 export default address;
