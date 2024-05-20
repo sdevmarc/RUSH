@@ -124,6 +124,7 @@ const UserController = {
     GetAllUsers: async (req, res) => {
         try {
             const users = await Users.find()
+
             res.json({ success: true, message: 'Retrieving all users is successfull!', data: users })
         } catch (error) {
             res.json({ success: false, message: `Get all user error from controller: ${error}` })
@@ -168,15 +169,31 @@ const UserController = {
                     new: true
                 }
             )
-            if(updateDetails) {
+            if (updateDetails) {
                 res.json({ success: true, message: 'User updated account details successfully!', data: updateDetails })
             } else {
                 res.json({ success: false, message: 'Failed to update user details!' })
             }
-           
+
 
         } catch (error) {
             res.json({ success: false, message: `Update account details error from user controller: ${error}` })
+        }
+    },
+    GetRenters: async (req, res) => {
+        try {
+            const findRenter = await Users.find({ UserType: 'Renter' })
+            res.json({ success: true, message: 'Renters retrieved successfully!', data: findRenter })
+        } catch (error) {
+            res.json({ success: false, message: `Get renters details error from user controller: ${error}` })
+        }
+    },
+    GetRentees: async (req, res) => {
+        try {
+            const findRenter = await Users.find({ UserType: 'Rentee' })
+            res.json({ success: true, message: 'Rentees retrieved successfully!', data: findRenter })
+        } catch (error) {
+            res.json({ success: false, message: `Get renters details error from user controller: ${error}` })
         }
     }
 }
