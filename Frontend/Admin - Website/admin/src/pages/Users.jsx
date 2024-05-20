@@ -60,8 +60,6 @@ export default function Users() {
                                     placeholder='Search for users...'
                                 />
                             </div>
-
-                            <Button variant="contained" sx={{ background: '#333' }}>Add User</Button>
                         </div>
                         <div className="w-full h-[90%] bg-yellow flex justify-center items-center">
                             <DataGrid
