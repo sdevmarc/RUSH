@@ -6,7 +6,6 @@ import Users from './pages/Users'
 import Renters from './pages/Renters'
 import Rentees from './pages/Rentees'
 import Shops from './pages/Shops'
-import Settings from './pages/Settings'
 
 const Routes = createBrowserRouter([
     { path: '/', element: <Home /> },
@@ -14,8 +13,7 @@ const Routes = createBrowserRouter([
     { path: '/users', element: <Users /> },
     { path: '/renters', element: <Renters /> },
     { path: '/rentees', element: <Rentees /> },
-    { path: '/shops', element: <Shops /> },
-    { path: '/settings', element: <Settings /> }
+    { path: '/shops', element: <Shops /> }
 ])
 
 export default Routes
