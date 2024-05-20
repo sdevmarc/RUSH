@@ -59,8 +59,6 @@ export default function Renters() {
                                     placeholder='Search for renters...'
                                 />
                             </div>
-
-                            <Button variant="contained" sx={{ background: '#333' }}>Add Renter</Button>
                         </div>
                         <div className="w-full h-[90%] bg-yellow flex justify-center items-center">
                             <DataGrid
