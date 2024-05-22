@@ -104,6 +104,13 @@ const Product = () => {
                             </TouchableOpacity>
 
                             <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                                {products.length <= 0 && (
+                                    <View style={{ width: '100%', height: height * 0.5, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ color: Colors.fontColor, fontSize: height * 0.03 }}>
+                                            No products available
+                                        </Text>
+                                    </View>
+                                )}
                                 {
                                     isSearch.length > 0 ? (
                                         isSearch?.map((item) => (
@@ -167,7 +174,7 @@ const Product = () => {
                                                                     {item?.productInformation?.productName}
                                                                 </Text>
                                                                 <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
-                                                                <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
+                                                                    <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
                                                                 </Text>
                                                             </View>
                                                         </View>
