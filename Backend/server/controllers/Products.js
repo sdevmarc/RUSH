@@ -154,7 +154,28 @@ const ProductController = {
         } catch (error) {
             res.json({ success: false, message: `Error deleting product: ${error}`, error });
         }
-    }
+    },
+    GetAll: async (req, res) => {
+        try {
+            const data = await Product.find()
+            res.json({ success: true, message: 'Products fetched successfully!', data })
+        } catch (error) {
+            res.json({ success: false, message: `Error deleting product: ${error}`, error });
+        }
+    },
+    SearchAdminProduct: async (req, res) => {
+        try {
+            const { searchId } = req.params
+
+            const checkProducts = await Product.find({
+                "productInformation.productName": { $regex: new RegExp(searchId, 'i') }
+            })
+
+            res.json({ success: true, message: 'Search product successfully!', data: checkProducts })
+        } catch (error) {
+            res.json({ success: false, message: `Error searching a product controller: ${error}` })
+        }
+    },
 }
 
 module.exports = ProductController
