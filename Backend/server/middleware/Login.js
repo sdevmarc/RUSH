@@ -17,10 +17,10 @@ const LoginAuth = async (req, res, next) => {
                 res.json({ success: true, message: 'Login successful!', token: token, userId: User._id })
                 next()
             } else {
-                res.json({ success: false, message: 'Wrong Password!' });
+                res.json({ success: false, message: 'Username nor Password Incorrect!' });
             }
         } else {
-            res.json({ success: false, message: 'No such user found.' })
+            res.json({ success: false, message: 'User does not exist!' })
         }
     } catch (error) {
         return next(`Error Login Auth: ${error}`)
