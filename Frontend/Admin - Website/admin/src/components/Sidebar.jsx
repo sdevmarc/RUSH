@@ -25,12 +25,22 @@ export default function Sidebar() {
 
     const handleBackup = async () => {
         const res = await axios.get(`http://${address}/api/admin/backup`)
-        alert(res?.data?.message)
+        if (res?.data?.success) {
+            alert(res?.data?.message)
+        } else {
+            alert(res?.data?.message)
+        }
+
     }
 
     const handleRestore = async () => {
         const res = await axios.get(`http://${address}/api/admin/restore`)
-        alert(res?.data?.message)
+
+        if (res?.data?.success) {
+            alert(res?.data?.message)
+        } else {
+            alert(res?.data?.message)
+        }
     }
 
     return (
