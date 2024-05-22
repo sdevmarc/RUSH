@@ -158,6 +158,11 @@ const UserController = {
     UpdateAccountDetails: async (req, res) => {
         try {
             const { userId, displayName, contactno } = req.body
+            const displayNameCheck = /[^a-zA-Z0-9_-]/
+
+            if (displayNameCheck.test(username)) {
+                return res.json({ success: false, message: 'Display name contains invalid characters. Only letters, numbers, underscores, and hyphens are allowed.' })
+            }
 
             const updateDetails = await Users.findByIdAndUpdate(
                 userId,
