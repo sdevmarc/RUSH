@@ -40,7 +40,7 @@ const AdminUserController = {
                     console.error(`Error executing command: ${error}`);
                     return res.json({ success: false, message: 'Failed to backup database!' });
                 }
-                res.json({ success: true, message: 'Backup successfully!' });
+                res.json({ success: true, message: 'Backup completed successfully!' });
             });
         } catch (error) {
             res.json({ success: false, message: `Error Backup controller: ${error}` });
@@ -49,12 +49,12 @@ const AdminUserController = {
 
     Restore: async (req, res) => {
         try {
-            exec(`${mongorestorePath} backups`, (error, stdout, stderr) => {
+            exec(`${mongorestorePath} ${dbName}_backups`, (error, stdout, stderr) => {
                 if (error) {
                     console.error(`Error restoring backup: ${stderr}`);
                     return res.json({ success: false, message: `Error restoring backup: ${stderr}` });
                 }
-                res.json({ success: true, message: 'Data restored successfully!' });
+                res.json({ success: true, message: 'Restore completed successfully!' });
             });
         } catch (error) {
             res.json({ success: false, message: `Error Restore controller: ${error}` });
