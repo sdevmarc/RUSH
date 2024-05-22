@@ -34,8 +34,6 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('')
 
     const handleSignUp = async () => {
-        // navigation.replace('SuccessfulLogin')
-
         try {
             if (values.displayName === '' || values.username === '' || values.password === '' || confirmPassword === '' || values.contactno === '') {
                 Alert.alert('Warning', 'Please fill-in the required fields')
