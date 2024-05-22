@@ -209,12 +209,11 @@ export default function SellerViewProduct({ route }) {
                                 height: height * 0.06,
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                backgroundColor: values?.productInformation?.isAvailable === 'Available' ? Colors.orange : Colors.idleColor,
+                                backgroundColor: Colors.orange,
                                 borderRadius: height * 0.02
                             }}
-                            disabled={values?.productInformation?.isAvailable === 'Not Available' && true}
                         >
-                            <Text style={{ color: values?.productInformation?.isAvailable === 'Available' ? Colors.whiteColor : Colors.fontColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
+                            <Text style={{ color: Colors.whiteColor, fontWeight: 'bold', fontSize: width * 0.04 }}>
                                 EDIT
                             </Text>
                         </TouchableOpacity>
