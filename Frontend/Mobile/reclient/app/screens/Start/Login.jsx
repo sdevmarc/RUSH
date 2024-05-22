@@ -35,6 +35,7 @@ const Login = () => {
                 const res = await axios.post(`http://${address}/api/login`, values)
 
                 if (res.data.success) {
+                    Alert.alert(res?.data?.message)
                     await AsyncStorage.setItem('token', res.data.token)
                     await AsyncStorage.setItem('userId', res.data.userId)
                     navigation.replace('DrawerRoutes')
