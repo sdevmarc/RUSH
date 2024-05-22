@@ -10,6 +10,7 @@ import { Button } from '@mui/material'
 import FlagIcon from '@mui/icons-material/Flag'
 import axios from 'axios'
 import address from '../config'
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 const LinksTop = [
     { id: 1, linkto: '/dashboard', icon: <GridViewIcon />, name: 'Dashboard' },
@@ -17,7 +18,8 @@ const LinksTop = [
     { id: 3, linkto: '/renters', icon: <SellIcon />, name: 'Renters' },
     { id: 4, linkto: '/rentees', icon: <SupervisorAccountIcon />, name: 'Rentee' },
     { id: 5, linkto: '/shops', icon: <StorefrontIcon />, name: 'Shops' },
-    { id: 6, linkto: '/shops', icon: <FlagIcon />, name: 'Reports' }
+    { id: 6, linkto: '/products', icon: <InventoryIcon />, name: 'Products' },
+    { id: 7, linkto: '/reports', icon: <FlagIcon />, name: 'Reports' }
 ]
 
 
