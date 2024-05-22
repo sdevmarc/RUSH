@@ -4,6 +4,7 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import { useNavigate } from 'react-router-dom'
 
 function stringToColor(string) {
     let hash = 0;
@@ -35,6 +36,7 @@ function stringAvatar(name) {
 }
 
 export default function Navbar() {
+    const navigate = useNavigate()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -43,6 +45,10 @@ export default function Navbar() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = () => {
+        navigate('/')
+    }
 
     return (
         <>
@@ -69,7 +75,7 @@ export default function Navbar() {
                     >
                         <MenuItem onClick={handleClose}>Profile</MenuItem>
                         <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                 </div>
             </div>
