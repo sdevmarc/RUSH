@@ -36,13 +36,17 @@ export default function EditProductModal({ isVisible, onClose, data }) {
             setIsLoading(true)
             const res = await axios.get(`http://${address}/api/selectproduct/${data}/false`)
 
-            setDetails((prev) => ({
-                ...prev,
-                productName: res?.data?.data?.productInformation?.productName,
-                productDescription: res?.data?.data?.productInformation?.productDescription,
-                price: res?.data?.data?.productInformation?.price,
-                shippingFee: res?.data?.data?.productInformation?.shippingFee
-            }))
+            if (res?.data?.success) {
+                setDetails((prev) => ({
+                    ...prev,
+                    productName: res?.data?.data?.productInformation?.productName,
+                    productDescription: res?.data?.data?.productInformation?.productDescription,
+                    price: res?.data?.data?.productInformation?.price,
+                    shippingFee: res?.data?.data?.productInformation?.shippingFee
+                }))
+            }
+
+
         } catch (error) {
             console.error(`Error Selected Item: ${error}`)
         } finally {
@@ -69,12 +73,13 @@ export default function EditProductModal({ isVisible, onClose, data }) {
             }
             const updateProduct = await axios.post(`http://${address}/api/updateproductdetails`, { productId: data, productInformation })
 
+            console.log(updateProduct?.data)
+
             if (updateProduct?.data?.success) {
                 Alert.alert('Success!', updateProduct?.data?.message)
                 onClose()
             } else {
-                console.log('Error', updateProduct?.data?.message)
-                onClose()
+                Alert.alert('Error', updateProduct?.data?.message)
             }
 
         } catch (error) {
