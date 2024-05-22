@@ -154,40 +154,49 @@ const SelectedStore = ({ route }) => {
                             </Text>
                         </View>
                         <View style={{ width: '100%', flexDirection: 'row', gap: width * 0.03, flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                            {values.map((item) => (
-                                <TouchableOpacity
-                                    key={item._id}
-                                    onPress={() => handleSelectItem(item._id)}
-                                    style={{
-                                        overflow: 'hidden',
-                                        width: width * 0.452,
-                                        height: height * 0.3,
-                                        borderRadius: height * 0.01,
-                                        backgroundColor: '#4a4c59'
-                                    }}
-                                >
-                                    <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
-                                        <ImageBackground
-                                            source={{ uri: item?.productInformation?.gallery[0]?.uri }}
-                                            resizeMode='cover'
-                                            style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
-                                            onLoad={() => setImageLoading(false)}
-                                            onError={() => setImageLoading(false)}
+                            {values.length > 0 ?
+                                (
+                                    values.map((item) => (
+                                        <TouchableOpacity
+                                            key={item._id}
+                                            onPress={() => handleSelectItem(item._id)}
+                                            style={{
+                                                overflow: 'hidden',
+                                                width: width * 0.452,
+                                                height: height * 0.3,
+                                                borderRadius: height * 0.01,
+                                                backgroundColor: '#4a4c59'
+                                            }}
                                         >
-                                            <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
-                                                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
-                                                        {item?.productInformation?.productName}
-                                                    </Text>
-                                                    <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
-                                                        <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
-                                                    </Text>
-                                                </View>
+                                            <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
+                                                <ImageBackground
+                                                    source={{ uri: item?.productInformation?.gallery[0]?.uri }}
+                                                    resizeMode='cover'
+                                                    style={{ width: '100%', height: '100%', backgroundColor: 'black' }}
+                                                    onLoad={() => setImageLoading(false)}
+                                                    onError={() => setImageLoading(false)}
+                                                >
+                                                    <View style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems: 'flex-start', padding: width * 0.03, backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                                                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                            <Text style={{ width: '50%', color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                                {item?.productInformation?.productName}
+                                                            </Text>
+                                                            <Text style={{ color: Colors.whiteColor, fontWeight: '700', fontSize: width * 0.04 }} numberOfLines={2} ellipsizeMode='tail'>
+                                                                <MaterialIcons name="star" size={24} color={Colors.whiteColor} />
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                                </ImageBackground>
                                             </View>
-                                        </ImageBackground>
+                                        </TouchableOpacity>
+                                    ))
+                                ) : (
+                                    <View style={{ width: '100%', height: height * 0.5, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ color: Colors.fontColor, fontSize: height * 0.03 }}>
+                                            No products available
+                                        </Text>
                                     </View>
-                                </TouchableOpacity>
-                            ))}
+                                )}
                         </View>
                     </View>
                 </ScrollView>
