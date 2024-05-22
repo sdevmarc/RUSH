@@ -1,13 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './css/Home.css'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import address from '../config'
 
 const Home = () => {
     const navigate = useNavigate()
+    const [values, setValues] = useState({
+        username: '',
+        password: ''
+    })
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        navigate('/dashboard')
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault()
+
+            const { username, password } = values
+
+            if (!username || !password) return alert('Please fill in the required fields!')
+
+            const res = await axios.post(`http://${address}/api/admin/login`, values)
+
+            if (res?.data?.success) {
+                alert(res?.data?.message)
+                navigate('/dashboard')
+            } else {
+                alert(res?.data?.message)
+            }
+        } catch (error) {
+            alert(`Error catch login: ${error}`)
+        }
+    }
+
+    const handleOnChange = (e) => {
+        const { name, value } = e.target
+
+        setValues((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+
     }
 
     return (
@@ -22,6 +54,9 @@ const Home = () => {
                         <div className="w-full flex flex-col justify-center items-start gap-[.5rem]">
                             <h1 className='text-[.9rem]'>Username</h1>
                             <input
+                                name='username'
+                                onChange={handleOnChange}
+                                value={values?.username}
                                 className='w-full h-[2.8rem] bg-[#EFEFEF] p-[.5rem] rounded-lg text-[.9rem]'
                                 type="text"
                                 placeholder='Enter your username here...' />
@@ -29,6 +64,9 @@ const Home = () => {
                         <div className="w-full flex flex-col justify-center items-start gap-[.5rem]">
                             <h1 className='text-[.9rem]'>Password</h1>
                             <input
+                                name='password'
+                                onChange={handleOnChange}
+                                value={values?.password}
                                 className='w-full h-[2.8rem] bg-[#EFEFEF] p-[.5rem] rounded-lg text-[.9rem]'
                                 type="password"
                                 placeholder='Enter your password here...' />
