@@ -41,7 +41,7 @@ const StoreController = {
     GetAllStore: async (req, res) => {
         try {
             const data = await Stores.find()
-            res.json({ success: true, message: 'Fetched all stores successfully', data: data })
+            res.json({ success: true, message: 'Fetched all stores successfully', data })
         } catch (error) {
             res.json({ success: false, message: `Error get all store controller: ${error}` })
         }
