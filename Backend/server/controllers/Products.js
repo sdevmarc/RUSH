@@ -6,6 +6,13 @@ const ProductController = {
         try {
             const values = req.body
 
+            const productNameInvalidChars = /[^a-zA-Z0-9_-]/
+
+            if (productNameInvalidChars.test(values?.productInformation?.productName)) {
+                return res.json({ success: false, message: 'Product Name contains invalid characters. Only letters, numbers, underscores, and hyphens are allowed.' })
+            }
+
+
             const data = await Product.create(values)
 
             if (data) {
@@ -64,9 +71,9 @@ const ProductController = {
 
             if (data) {
                 if (IsDelivery === 'true') {
-                    res.json({ success: false, message: 'Product did fetched', data, shippingFee: data?.productInformation?.shippingFee })
+                    res.json({ success: true, message: 'Product did fetched', data, shippingFee: data?.productInformation?.shippingFee })
                 } else {
-                    res.json({ success: false, message: 'Product did fetched', data, shippingFee: 0 })
+                    res.json({ success: true, message: 'Product did fetched', data, shippingFee: 0 })
                 }
 
 
@@ -98,6 +105,12 @@ const ProductController = {
             const { productName, productDescription, price, shippingFee } = productInformation
             console.log(productId, productInformation)
 
+            const productNameInvalidChars = /[^a-zA-Z0-9_-]/
+
+            if (productNameInvalidChars.test(productInformation?.productName)) {
+                return res.json({ success: false, message: 'Product Name contains invalid characters. Only letters, numbers, underscores, and hyphens are allowed.' })
+            }
+
             const updateProduct = await Product.findByIdAndUpdate(
                 productId,
                 {
@@ -125,12 +138,18 @@ const ProductController = {
         try {
             const { productId } = req.params;
 
-            const deleteProduct = await Product.findByIdAndDelete(productId);
+            const findTransaction = await TransactionModel.findOne({ productId });
 
-            if (deleteProduct) {
-                res.json({ success: true, message: 'Product deleted successfully!' });
+            if (findTransaction && (findTransaction.checkout.status === 'COMPLETED' || findTransaction.checkout.status === 'RATING')) {
+                const deleteProduct = await Product.findByIdAndDelete(productId);
+
+                if (deleteProduct) {
+                    res.json({ success: true, message: 'Product deleted successfully!' });
+                } else {
+                    res.json({ success: false, message: 'Product deletion failed!' });
+                }
             } else {
-                res.json({ success: false, message: 'Product deletion failed!' });
+                res.json({ success: false, message: 'Cannot delete rented product.' });
             }
         } catch (error) {
             res.json({ success: false, message: `Error deleting product: ${error}`, error });
