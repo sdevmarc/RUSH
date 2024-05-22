@@ -1,27 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
-import Button from '@mui/material/Button'
 import { DataGrid } from '@mui/x-data-grid'
-import EditIcon from '@mui/icons-material/Edit'
 import address from '../config'
 import axios from 'axios'
 
-const renderActionButtons = () => {
-    return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-            <Button variant="text">
-                <EditIcon />
-            </Button>
-        </div>
-    );
-};
-
 const columns = [
     { field: 'id', headerName: 'No.', width: 70 },
-    { field: 'username', headerName: 'Username', width: 250 },
-    { field: 'displayName', headerName: 'Display Name', width: 230 },
-    { field: 'actions', headerName: 'Actions', width: 200, headerAlign: 'center', renderCell: renderActionButtons }
+    { field: 'userId', headerName: 'User Id', width: 250 },
+    { field: 'shopName', headerName: 'Shop Name', width: 230 },
+    { field: 'email', headerName: 'Email', width: 230 },
+    { field: 'mobileNumber', headerName: 'Mobile Number', width: 230 }
 ];
 
 export default function Shops() {
@@ -32,12 +21,14 @@ export default function Shops() {
     }, [])
 
     const fetchUsers = async () => {
-        const res = await axios.get(`http://${address}/api/getrentees`)
+        const res = await axios.get(`http://${address}/api/allstore`)
 
         const formattedData = res?.data?.data?.map((user) => ({
-            id: user._id,
-            username: user.username,
-            displayName: user?.displayName || ''
+            id: user?._id,
+            userId: user?.userId,
+            shopName: user?.shopInformation?.shopName,
+            email: user?.shopInformation?.email,
+            mobileNumber: user?.shopInformation?.mobileNumber
         }))
         setValues(formattedData)
     }
@@ -52,11 +43,6 @@ export default function Shops() {
                         <div className="w-full h-[8%] flex justify-between items-center ">
                             <div className="h-full flex items-center gap-[1rem]">
                                 <h1 className='font-[600]'>Shops</h1>
-                                <input
-                                    className='w-[30rem] h-full rounded-lg p-[1rem] border border-black'
-                                    type="text"
-                                    placeholder='Search for shops...'
-                                />
                             </div>
                         </div>
                         <div className="w-full h-[90%] bg-yellow flex justify-center items-center">
