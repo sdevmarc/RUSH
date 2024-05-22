@@ -3,25 +3,13 @@ import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
 import Button from '@mui/material/Button'
 import { DataGrid } from '@mui/x-data-grid'
-import EditIcon from '@mui/icons-material/Edit'
 import address from '../config'
 import axios from 'axios'
-
-const renderActionButtons = () => {
-    return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-            <Button variant="text">
-                <EditIcon />
-            </Button>
-        </div>
-    );
-};
 
 const columns = [
     { field: 'id', headerName: 'No.', width: 70 },
     { field: 'username', headerName: 'Username', width: 250 },
-    { field: 'displayName', headerName: 'Display Name', width: 230 },
-    { field: 'actions', headerName: 'Actions', width: 200, headerAlign: 'center', renderCell: renderActionButtons }
+    { field: 'displayName', headerName: 'Display Name', width: 230 }
 ];
 
 export default function Rentees() {
@@ -52,11 +40,6 @@ export default function Rentees() {
                         <div className="w-full h-[8%] flex justify-between items-center ">
                             <div className="h-full flex items-center gap-[1rem]">
                                 <h1 className='font-[600]'>Rentees</h1>
-                                <input
-                                    className='w-[30rem] h-full rounded-lg p-[1rem] border border-black'
-                                    type="text"
-                                    placeholder='Search for rentees...'
-                                />
                             </div>
 
                             <Button variant="contained" sx={{ background: '#333' }}>Add Rentee</Button>
