@@ -1,0 +1,4 @@
+.sidebar a.active {
+    background: #EFEFEF;
+    font-weight: 600;
+}
