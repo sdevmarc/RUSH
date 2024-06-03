@@ -42,7 +42,7 @@ const DrawerRoutes = () => {
     const fetchData = async () => {
         try {
             const userId = await AsyncStorage.getItem('userId')
-            const data = await axios.get(`http:${address}/api/getuser/${userId}`)
+            const data = await axios.get(`${address}/api/getuser/${userId}`)
             const { UserType } = data.data.data
 
             if (UserType === 'Renter') {
