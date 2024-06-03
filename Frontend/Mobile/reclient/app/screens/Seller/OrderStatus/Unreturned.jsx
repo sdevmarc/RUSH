@@ -13,7 +13,6 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import * as Colors from '../../../../utils/colors'
 import Navbar from '../../../components/Navbar'
 import axios from 'axios'
-import address from '../../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loading from '../../../components/Loading'
 
@@ -32,7 +31,7 @@ export default function Unreturned() {
         try {
             setIsLoading(true)
             const sellerId = await AsyncStorage.getItem('storeId')
-            const res = await axios.get(`${address}/api/viewstatustransactions/${sellerId}/seller/UNRETURNED`)
+            const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/viewstatustransactions/${sellerId}/seller/UNRETURNED`)
 
             if (res?.data?.success) {
                 setValues(res?.data?.data)
@@ -50,7 +49,7 @@ export default function Unreturned() {
         try {
             setIsLoading(true)
 
-            const updateTransaction = await axios.post(`${address}/api/updatetransactionstatus`, {status: 'RATING', transactionId: value})
+            const updateTransaction = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/updatetransactionstatus`, {status: 'RATING', transactionId: value})
             if(updateTransaction?.data?.success) {
                 Alert.alert('Success!', 'The product has been returned!')
                 navigation.navigate('StoreDashboard')
