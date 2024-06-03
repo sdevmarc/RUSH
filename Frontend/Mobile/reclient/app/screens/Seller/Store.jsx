@@ -44,7 +44,7 @@ const Store = () => {
             const userId = await AsyncStorage.getItem('userId')
             const token = await AsyncStorage.getItem('token')
 
-            const getStore = await axios.get(`http://${address}/api/getstore/${userId}`, {
+            const getStore = await axios.get(`${address}/api/getstore/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -53,7 +53,7 @@ const Store = () => {
                 await AsyncStorage.setItem('storeId', getStore.data.data._id)
                 setValues(getStore?.data?.data)
 
-                const getTransactions = await axios.get(`http://${address}/api/viewtransactions/${sellerId}/sellerId`)
+                const getTransactions = await axios.get(`${address}/api/viewtransactions/${sellerId}/sellerId`)
 
                 if (getTransactions?.data?.success) {
                     setStatus((prev) => ({
