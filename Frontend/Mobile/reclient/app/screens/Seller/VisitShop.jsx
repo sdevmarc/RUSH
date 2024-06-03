@@ -38,14 +38,14 @@ export default function VisitShop() {
             const token = await AsyncStorage.getItem('token')
 
             setIsLoading(true)
-            const getStoreName = await axios.get(`http://${address}/api/getstore/${userId}`, {
+            const getStoreName = await axios.get(`${address}/api/getstore/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             setDetails(getStoreName?.data?.data)
 
-            const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
+            const res = await axios.get(`${address}/api/getproducts/${storeId}`)
 
             // if (res?.data?.data.length === 0 || getStoreName?.data?.data?.shopInformation?.shopImage) {
             //     setImageLoading(false)
