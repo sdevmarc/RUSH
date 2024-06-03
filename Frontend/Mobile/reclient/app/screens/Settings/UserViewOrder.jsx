@@ -7,13 +7,11 @@ import {
     Image,
     Alert,
 } from 'react-native'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import * as Colors from '../../../utils/colors'
 import Navbar from '../../components/Navbar'
-import BottomBar from '../../components/BottomBar'
-import address from '../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
@@ -37,7 +35,7 @@ export default function UserViewOrder({ route }) {
 
     const fetchData = async () => {
         const { transactionId } = route.params
-        const res = await axios.get(`${address}/api/viewselectedtransaction/${transactionId}`)
+        const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/viewselectedtransaction/${transactionId}`)
 
         if (res?.data?.data?.transaction) {
             setValues((prev) => ({
