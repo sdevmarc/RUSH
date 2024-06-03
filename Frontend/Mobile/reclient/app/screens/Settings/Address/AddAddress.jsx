@@ -137,57 +137,24 @@ const AddAddress = ({ route }) => {
                                 <View style={{ width: '100%', gap: height * 0.01, paddingHorizontal: width * 0.01 }}>
                                     <View style={{ width: '100%', gap: height * 0.01 }}>
                                         <Text style={{ color: Colors.fontColor, fontWeight: '500' }}>Municipality</Text>
-                                        {Platform.OS === 'ios'
-                                            ? (
-                                                <>
-                                                    <TouchableOpacity
-                                                        onPress={() => handleModalState(true)}
-                                                        style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.idleColor, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
-                                                    >
-                                                        <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
-                                                            <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '500' }}>
-                                                                Municipality
-                                                            </Text>
-                                                            <Text style={{ width: '50%', color: Colors.fontColor, textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
-                                                                {values?.deliveryAddress?.municipality ? values?.deliveryAddress?.municipality : 'Add Municipality'}
-                                                            </Text>
-                                                        </View>
-                                                    </TouchableOpacity>
 
-                                                </>
-                                            )
-                                            :
-                                            (
-                                                <>
-                                                    <View style={{ width: '100%', gap: height * 0.01 }}>
-                                                        <View style={{ width: '100%', gap: height * 0.01 }}>
-                                                            <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '500' }}>
-                                                                Municipality
-                                                            </Text>
-                                                            <Picker
-                                                                selectedValue={values?.deliveryAddress?.municipality}
-                                                                onValueChange={(value) => handleOnChangeAddress('municipality', value)}
-                                                                mode='drop'
-                                                                dropdownIconColor={'#000'}
-                                                                dropdownIconRippleColor={'#d9d8d7'}
-                                                                prompt='Select Municipality'
-                                                                selectionColor={'#000'}
-                                                                style={{ backgroundColor: '#d9d8d7', color: '#000', borderRadius: height * 0.01 }}
-                                                            >
-                                                                {
-                                                                    Platform.OS === 'android' && <Picker.Item color={Platform.OS === 'android' && '#000'} label="" value="" />
-                                                                }
-                                                                {
-                                                                    IsAddress.map((item) => (
-                                                                        <Picker.Item key={item.code} color={Platform.OS === 'android' && '#000'} label={item.name} value={item.name} />
-                                                                    ))
-                                                                }
-                                                            </Picker>
-                                                        </View>
-                                                    </View>
-                                                </>
-                                            )
-                                        }
+                                        <>
+                                            <TouchableOpacity
+                                                onPress={() => handleModalState(true)}
+                                                style={{ width: '100%', gap: height * 0.003, backgroundColor: Colors.idleColor, padding: width * 0.03, borderRadius: height * 0.01, justifyContent: 'space-between' }}
+                                            >
+                                                <View style={{ width: '100%', gap: height * 0.005, flexDirection: 'row', paddingHorizontal: width * 0.02, paddingVertical: height * 0.01, justifyContent: 'space-between' }}>
+                                                    <Text style={{ color: Colors.fontColor, textAlign: 'justify', fontWeight: '500' }}>
+                                                        Municipality
+                                                    </Text>
+                                                    <Text style={{ width: '50%', color: Colors.fontColor, textAlign: 'right' }} numberOfLines={1} ellipsizeMode='tail'>
+                                                        {values?.deliveryAddress?.municipality ? values?.deliveryAddress?.municipality : 'Add Municipality'}
+                                                    </Text>
+                                                </View>
+                                            </TouchableOpacity>
+
+                                        </>
+
                                     </View>
 
                                     <View style={{ width: '100%', gap: height * 0.01 }}>
