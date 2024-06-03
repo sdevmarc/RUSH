@@ -7,13 +7,12 @@ import {
     Image,
     Alert,
 } from 'react-native'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import * as Colors from '../../../utils/colors'
 import Navbar from '../../components/Navbar'
 import BottomBar from '../../components/BottomBar'
-import address from '../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
@@ -41,7 +40,7 @@ export default function Summary({ route }) {
 
     const fetchData = async () => {
         const { transactionId } = route.params
-        const res = await axios.get(`${address}/api/viewselectedtransaction/${transactionId}`)
+        const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/viewselectedtransaction/${transactionId}`)
 
         if (res?.data?.data?.transaction) {
             setValues((prev) => ({
@@ -66,7 +65,7 @@ export default function Summary({ route }) {
     }
 
     const handleAccept = async () => {
-        const res = await axios.post(`${address}/api/updatetransactionstatus`, isAccept)
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/updatetransactionstatus`, isAccept)
 
         if(res?.data?.success) {
             Alert.alert('You have accepted the order successfully!')
