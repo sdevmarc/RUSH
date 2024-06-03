@@ -29,7 +29,7 @@ export default function Cancelled() {
         try {
             setIsLoading(true)
             const sellerId = await AsyncStorage.getItem('storeId')
-            const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/CANCELLED`)
+            const res = await axios.get(`${address}/api/viewstatustransactions/${sellerId}/seller/CANCELLED`)
     
             if (res?.data?.success) {
                 setValues(res?.data?.data)
