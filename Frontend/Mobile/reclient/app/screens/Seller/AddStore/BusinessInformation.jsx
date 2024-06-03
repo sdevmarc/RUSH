@@ -16,7 +16,6 @@ import BottomBar from '../../../components/BottomBar'
 import { Picker } from '@react-native-picker/picker';
 import { Checkbox } from 'expo-checkbox'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import address from '../../../../config/host'
 import axios from 'axios'
 import * as Colors from '../../../../utils/colors'
 
@@ -76,7 +75,7 @@ const BusinessInformation = () => {
 
     const handleSubmit = async () => {
         try {
-            const data = await axios.post(`${address}/api/addstore`, values, {
+            const data = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/addstore`, values, {
                 headers: {
                     Authorization: `Bearer ${IsToken}`
                 }
