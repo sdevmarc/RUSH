@@ -7,11 +7,10 @@ import {
     ScrollView,
     Image
 } from 'react-native'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import Navbar from '../../components/Navbar'
 import axios from 'axios'
-import address from '../../../config/host'
 import * as Colors from '../../../utils/colors'
 import Loading from '../../components/Loading'
 
@@ -31,7 +30,7 @@ const SelectedItem = ({ route }) => {
         try {
             setIsLoading(true)
             const { id } = route.params
-            const res = await axios.get(`${address}/api/selectproduct/${id}/false`)
+            const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/selectproduct/${id}/false`)
             setValues(res?.data?.data)
         } catch (error) {
             console.error(`Error Selected Item: ${error}`)
