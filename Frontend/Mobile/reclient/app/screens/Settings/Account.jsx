@@ -36,7 +36,7 @@ const Account = () => {
         try {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
-            const data = await axios.get(`http:${address}/api/getuser/${userId}`)
+            const data = await axios.get(`${address}/api/getuser/${userId}`)
             setValues(data?.data?.data)
         } catch (error) {
             console.log(error)
@@ -89,7 +89,7 @@ const Account = () => {
             })
 
             if (res) {
-                const updateUserPhoto = await axios.post(`http://${address}/api/updateprofilephoto`, { userId, profilePhoto: res?.data?.url })
+                const updateUserPhoto = await axios.post(`${address}/api/updateprofilephoto`, { userId, profilePhoto: res?.data?.url })
 
                 if (updateUserPhoto) {
                     Alert.alert(updateUserPhoto?.data?.message)
