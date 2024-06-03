@@ -37,19 +37,14 @@ const SelectedStore = ({ route }) => {
             const { userId, storeId } = route.params
             const token = await AsyncStorage.getItem('token')
 
-            const getStoreName = await axios.get(`http://${address}/api/getstore/${userId}`, {
+            const getStoreName = await axios.get(`${address}/api/getstore/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             setDetails(getStoreName?.data?.data)
 
-            const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
-
-            // if (res?.data?.data.length === 0 || getStoreName?.data?.data?.shopInformation?.shopImage) {
-            //     setImageLoading(false)
-            // }
-
+            const res = await axios.get(`${address}/api/getproducts/${storeId}`)
             setValues(res?.data?.data)
         } catch (error) {
             console.log('Error', error);
