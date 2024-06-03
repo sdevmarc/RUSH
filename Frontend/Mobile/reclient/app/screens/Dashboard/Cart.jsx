@@ -146,7 +146,7 @@ const Cart = ({ route }) => {
             }
 
             setIsLoading(true)
-            const res = await axios.post(`http://${address}/api/createtransaction`, IsCheckout)
+            const res = await axios.post(`${address}/api/createtransaction`, IsCheckout)
 
             if (res?.data?.success) {
                 await schedulePushNotification()
@@ -171,7 +171,7 @@ const Cart = ({ route }) => {
             setIsLoading(true)
 
             const { id, shopName } = route.params
-            const res = await axios.get(`http://${address}/api/selectproduct/${id}/${value}`)
+            const res = await axios.get(`${address}/api/selectproduct/${id}/${value}`)
             setValues(res?.data?.data)
             setShopName(shopName)
 
@@ -204,7 +204,7 @@ const Cart = ({ route }) => {
         try {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
-            const res = await axios.get(`http://${address}/api/getactiveaddress/${userId}`)
+            const res = await axios.get(`${address}/api/getactiveaddress/${userId}`)
 
             if (res?.data?.success) {
                 setDetails((prev) => ({
