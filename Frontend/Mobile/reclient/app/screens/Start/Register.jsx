@@ -40,7 +40,7 @@ const Register = () => {
             } else {
                 if (values.password === confirmPassword) {
                     if (isChecked) {
-                        const res = await axios.post(`http://${address}/api/signup`, values)
+                        const res = await axios.post(`${address}/api/signup`, values)
 
                         if (res.data.success) {
                             navigation.replace('SuccessfulLogin')
