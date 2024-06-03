@@ -13,7 +13,6 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { MaterialCommunityIcons, Feather, Ionicons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-import address from '../../../config/host'
 import * as Colors from '../../../utils/colors'
 import Loading from '../../components/Loading'
 
@@ -44,7 +43,7 @@ const Store = () => {
             const userId = await AsyncStorage.getItem('userId')
             const token = await AsyncStorage.getItem('token')
 
-            const getStore = await axios.get(`${address}/api/getstore/${userId}`, {
+            const getStore = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/getstore/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -53,7 +52,7 @@ const Store = () => {
                 await AsyncStorage.setItem('storeId', getStore.data.data._id)
                 setValues(getStore?.data?.data)
 
-                const getTransactions = await axios.get(`${address}/api/viewtransactions/${sellerId}/sellerId`)
+                const getTransactions = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/viewtransactions/${sellerId}/sellerId`)
 
                 if (getTransactions?.data?.success) {
                     setStatus((prev) => ({
