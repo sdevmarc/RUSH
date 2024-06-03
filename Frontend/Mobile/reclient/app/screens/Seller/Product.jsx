@@ -36,7 +36,7 @@ const Product = () => {
             setIsLoading(true)
             const storeId = await AsyncStorage.getItem('storeId')
 
-            const res = await axios.get(`http://${address}/api/getproducts/${storeId}`)
+            const res = await axios.get(`${address}/api/getproducts/${storeId}`)
             console.log(res?.data)
             if (res?.data?.data.length > 0) {
                 setProducts(res?.data?.data)
@@ -66,7 +66,7 @@ const Product = () => {
             fetchUserProducts()
             setSearch([])
         } else {
-            const res = await axios.get(`http://${address}/api/searchproduct/${storeId}/${value}`)
+            const res = await axios.get(`${address}/api/searchproduct/${storeId}/${value}`)
             setSearch(res?.data?.data)
         }
 
