@@ -54,7 +54,7 @@ const Home = ({ route }) => {
             setIsLoading(true)
             const token = await AsyncStorage.getItem('token')
 
-            const data = await axios.get(`http://${address}/api/getallstore`, {
+            const data = await axios.get(`${address}/api/getallstore`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -119,7 +119,7 @@ const Home = ({ route }) => {
                 fetchStores()
                 setSearch([])
             } else {
-                const res = await axios.get(`http://${address}/api/searchstore/${value}`)
+                const res = await axios.get(`${address}/api/searchstore/${value}`)
                 console.log(res?.data?.data)
                 setSearch(res?.data?.data)
             }
