@@ -91,7 +91,7 @@ const AddProducts = () => {
 
     const sendData = async () => {
         try {
-            const res = await axios.post(`http://${address}/api/addproduct`, values);
+            const res = await axios.post(`${address}/api/addproduct`, values);
 
             if (res.data.success) {
                 Alert.alert(res.data.message);
