@@ -12,7 +12,6 @@ import {
 } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
-import address from '../../../config/host'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Colors from '../../../utils/colors'
@@ -32,7 +31,7 @@ const Login = () => {
             if (values.username === '' || values.password === '') {
                 Alert.alert('Warning', 'Please fill-in the required fields.')
             } else {
-                const res = await axios.post(`${address}/api/login`, values)
+                const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/login`, values)
 
                 if (res.data.success) {
                     Alert.alert(res?.data?.message)
