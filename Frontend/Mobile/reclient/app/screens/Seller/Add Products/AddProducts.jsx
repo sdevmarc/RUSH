@@ -20,7 +20,6 @@ import Context from '../../../components/Context'
 import Modal from '../../../components/Modal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-import address from '../../../../config/host'
 import { useNavigation } from '@react-navigation/native'
 import * as Colors from '../../../../utils/colors'
 import Loading from '../../../components/Loading'
@@ -91,7 +90,7 @@ const AddProducts = () => {
 
     const sendData = async () => {
         try {
-            const res = await axios.post(`${address}/api/addproduct`, values);
+            const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/addproduct`, values);
 
             if (res.data.success) {
                 Alert.alert(res.data.message);
@@ -210,7 +209,7 @@ const AddProducts = () => {
             data.append('cloud_name', 'do1p9llzd')
             data.append('folder', 'products_image')
 
-            const res = await axios.post(`https://api.cloudinary.com/v1_1/do1p9llzd/image/upload`, data, {
+            const res = await axios.post(process.env.EXPO_PUBLIC_CLOUDINARY_URL, data, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'multipart/form-data'
@@ -219,7 +218,9 @@ const AddProducts = () => {
 
             if (res) {
                 console.log(`There is a res:`, res.data.url)
-                return { uri: res.data.url }
+                const secureUrl = res.data.url.replace('http://', 'https://');
+                return { uri: secureUrl }
+                // return { uri: res.data.url }
             } else {
                 console.log(`Error data`)
             }
