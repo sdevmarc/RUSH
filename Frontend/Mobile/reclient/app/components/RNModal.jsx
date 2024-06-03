@@ -42,7 +42,7 @@ export default function RNModal({ isVisible, onClose }) {
             const userId = await AsyncStorage.getItem('userId')
             const token = await AsyncStorage.getItem('token')
 
-            const storeDetails = await axios.get(`http://${address}/api/getstore/${userId}`, {
+            const storeDetails = await axios.get(`${address}/api/getstore/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -76,7 +76,7 @@ export default function RNModal({ isVisible, onClose }) {
             if (isImage) {
                 handleUploadImage(isImage);
             } else {
-                const updateUserPhoto = await axios.post(`http://${address}/api/updatestoredetails`, { storeId, shopName: shopName })
+                const updateUserPhoto = await axios.post(`${address}/api/updatestoredetails`, { storeId, shopName: shopName })
 
                 if (updateUserPhoto) {
                     Alert.alert('Success!',updateUserPhoto?.data?.message)
@@ -114,7 +114,7 @@ export default function RNModal({ isVisible, onClose }) {
                 }
             })
             if (res) {
-                const updateUserPhoto = await axios.post(`http://${address}/api/updatestoredetails`, { storeId, shopImage: res?.data?.url, shopName: details?.shopName })
+                const updateUserPhoto = await axios.post(`${address}/api/updatestoredetails`, { storeId, shopImage: res?.data?.url, shopName: details?.shopName })
 
                 if (updateUserPhoto) {
                     Alert.alert('Success!',updateUserPhoto?.data?.message)
