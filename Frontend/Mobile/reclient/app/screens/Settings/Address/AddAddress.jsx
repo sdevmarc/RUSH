@@ -15,7 +15,6 @@ import Navbar from '../../../components/Navbar'
 import AddressModal from '../../../components/AddressModal'
 import Context from '../../../components/Context'
 import { Picker } from '@react-native-picker/picker'
-import address from '../../../../config/host'
 import BottomBar from '../../../components/BottomBar'
 import axios from 'axios'
 import { useNavigation } from '@react-navigation/native'
@@ -60,7 +59,7 @@ const AddAddress = ({ route }) => {
 
         if (!lastname || !firstname || !middlename || deliveryAddress.length <= 0) return Alert.alert('Error', "Please fill in the required field!")
 
-        const res = await axios.post(`${address}/api/addaddress`, values)
+        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/addaddress`, values)
 
         if (res.data.success) {
             Alert.alert(res.data.message)
