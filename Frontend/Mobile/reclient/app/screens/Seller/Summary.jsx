@@ -41,7 +41,7 @@ export default function Summary({ route }) {
 
     const fetchData = async () => {
         const { transactionId } = route.params
-        const res = await axios.get(`http://${address}/api/viewselectedtransaction/${transactionId}`)
+        const res = await axios.get(`${address}/api/viewselectedtransaction/${transactionId}`)
 
         if (res?.data?.data?.transaction) {
             setValues((prev) => ({
@@ -66,7 +66,7 @@ export default function Summary({ route }) {
     }
 
     const handleAccept = async () => {
-        const res = await axios.post(`http://${address}/api/updatetransactionstatus`, isAccept)
+        const res = await axios.post(`${address}/api/updatetransactionstatus`, isAccept)
 
         if(res?.data?.success) {
             Alert.alert('You have accepted the order successfully!')
