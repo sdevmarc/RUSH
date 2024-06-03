@@ -26,13 +26,13 @@ const DeliveryAddress = ({ route }) => {
 
     const fetchAddress = async () => {
         const userId = await AsyncStorage.getItem('userId')
-        const res = await axios.get(`http://${address}/api/getaddress/${userId}`)
+        const res = await axios.get(`${address}/api/getaddress/${userId}`)
         setValues(res?.data?.data?.deliveryAddress)
     }
 
     const handleSetActiveAddress = async (index) => {
         const userId = await AsyncStorage.getItem('userId')
-        const res = await axios.post(`http://${address}/api/activeaddress`, { index, userId })
+        const res = await axios.post(`${address}/api/activeaddress`, { index, userId })
         if (res?.data?.success) {
             Alert.alert(res?.data?.message)
         } else {
