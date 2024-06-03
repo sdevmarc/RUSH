@@ -12,7 +12,6 @@ import { useFocusEffect } from '@react-navigation/native'
 import * as Colors from '../../../../utils/colors'
 import Navbar from '../../../components/Navbar'
 import axios from 'axios'
-import address from '../../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loading from '../../../components/Loading'
 
@@ -30,7 +29,7 @@ export default function UserToReturn() {
         try {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
-            const res = await axios.get(`${address}/api/viewstatustransactions/${userId}/user/UNRETURNED`)
+            const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/viewstatustransactions/${userId}/user/UNRETURNED`)
     
             if (res?.data?.success) {
                 setValues(res?.data?.data)
