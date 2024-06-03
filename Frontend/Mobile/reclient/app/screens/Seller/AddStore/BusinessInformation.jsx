@@ -76,7 +76,7 @@ const BusinessInformation = () => {
 
     const handleSubmit = async () => {
         try {
-            const data = await axios.post(`http:${address}/api/addstore`, values, {
+            const data = await axios.post(`${address}/api/addstore`, values, {
                 headers: {
                     Authorization: `Bearer ${IsToken}`
                 }
