@@ -40,7 +40,7 @@ export default function EditAccountDetails({ route }) {
         try {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
-            const res = await axios.get(`http:${address}/api/getuser/${userId}`)
+            const res = await axios.get(`${address}/api/getuser/${userId}`)
 
             setValues((prev) => ({
                 ...prev,
@@ -61,7 +61,7 @@ export default function EditAccountDetails({ route }) {
             if (!userId || !displayName || !contactno) return Alert.alert('Error', 'Please fill-in the empty fields!')
 
             setIsLoading(true)
-            const res = await axios.post(`http://${address}/api/updateaccountdetails`, values)
+            const res = await axios.post(`${address}/api/updateaccountdetails`, values)
 
             if (res?.data?.success) {
                 Alert.alert('Success', res?.data?.message)
