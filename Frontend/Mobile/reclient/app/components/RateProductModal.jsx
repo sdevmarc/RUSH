@@ -14,7 +14,6 @@ import React, { useState } from 'react'
 import * as Colors from '../../utils/colors'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios'
-import address from '../../config/host'
 import Loading from './Loading'
 import BottomBar from './BottomBar'
 
@@ -61,7 +60,7 @@ export default function RateProductModal({ isVisible, onClose, data }) {
                     comment: comments
                 }
             }
-            const res = await axios.post(`${address}/api/rateitem`, rated)
+            const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/rateitem`, rated)
             if (res?.data?.success) {
                 Alert.alert('Success!', res?.data?.message)
                 onClose()
