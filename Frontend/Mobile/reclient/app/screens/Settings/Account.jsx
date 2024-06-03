@@ -12,7 +12,6 @@ import React, { useCallback, useState } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons, MaterialIcons, Entypo } from '@expo/vector-icons'
 import axios from 'axios'
-import address from '../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Colors from '../../../utils/colors'
 import Loading from '../../components/Loading'
@@ -36,7 +35,7 @@ const Account = () => {
         try {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
-            const data = await axios.get(`${address}/api/getuser/${userId}`)
+            const data = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/getuser/${userId}`)
             setValues(data?.data?.data)
         } catch (error) {
             console.log(error)
@@ -89,7 +88,7 @@ const Account = () => {
             })
 
             if (res) {
-                const updateUserPhoto = await axios.post(`${address}/api/updateprofilephoto`, { userId, profilePhoto: res?.data?.url })
+                const updateUserPhoto = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/updateprofilephoto`, { userId, profilePhoto: res?.data?.url })
 
                 if (updateUserPhoto) {
                     Alert.alert(updateUserPhoto?.data?.message)
