@@ -28,7 +28,7 @@ export default function CreateOrLogin() {
                     <View style={{ width: '100%', height: height, justifyContent: 'flex-end', alignItems: 'center' }}>
                         <View style={{ width: '100%', gap: height * 0.03, paddingHorizontal: width * 0.07, paddingVertical: height * 0.03 }}>
                             <Text style={{ color: 'white', fontSize: width * 0.09, fontWeight: '700' }}>
-                                Discover the best rental items!
+                                Discover the best rental items!s
                             </Text>
                             <Text style={{ color: 'white', fontSize: width * 0.05 }}>
                                 Rent na kayo please.
