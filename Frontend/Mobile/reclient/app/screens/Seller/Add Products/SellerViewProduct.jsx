@@ -34,7 +34,7 @@ export default function SellerViewProduct({ route }) {
     const fetchProductItem = async () => {
         try {
             setIsLoading(true)
-            const res = await axios.get(`http://${address}/api/selectproduct/${id}/false`)
+            const res = await axios.get(`${address}/api/selectproduct/${id}/false`)
 
             setValues(res?.data?.data)
         } catch (error) {
@@ -55,7 +55,7 @@ export default function SellerViewProduct({ route }) {
 
     const handleDeleteProduct = async () => {
         try {
-            const res = await axios.get(`http://${address}/api/deleteproduct/${id}`)
+            const res = await axios.get(`${address}/api/deleteproduct/${id}`)
             if (res?.data?.success) {
                 Alert.alert('Success!', res?.data?.message)
                 navigation.goBack()
