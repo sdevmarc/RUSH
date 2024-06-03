@@ -15,7 +15,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-import address from '../../config/host'
 import Loading from './Loading'
 import * as ImagePicker from 'expo-image-picker'
 import BottomBar from './BottomBar';
@@ -42,7 +41,7 @@ export default function RNModal({ isVisible, onClose }) {
             const userId = await AsyncStorage.getItem('userId')
             const token = await AsyncStorage.getItem('token')
 
-            const storeDetails = await axios.get(`${address}/api/getstore/${userId}`, {
+            const storeDetails = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/getstore/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -76,7 +75,7 @@ export default function RNModal({ isVisible, onClose }) {
             if (isImage) {
                 handleUploadImage(isImage);
             } else {
-                const updateUserPhoto = await axios.post(`${address}/api/updatestoredetails`, { storeId, shopName: shopName })
+                const updateUserPhoto = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/updatestoredetails`, { storeId, shopName: shopName })
 
                 if (updateUserPhoto) {
                     Alert.alert('Success!',updateUserPhoto?.data?.message)
@@ -107,14 +106,14 @@ export default function RNModal({ isVisible, onClose }) {
             data.append('folder', 'store_photo')
 
             setIsLoading(true)
-            const res = await axios.post(`https://api.cloudinary.com/v1_1/do1p9llzd/image/upload`, data, {
+            const res = await axios.post(process.env.EXPO_PUBLIC_CLOUDINARY_URL, data, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'multipart/form-data'
                 }
             })
             if (res) {
-                const updateUserPhoto = await axios.post(`${address}/api/updatestoredetails`, { storeId, shopImage: res?.data?.url, shopName: details?.shopName })
+                const updateUserPhoto = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/updatestoredetails`, { storeId, shopImage: res?.data?.url, shopName: details?.shopName })
 
                 if (updateUserPhoto) {
                     Alert.alert('Success!',updateUserPhoto?.data?.message)
