@@ -31,7 +31,7 @@ const SelectedItem = ({ route }) => {
         try {
             setIsLoading(true)
             const { id } = route.params
-            const res = await axios.get(`http://${address}/api/selectproduct/${id}/false`)
+            const res = await axios.get(`${address}/api/selectproduct/${id}/false`)
             setValues(res?.data?.data)
         } catch (error) {
             console.error(`Error Selected Item: ${error}`)
