@@ -9,13 +9,12 @@ import {
     TextInput,
     ImageBackground
 } from 'react-native'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import { useFonts } from 'expo-font';
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-import address from '../../../config/host'
 import * as Colors from '../../../utils/colors'
 import Loading from '../../components/Loading';
 
@@ -54,7 +53,7 @@ const Home = ({ route }) => {
             setIsLoading(true)
             const token = await AsyncStorage.getItem('token')
 
-            const data = await axios.get(`${address}/api/getallstore`, {
+            const data = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/getallstore`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -119,7 +118,7 @@ const Home = ({ route }) => {
                 fetchStores()
                 setSearch([])
             } else {
-                const res = await axios.get(`${address}/api/searchstore/${value}`)
+                const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/searchstore/${value}`)
                 console.log(res?.data?.data)
                 setSearch(res?.data?.data)
             }
