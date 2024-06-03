@@ -40,7 +40,7 @@ export default function Report() {
 
             setIsLoading(true)
 
-            const res = await axios.post(`http://${address}/api/addreport`, { userId, values })
+            const res = await axios.post(`${address}/api/addreport`, { userId, values })
 
             if (res?.data?.success) {
                 Alert.alert('Success', res?.data?.message)
