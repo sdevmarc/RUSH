@@ -2,6 +2,8 @@
 
 # dependencies
 node_modules/
+android
+eas.json
 
 # Expo
 .expo/
@@ -30,6 +32,7 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
 
 # typescript
 *.tsbuildinfo
