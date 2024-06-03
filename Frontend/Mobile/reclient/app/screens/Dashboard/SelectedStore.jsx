@@ -13,7 +13,6 @@ import React, { useCallback, useState } from 'react'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import axios from 'axios'
-import address from '../../../config/host'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Colors from '../../../utils/colors'
 import Loading from '../../components/Loading';
@@ -37,14 +36,14 @@ const SelectedStore = ({ route }) => {
             const { userId, storeId } = route.params
             const token = await AsyncStorage.getItem('token')
 
-            const getStoreName = await axios.get(`${address}/api/getstore/${userId}`, {
+            const getStoreName = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/getstore/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             setDetails(getStoreName?.data?.data)
 
-            const res = await axios.get(`${address}/api/getproducts/${storeId}`)
+            const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/getproducts/${storeId}`)
             setValues(res?.data?.data)
         } catch (error) {
             console.log('Error', error);
