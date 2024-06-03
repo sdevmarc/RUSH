@@ -61,7 +61,7 @@ export default function RateProductModal({ isVisible, onClose, data }) {
                     comment: comments
                 }
             }
-            const res = await axios.post(`http://${address}/api/rateitem`, rated)
+            const res = await axios.post(`${address}/api/rateitem`, rated)
             if (res?.data?.success) {
                 Alert.alert('Success!', res?.data?.message)
                 onClose()
