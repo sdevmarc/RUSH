@@ -11,7 +11,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import * as Colors from '../../utils/colors'
 import axios from 'axios'
-import address from '../../config/host'
 import Loading from './Loading'
 import BottomBar from './BottomBar'
 import Navbar from './Navbar'
@@ -34,7 +33,7 @@ export default function EditProductModal({ isVisible, onClose, data }) {
     const fetchProductItem = async () => {
         try {
             setIsLoading(true)
-            const res = await axios.get(`${address}/api/selectproduct/${data}/false`)
+            const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/selectproduct/${data}/false`)
 
             if (res?.data?.success) {
                 setDetails((prev) => ({
@@ -71,7 +70,7 @@ export default function EditProductModal({ isVisible, onClose, data }) {
                 price,
                 shippingFee
             }
-            const updateProduct = await axios.post(`${address}/api/updateproductdetails`, { productId: data, productInformation })
+            const updateProduct = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/updateproductdetails`, { productId: data, productInformation })
 
             console.log(updateProduct?.data)
 
