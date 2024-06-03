@@ -34,7 +34,7 @@ export default function UserToReview() {
         try {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
-            const res = await axios.get(`http:${address}/api/viewstatustransactions/${userId}/user/RATING`)
+            const res = await axios.get(`${address}/api/viewstatustransactions/${userId}/user/RATING`)
 
             if (res?.data?.success) {
                 setValues(res?.data?.data)
