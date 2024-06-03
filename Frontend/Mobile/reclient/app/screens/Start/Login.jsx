@@ -32,7 +32,7 @@ const Login = () => {
             if (values.username === '' || values.password === '') {
                 Alert.alert('Warning', 'Please fill-in the required fields.')
             } else {
-                const res = await axios.post(`http://${address}/api/login`, values)
+                const res = await axios.post(`${address}/api/login`, values)
 
                 if (res.data.success) {
                     Alert.alert(res?.data?.message)
