@@ -19,7 +19,6 @@ import {
 } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-import address from '../../config/host'
 import { Ionicons, MaterialIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import * as Colors from '../../utils/colors'
 import CustomerService from '../screens/Settings/CustomerService'
@@ -30,10 +29,6 @@ const { width, height } = Dimensions.get('window')
 
 const DrawerRoutes = () => {
     const [isRenter, setIsRenter] = useState(false)
-    const [values, setValues] = useState({
-        activeTint: '',
-        iconColor: ''
-    })
 
     useEffect(() => {
         fetchData()
@@ -42,7 +37,7 @@ const DrawerRoutes = () => {
     const fetchData = async () => {
         try {
             const userId = await AsyncStorage.getItem('userId')
-            const data = await axios.get(`${address}/api/getuser/${userId}`)
+            const data = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/getuser/${userId}`)
             const { UserType } = data.data.data
 
             if (UserType === 'Renter') {
