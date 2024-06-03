@@ -46,7 +46,7 @@ const AddressModal = ({ title, onSelectMunicipality }) => {
     return (
         <>
             {
-                IsModalOpen && Platform.OS === 'ios' && (
+                IsModalOpen  && (
                     <>
                         <View style={{ position: 'absolute', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', opacity: .4, zIndex: 1 }} />
                         <View style={{ position: 'absolute', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', zIndex: 1 }}>
