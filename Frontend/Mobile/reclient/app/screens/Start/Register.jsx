@@ -13,7 +13,6 @@ import {
 import React, { useState } from 'react'
 import { Checkbox } from 'expo-checkbox'
 import axios from 'axios'
-import address from '../../../config/host'
 import { useNavigation } from '@react-navigation/native'
 import * as Colors from '../../../utils/colors'
 
@@ -40,7 +39,7 @@ const Register = () => {
             } else {
                 if (values.password === confirmPassword) {
                     if (isChecked) {
-                        const res = await axios.post(`${address}/api/signup`, values)
+                        const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/signup`, values)
 
                         if (res.data.success) {
                             navigation.replace('SuccessfulLogin')
