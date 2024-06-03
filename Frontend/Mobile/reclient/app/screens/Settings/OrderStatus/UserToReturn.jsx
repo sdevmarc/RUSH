@@ -30,7 +30,7 @@ export default function UserToReturn() {
         try {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
-            const res = await axios.get(`http:${address}/api/viewstatustransactions/${userId}/user/UNRETURNED`)
+            const res = await axios.get(`${address}/api/viewstatustransactions/${userId}/user/UNRETURNED`)
     
             if (res?.data?.success) {
                 setValues(res?.data?.data)
