@@ -17,7 +17,6 @@ import Loading from '../../components/Loading'
 import Navbar from '../../components/Navbar'
 import BottomBar from '../../components/BottomBar'
 import axios from 'axios'
-import address from '../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
@@ -40,7 +39,7 @@ export default function Report() {
 
             setIsLoading(true)
 
-            const res = await axios.post(`${address}/api/addreport`, { userId, values })
+            const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/addreport`, { userId, values })
 
             if (res?.data?.success) {
                 Alert.alert('Success', res?.data?.message)
