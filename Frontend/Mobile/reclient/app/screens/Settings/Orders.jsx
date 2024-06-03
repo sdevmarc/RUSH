@@ -36,7 +36,7 @@ const Orders = () => {
         try {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
-            const res = await axios.get(`${address}/api/viewtransactions/${userId}/userId`)
+            const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/viewtransactions/${userId}/userId`)
 
             if (res?.data?.success) {
                 setStatus((prev) => ({
