@@ -32,7 +32,7 @@ export default function Unreturned() {
         try {
             setIsLoading(true)
             const sellerId = await AsyncStorage.getItem('storeId')
-            const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/UNRETURNED`)
+            const res = await axios.get(`${address}/api/viewstatustransactions/${sellerId}/seller/UNRETURNED`)
 
             if (res?.data?.success) {
                 setValues(res?.data?.data)
@@ -50,7 +50,7 @@ export default function Unreturned() {
         try {
             setIsLoading(true)
 
-            const updateTransaction = await axios.post(`http://${address}/api/updatetransactionstatus`, {status: 'RATING', transactionId: value})
+            const updateTransaction = await axios.post(`${address}/api/updatetransactionstatus`, {status: 'RATING', transactionId: value})
             if(updateTransaction?.data?.success) {
                 Alert.alert('Success!', 'The product has been returned!')
                 navigation.navigate('StoreDashboard')
