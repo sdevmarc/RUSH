@@ -15,11 +15,8 @@ import Navbar from '../../../components/Navbar'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import BottomBar from '../../../components/BottomBar'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import AddressModal from '../../../components/AddressModal'
-import Context from '../../../components//Context'
 import * as Colors from '../../../../utils/colors'
 import Loading from '../../../components/Loading'
-import address from '../../../../config/host'
 
 const { width, height } = Dimensions.get('window')
 
@@ -40,7 +37,7 @@ export default function EditAccountDetails({ route }) {
         try {
             setIsLoading(true)
             const userId = await AsyncStorage.getItem('userId')
-            const res = await axios.get(`${address}/api/getuser/${userId}`)
+            const res = await axios.get(`${process.env.EXPO_PUBLIC_SERVER}/api/getuser/${userId}`)
 
             setValues((prev) => ({
                 ...prev,
@@ -61,7 +58,7 @@ export default function EditAccountDetails({ route }) {
             if (!userId || !displayName || !contactno) return Alert.alert('Error', 'Please fill-in the empty fields!')
 
             setIsLoading(true)
-            const res = await axios.post(`${address}/api/updateaccountdetails`, values)
+            const res = await axios.post(`${process.env.EXPO_PUBLIC_SERVER}/api/updateaccountdetails`, values)
 
             if (res?.data?.success) {
                 Alert.alert('Success', res?.data?.message)
