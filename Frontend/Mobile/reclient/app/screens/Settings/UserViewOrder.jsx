@@ -37,7 +37,7 @@ export default function UserViewOrder({ route }) {
 
     const fetchData = async () => {
         const { transactionId } = route.params
-        const res = await axios.get(`http://${address}/api/viewselectedtransaction/${transactionId}`)
+        const res = await axios.get(`${address}/api/viewselectedtransaction/${transactionId}`)
 
         if (res?.data?.data?.transaction) {
             setValues((prev) => ({
