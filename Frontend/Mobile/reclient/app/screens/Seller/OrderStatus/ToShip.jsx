@@ -33,7 +33,7 @@ export default function ToShip() {
         try {
             setIsLoading(true)
             const sellerId = await AsyncStorage.getItem('storeId')
-            const res = await axios.get(`http:${address}/api/viewstatustransactions/${sellerId}/seller/PENDING`)
+            const res = await axios.get(`${address}/api/viewstatustransactions/${sellerId}/seller/PENDING`)
 
             if (res?.data?.success) {
                 setValues(res?.data?.data)
@@ -51,7 +51,7 @@ export default function ToShip() {
         try {
             setIsLoading(true)
 
-            const updateTransaction = await axios.post(`http://${address}/api/updatetransactionstatus`, { status: 'CANCELLED', transactionId: value })
+            const updateTransaction = await axios.post(`${address}/api/updatetransactionstatus`, { status: 'CANCELLED', transactionId: value })
             if (updateTransaction?.data?.success) {
                 Alert.alert('Success!', 'The product has been cancelled!')
                 navigation.navigate('StoreDashboard')
